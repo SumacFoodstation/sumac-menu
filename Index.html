@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SUMAC Foodstation</title>
+  <style>
+    body { font-family: sans-serif; background: #f8f8f8; color: #222; margin: 0; padding: 1em; }
+    h1, h2, h3 { text-align: center; }
+    .tabs { display: flex; justify-content: center; gap: 1em; margin-bottom: 1em; }
+    .tab-content { display: none; padding: 1em; border: 1px solid #ccc; background: #fff; border-radius: 0.5em; }
+    .tab-content.active { display: block; }
+    .menu-card { margin: 1em auto; max-width: 600px; background: #fff; padding: 1em; border-radius: 0.5em; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
+    .qr, .cart { text-align: center; margin-top: 2em; }
+    .cart-item { margin: 0.5em 0; }
+    button.add-btn { margin-top: 0.5em; }
+  </style>
+</head>
+<body>
+  <h1>SUMAC Foodstation</h1>
+  <h3>Meniu digital pentru masa <span id="masa">-</span></h3>
+
+  <div class="tabs">
+    <button onclick="switchTab('aperitive')">Aperitive</button>
+    <button onclick="switchTab('supe')">Supe</button>
+    <button onclick="switchTab('gatite')">Gătite</button>
+    <button onclick="switchTab('salate')">Salate</button>
+    <button onclick="switchTab('cos')">Coș</button>
+  </div>
+
+  <div id="aperitive" class="tab-content active">
+    <div class="menu-card">
+      <h2>Hummus clasic</h2>
+      <p>Ingrediente: năut, pastă de susan, usturoi, ulei, lămâie, sare</p>
+      <p>Alergeni: Semințe de susan</p>
+      <p>250g — 17.00 lei</p>
+      <button class="add-btn" onclick="adaugaInCos('Hummus clasic', 17.00)">Adaugă în coș</button>
+    </div>
+    <div class="menu-card">
+      <h2>Labneh</h2>
+      <p>Ingrediente: iaurt, ulei, sare, mentă uscată</p>
+      <p>Alergeni: Lactoza</p>
+      <p>250g — 19.00 lei</p>
+      <button class="add-btn" onclick="adaugaInCos('Labneh', 19.00)">Adaugă în coș</button>
+    </div>
+  </div>
+
+  <div id="supe" class="tab-content">
+    <div class="menu-card">
+      <h2>Supă cremă de linte</h2>
+      <p>Ingrediente: linte, ceapă, morcovi, cartofi, usturoi, ulei, chimion, concentrat de legume, sare, piper, pastă de roșii, lămâie</p>
+      <p>Alergeni: —</p>
+      <p>300g — 12.80 lei | 500g — 21.30 lei</p>
+      <button class="add-btn" onclick="adaugaInCos('Supă cremă de linte 300g', 12.80)">Adaugă în coș</button>
+      <button class="add-btn" onclick="adaugaInCos('Supă cremă de linte 500g', 21.30)">Adaugă în coș</button>
+    </div>
+  </div>
+
+  <div id="gatite" class="tab-content">
+    <div class="menu-card">
+      <h2>Chiftele marinate</h2>
+      <p>Ingrediente: carne tocată, ceapă, morcovi, ouă, pesmet, roșii, condimente</p>
+      <p>Alergeni: Gluten, Ouă</p>
+      <p>300g — 22.00 lei</p>
+      <button class="add-btn" onclick="adaugaInCos('Chiftele marinate', 22.00)">Adaugă în coș</button>
+    </div>
+  </div>
+
+  <div id="salate" class="tab-content">
+    <div class="menu-card">
+      <h2>Salată Coleslaw</h2>
+      <p>Ingrediente: varză, ridichi, morcovi, ceapă roșie, maioneză, muștar, oșet, zahăr, condimente</p>
+      <p>Alergeni: Ouă, Muștar</p>
+      <p>300g — 15.00 lei</p>
+      <button class="add-btn" onclick="adaugaInCos('Salată Coleslaw', 15.00)">Adaugă în coș</button>
+    </div>
+  </div>
+
+  <div id="cos" class="tab-content">
+    <div class="menu-card">
+      <h2>Coșul de comandă</h2>
+      <div id="cosContent"></div>
+      <button onclick="trimiteComanda()">Trimite comanda</button>
+    </div>
+  </div>
+
+  <div class="qr">
+    <h3>Scanează codul QR pentru a comanda</h3>
+    <img id="qrcode" src="" alt="QR Code">
+  </div>
+
+  <script>
+    function switchTab(id) {
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+    }
+
+    const params = new URLSearchParams(window.location.search);
+    const masa = params.get("masa") || "-";
+    document.getElementById("masa").innerText = masa;
+    document.getElementById("qrcode").src = `https://api.qrserver.com/v1/create-qr-code/?data=https://sumac.ro/?masa=${masa}&size=150x150`;
+
+    let cos = [];
+
+    function adaugaInCos(produs, pret) {
+      cos.push({ produs, pret });
+      afiseazaCos();
+    }
+
+    function afiseazaCos() {
+      const container = document.getElementById("cosContent");
+      container.innerHTML = "";
+      cos.forEach(item => {
+        const div = document.createElement("div");
+        div.className = "cart-item";
+        div.textContent = `${item.produs} — ${item.pret.toFixed(2)} lei`;
+        container.appendChild(div);
+      });
+    }
+
+    function trimiteComanda() {
+      const comandaText = `Comandă masa ${masa}:%0A` + cos.map(c => `• ${c.produs} — ${c.pret.toFixed(2)} lei`).join('%0A');
+      const link = `https://wa.me/40766362943?text=${comandaText}`;
+      window.open(link, '_blank');
+    }
+  </script>
+</body>
+</html>
