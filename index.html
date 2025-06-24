@@ -11,11 +11,12 @@
     .tab-content { display: none; padding: 1em; border: 1px solid #ccc; background: #fff; border-radius: 0.5em; }
     .tab-content.active { display: block; }
     .menu-card { margin: 1em auto; max-width: 600px; background: #fff; padding: 1em; border-radius: 0.5em; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
-    .qr, .cart { text-align: center; margin-top: 2em; }
+    .cart { text-align: center; margin-top: 2em; }
     .cart-item { margin: 0.5em 0; }
     button.add-btn { margin-top: 0.5em; }
     #notificare { text-align: center; color: green; margin-top: 1em; font-weight: bold; }
     #total { font-weight: bold; margin-top: 1em; }
+    .link-sumac { text-align: center; margin-top: 2em; font-weight: bold; }
   </style>
 </head>
 <body>
@@ -83,15 +84,20 @@
       <h2>Coșul de comandă</h2>
       <div id="cosContent"></div>
       <div id="total"></div>
+      <label for="plata">Metodă de plată:</label>
+      <select id="plata">
+        <option value="Cash">Cash</option>
+        <option value="Card">Card</option>
+      </select>
+      <br><br>
       <button onclick="trimiteComanda()">Trimite comanda</button>
     </div>
   </div>
 
   <div id="notificare"></div>
 
-  <div class="qr">
-    <h3>Scanează codul QR pentru a comanda</h3>
-    <img id="qrcode" src="" alt="QR Code">
+  <div class="link-sumac">
+    <a href="https://sumac.ro" target="_blank">&larr; Înapoi la sumac.ro</a>
   </div>
 
   <script>
@@ -103,7 +109,6 @@
     const params = new URLSearchParams(window.location.search);
     const masa = params.get("masa") || "-";
     document.getElementById("masa").innerText = masa;
-    document.getElementById("qrcode").src = `https://api.qrserver.com/v1/create-qr-code/?data=https://sumacfoodstation.github.io/sumac-menu/?masa=${masa}&size=150x150`;
 
     let cos = [];
 
@@ -131,7 +136,10 @@
 
     function trimiteComanda() {
       let total = cos.reduce((acc, cur) => acc + cur.pret, 0);
-      const comandaText = `Comandă masa ${masa}:%0A` + cos.map(c => `• ${c.produs} — ${c.pret.toFixed(2)} lei`).join('%0A') + `%0A%0ATotal: ${total.toFixed(2)} lei`;
+      const metodaPlata = document.getElementById("plata").value;
+      const comandaText = `Comandă masa ${masa} (%20plată%20cu%20${metodaPlata}):%0A` +
+        cos.map(c => `• ${c.produs} — ${c.pret.toFixed(2)} lei`).join('%0A') +
+        `%0A%0ATotal: ${total.toFixed(2)} lei`;
       const link = `https://wa.me/40766362943?text=${comandaText}`;
       window.open(link, '_blank');
     }
