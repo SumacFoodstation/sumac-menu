@@ -1,148 +1,1548 @@
 <!DOCTYPE html>
 <html lang="ro">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SUMAC Foodstation</title>
-  <style>
-    body { font-family: sans-serif; background: #f8f8f8; color: #222; margin: 0; padding: 1em; }
-    h1, h2, h3 { text-align: center; }
-    .tabs { display: flex; justify-content: center; gap: 1em; margin-bottom: 1em; flex-wrap: wrap; }
-    .tab-content { display: none; padding: 1em; border: 1px solid #ccc; background: #fff; border-radius: 0.5em; }
-    .tab-content.active { display: block; }
-    .menu-card { margin: 1em auto; max-width: 600px; background: #fff; padding: 1em; border-radius: 0.5em; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
-    .cart { text-align: center; margin-top: 2em; }
-    .cart-item { margin: 0.5em 0; }
-    button.add-btn { margin-top: 0.5em; }
-    #notificare { text-align: center; color: green; margin-top: 1em; font-weight: bold; }
-    #total { font-weight: bold; margin-top: 1em; }
-    .link-sumac { text-align: center; margin-top: 2em; font-weight: bold; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sumac - Meniu Virtual</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+            position: relative;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Language Switcher */
+        .language-switcher {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            padding: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .lang-btn {
+            background: transparent;
+            border: 1px solid #ccc;
+            padding: 5px 10px;
+            margin: 0 2px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .lang-btn.active {
+            background: #FF6B6B;
+            color: white;
+            border-color: #FF6B6B;
+        }
+
+        /* Admin Panel Toggle */
+        .admin-toggle {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background: linear-gradient(45deg, #8B4513, #A0522D);
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2em;
+            z-index: 1000;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .admin-toggle:hover {
+            transform: scale(1.1);
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        .header h1 {
+            color: #8B4513;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .promotion-banner {
+            background: linear-gradient(45deg, #FFD700, #FFA500);
+            color: #8B4513;
+            padding: 15px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: bold;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+
+        .table-info {
+            background: linear-gradient(45deg, #FF6B6B, #4ECDC4);
+            color: white;
+            padding: 15px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            font-size: 1.2em;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Navigation Tabs */
+        .nav-tabs {
+            display: flex;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            padding: 10px;
+            margin-bottom: 20px;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .nav-tab {
+            flex: 1;
+            background: transparent;
+            border: none;
+            padding: 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            min-width: 120px;
+        }
+
+        .nav-tab.active {
+            background: linear-gradient(45deg, #FF6B6B, #4ECDC4);
+            color: white;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Content Sections */
+        .content-section {
+            display: none;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        .menu-container {
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .menu-section {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            backdrop-filter: blur(10px);
+        }
+
+        .category {
+            margin-bottom: 30px;
+        }
+
+        .category h2 {
+            color: #8B4513;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #FF6B6B;
+            position: relative;
+        }
+
+        .category h2::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: #4ECDC4;
+        }
+
+        .menu-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 15px;
+            border-left: 5px solid #FF6B6B;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .menu-item:hover {
+            transform: translateX(10px);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+            border-left-color: #4ECDC4;
+        }
+
+        .menu-item.promotion {
+            background: linear-gradient(135deg, #FFE4B5 0%, #FFEAA7 100%);
+            border-left-color: #FFD700;
+        }
+
+        .promotion-badge {
+            position: absolute;
+            top: -5px;
+            right: 10px;
+            background: #FF6B6B;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.8em;
+            font-weight: bold;
+        }
+
+        .prep-time {
+            background: #4ECDC4;
+            color: white;
+            padding: 3px 8px;
+            border-radius: 10px;
+            font-size: 0.8em;
+            margin-top: 5px;
+            display: inline-block;
+        }
+
+        .item-info {
+            flex: 1;
+        }
+
+        .item-name {
+            font-weight: bold;
+            font-size: 1.1em;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+
+        .item-description {
+            color: #666;
+            font-size: 0.9em;
+            line-height: 1.4;
+        }
+
+        .item-price {
+            font-weight: bold;
+            color: #e74c3c;
+            font-size: 1.2em;
+            margin: 0 15px;
+        }
+
+        .original-price {
+            text-decoration: line-through;
+            color: #999;
+            font-size: 0.9em;
+            margin-right: 10px;
+        }
+
+        .add-btn {
+            background: linear-gradient(45deg, #FF6B6B, #4ECDC4);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .add-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Cart */
+        .cart {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 25px;
+            position: sticky;
+            top: 20px;
+            height: fit-content;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            backdrop-filter: blur(10px);
+        }
+
+        .cart h3 {
+            color: #8B4513;
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            text-align: center;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #FF6B6B;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .cart-item-name {
+            flex: 1;
+            font-size: 0.9em;
+        }
+
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            margin: 0 10px;
+        }
+
+        .qty-btn {
+            background: #FF6B6B;
+            color: white;
+            border: none;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.2s ease;
+        }
+
+        .qty-btn:hover {
+            background: #e55555;
+            transform: scale(1.1);
+        }
+
+        .quantity {
+            margin: 0 10px;
+            font-weight: bold;
+            min-width: 20px;
+            text-align: center;
+        }
+
+        .cart-item-price {
+            font-weight: bold;
+            color: #e74c3c;
+            min-width: 60px;
+            text-align: right;
+        }
+
+        .payment-method {
+            margin: 20px 0;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+
+        .payment-option {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            cursor: pointer;
+        }
+
+        .payment-option input[type="radio"] {
+            margin-right: 10px;
+        }
+
+        .cart-total {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 2px solid #FF6B6B;
+            text-align: center;
+        }
+
+        .total-amount {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+
+        .order-btn {
+            background: linear-gradient(45deg, #28a745, #20c997);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 30px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .order-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 7px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .order-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Reservations */
+        .reservation-form {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #FF6B6B;
+        }
+
+        /* Feedback */
+        .feedback-section {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .rating-stars {
+            display: flex;
+            gap: 10px;
+            margin: 15px 0;
+            justify-content: center;
+        }
+
+        .star {
+            font-size: 2em;
+            color: #ddd;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+
+        .star:hover,
+        .star.active {
+            color: #FFD700;
+        }
+
+        .reviews {
+            margin-top: 30px;
+        }
+
+        .review-item {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 15px;
+            border-left: 4px solid #FF6B6B;
+        }
+
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .review-stars {
+            color: #FFD700;
+        }
+
+        /* Admin Panel */
+        .admin-panel {
+            position: fixed;
+            top: 0;
+            left: -400px;
+            width: 400px;
+            height: 100vh;
+            background: rgba(255, 255, 255, 0.98);
+            box-shadow: 2px 0 20px rgba(0, 0, 0, 0.3);
+            transition: left 0.3s ease;
+            z-index: 2000;
+            overflow-y: auto;
+            padding: 20px;
+        }
+
+        .admin-panel.open {
+            left: 0;
+        }
+
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #FF6B6B;
+        }
+
+        .close-admin {
+            background: #FF6B6B;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2em;
+        }
+
+        .admin-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 15px;
+        }
+
+        .admin-section h3 {
+            color: #8B4513;
+            margin-bottom: 15px;
+        }
+
+        /* Notifications */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(45deg, #4ECDC4, #44A08D);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+            z-index: 3000;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification.error {
+            background: linear-gradient(45deg, #FF6B6B, #FF5252);
+        }
+
+        .notification.success {
+            background: linear-gradient(45deg, #4CAF50, #45A049);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .menu-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .cart {
+                position: relative;
+                top: 0;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .menu-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            
+            .nav-tabs {
+                flex-direction: column;
+            }
+            
+            .admin-panel {
+                width: 100%;
+                left: -100%;
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .menu-item, .cart {
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        .empty-cart {
+            text-align: center;
+            color: #666;
+            font-style: italic;
+            padding: 20px 0;
+        }
+    </style>
 </head>
 <body>
-  <h1>SUMAC Foodstation</h1>
-  <h3>Meniu digital pentru masa <span id="masa">-</span></h3>
-
-  <div class="tabs">
-    <button onclick="switchTab('aperitive')">Aperitive</button>
-    <button onclick="switchTab('supe')">Supe</button>
-    <button onclick="switchTab('gatite')">Gătite</button>
-    <button onclick="switchTab('salate')">Salate</button>
-    <button onclick="switchTab('cos')">Coș</button>
-  </div>
-
-  <div id="aperitive" class="tab-content active">
-    <div class="menu-card">
-      <h2>Hummus clasic</h2>
-      <p>Ingrediente: năut, pastă de susan, usturoi, ulei, lămâie, sare</p>
-      <p>Alergeni: Semințe de susan</p>
-      <p>250g — 17.00 lei</p>
-      <button class="add-btn" onclick="adaugaInCos('Hummus clasic', 17.00)">Adaugă în coș</button>
+    <!-- Language Switcher -->
+    <div class="language-switcher">
+        <button class="lang-btn active" onclick="switchLanguage('ro')">RO</button>
+        <button class="lang-btn" onclick="switchLanguage('en')">EN</button>
     </div>
-    <div class="menu-card">
-      <h2>Labneh</h2>
-      <p>Ingrediente: iaurt, ulei, sare, mentă uscată</p>
-      <p>Alergeni: Lactoza</p>
-      <p>250g — 19.00 lei</p>
-      <button class="add-btn" onclick="adaugaInCos('Labneh', 19.00)">Adaugă în coș</button>
+
+    <!-- Admin Toggle -->
+    <button class="admin-toggle" onclick="toggleAdmin()">⚙️</button>
+
+    <div class="container">
+        <div class="header">
+            <h1 data-ro="🌿 Restaurant Sumac" data-en="🌿 Sumac Restaurant">🌿 Restaurant Sumac</h1>
+            <p data-ro="Bucătărie Orientală Autentică" data-en="Authentic Oriental Cuisine">Bucătărie Orientală Autentică</p>
+        </div>
+
+        <div class="promotion-banner" id="promotionBanner" style="display: none;">
+            <span data-ro="🎉 Oferta Specială: 20% reducere la toate salatele!" data-en="🎉 Special Offer: 20% off all salads!">🎉 Oferta Specială: 20% reducere la toate salatele!</span>
+        </div>
+
+        <div class="table-info" id="tableInfo">
+            <strong data-ro="📍 Masa: " data-en="📍 Table: ">📍 Masa: </strong><span id="tableNumber">-</span>
+        </div>
+
+        <!-- Navigation -->
+        <div class="nav-tabs">
+            <button class="nav-tab active" onclick="showSection('menu')" data-ro="🍽️ Meniu" data-en="🍽️ Menu">🍽️ Meniu</button>
+            <button class="nav-tab" onclick="showSection('reservations')" data-ro="📅 Rezervări" data-en="📅 Reservations">📅 Rezervări</button>
+            <button class="nav-tab" onclick="showSection('feedback')" data-ro="⭐ Feedback" data-en="⭐ Feedback">⭐ Feedback</button>
+        </div>
+
+        <!-- Menu Section -->
+        <div id="menu" class="content-section active">
+            <div class="menu-container">
+                <div class="menu-section">
+                    <div class="category">
+                        <h2 data-ro="🥗 Aperitive și Salate" data-en="🥗 Appetizers & Salads">🥗 Aperitive și Salate</h2>
+                        <div class="menu-item promotion" data-name="Hummus Beirut" data-price="24" data-original-price="30" data-description="Pasta de naut cu tahini, ulei masline, usturoi și lămâie" data-prep-time="5">
+                            <div class="promotion-badge" data-ro="REDUCERE!" data-en="SALE!">REDUCERE!</div>
+                            <div class="item-info">
+                                <div class="item-name">Hummus Beirut</div>
+                                <div class="item-description" data-ro="Pasta de naut cu tahini, ulei masline, usturoi și lămâie" data-en="Chickpea paste with tahini, olive oil, garlic and lemon">Pasta de naut cu tahini, ulei masline, usturoi și lămâie</div>
+                                <div class="prep-time" data-ro="⏱️ 5 min" data-en="⏱️ 5 min">⏱️ 5 min</div>
+                            </div>
+                            <div class="item-price">
+                                <span class="original-price">30 RON</span>
+                                24 RON
+                            </div>
+                            <button class="add-btn" data-ro="Adaugă" data-en="Add">Adaugă</button>
+                        </div>
+                        
+                        <div class="menu-item" data-name="Baba Ganoush" data-price="26" data-description="Pastă de vinete coapte cu tahini și condimente orientale" data-prep-time="7">
+                            <div class="item-info">
+                                <div class="item-name">Baba Ganoush</div>
+                                <div class="item-description" data-ro="Pastă de vinete coapte cu tahini și condimente orientale" data-en="Roasted eggplant paste with tahini and oriental spices">Pastă de vinete coapte cu tahini și condimente orientale</div>
+                                <div class="prep-time" data-ro="⏱️ 7 min" data-en="⏱️ 7 min">⏱️ 7 min</div>
+                            </div>
+                            <div class="item-price">26 RON</div>
+                            <button class="add-btn" data-ro="Adaugă" data-en="Add">Adaugă</button>
+                        </div>
+
+                        <div class="menu-item promotion" data-name="Salata Tabbouleh" data-price="26" data-original-price="33" data-description="Roșii, castraveți, ceapă, pătrunjel, lămâie, sumac, ulei" data-prep-time="5">
+                            <div class="promotion-badge" data-ro="REDUCERE!" data-en="SALE!">REDUCERE!</div>
+                            <div class="item-info">
+                                <div class="item-name">Salata Tabbouleh</div>
+                                <div class="item-description" data-ro="Roșii, castraveți, ceapă, pătrunjel, lămâie, sumac, ulei" data-en="Tomatoes, cucumbers, onion, parsley, lemon, sumac, oil">Roșii, castraveți, ceapă, pătrunjel, lămâie, sumac, ulei</div>
+                                <div class="prep-time" data-ro="⏱️ 5 min" data-en="⏱️ 5 min">⏱️ 5 min</div>
+                            </div>
+                            <div class="item-price">
+                                <span class="original-price">33 RON</span>
+                                26 RON
+                            </div>
+                            <button class="add-btn" data-ro="Adaugă" data-en="Add">Adaugă</button>
+                        </div>
+
+                        <div class="menu-item promotion" data-name="Salata Fattoush" data-price="27" data-original-price="34" data-description="Roșii, castraveți, ardei gras, ceapă, pătrunjel, rodie, sumac" data-prep-time="8">
+                            <div class="promotion-badge" data-ro="REDUCERE!" data-en="SALE!">REDUCERE!</div>
+                            <div class="item-info">
+                                <div class="item-name">Salata Fattoush</div>
+                                <div class="item-description" data-ro="Roșii, castraveți, ardei gras, ceapă, pătrunjel, rodie, sumac" data-en="Tomatoes, cucumbers, bell peppers, onion, parsley, pomegranate, sumac">Roșii, castraveți, ardei gras, ceapă, pătrunjel, rodie, sumac</div>
+                                <div class="prep-time" data-ro="⏱️ 8 min" data-en="⏱️ 8 min">⏱️ 8 min</div>
+                            </div>
+                            <div class="item-price">
+                                <span class="original-price">34 RON</span>
+                                27 RON
+                            </div>
+                            <button class="add-btn" data-ro="Adaugă" data-en="Add">Adaugă</button>
+                        </div>
+                    </div>
+
+                    <div class="category">
+                        <h2 data-ro="🍖 Feluri Principale" data-en="🍖 Main Courses">🍖 Feluri Principale</h2>
+                        <div class="menu-item" data-name="Shawarma de Pui" data-price="43" data-description="Piept de pui, sos teriyaki, cartofi prăjiți, salată, murături" data-prep-time="15">
+                            <div class="item-info">
+                                <div class="item-name">Shawarma de Pui</div>
+                                <div class="item-description" data-ro="Piept de pui, sos teriyaki, cartofi prăjiți, salată, murături" data-en="Chicken breast, teriyaki sauce, french fries, salad, pickles">Piept de pui, sos teriyaki, cartofi prăjiți, salată, murături</div>
+                                <div class="prep-time" data-ro="⏱️ 15 min" data-en="⏱️ 15 min">⏱️ 15 min</div>
+                            </div>
+                            <div class="item-price">43 RON</div>
+                            <button class="add-btn" data-ro="Adaugă" data-en="Add">Adaugă</button>
+                        </div>
+
+                        <div class="menu-item" data-name="Kibbeh cu Carne" data-price="42" data-description="Specialități libaneze din bulgur umplute cu carne de vițel, ceapă, nucă" data-prep-time="20">
+                            <div class="item-info">
+                                <div class="item-name">Kibbeh cu Carne</div>
+                                <div class="item-description" data-ro="Specialități libaneze din bulgur umplute cu carne de vițel, ceapă, nucă" data-en="Lebanese bulgur specialties filled with veal, onion, nuts">Specialități libaneze din bulgur umplute cu carne de vițel, ceapă, nucă</div>
+                                <div class="prep-time" data-ro="⏱️ 20 min" data-en="⏱️ 20 min">⏱️ 20 min</div>
+                            </div>
+                            <div class="item-price">42 RON</div>
+                            <button class="add-btn" data-ro="Adaugă" data-en="Add">Adaugă</button>
+                        </div>
+
+                        <div class="menu-item" data-name="Pui la Grătar" data-price="72" data-description="Jumătate de pui cu os, pe grătar de cărbune, lipie, cartofi prăjiți" data-prep-time="25">
+                            <div class="item-info">
+                                <div class="item-name">Pui la Grătar</div>
+                                <div class="item-description" data-ro="Jumătate de pui cu os, pe grătar de cărbune, lipie, cartofi prăjiți" data-en="Half chicken with bone, charcoal grilled, pita bread, french fries">Jumătate de pui cu os, pe grătar de cărbune, lipie, cartofi prăjiți</div>
+                                <div class="prep-time" data-ro="⏱️ 25 min" data-en="⏱️ 25 min">⏱️ 25 min</div>
+                            </div>
+                            <div class="item-price">72 RON</div>
+                            <button class="add-btn" data-ro="Adaugă" data-en="Add">Adaugă</button>
+                        </div>
+
+                        <div class="menu-item" data-name="Falafel Wrap" data-price="35" data-description="Falafel în lipie cu roșii, pătrunjel, murături, sos tahini" data-prep-time="12">
+                            <div class="item-info">
+                                <div class="item-name">Falafel Wrap</div>
+                                <div class="item-description" data-ro="Falafel în lipie cu roșii, pătrunjel, murături, sos tahini" data-en="Falafel in pita with tomatoes, parsley, pickles, tahini sauce">Falafel în lipie cu roșii, pătrunjel, murături, sos tahini</div>
+                                <div class="prep-time" data-ro="⏱️ 12 min" data-en="⏱️ 12 min">⏱️ 12 min</div>
+                            </div>
+                            <div class="item-price">35 RON</div>
+                            <button class="add-btn" data-ro="Adaugă" data-en="Add">Adaugă</button>
+                        </div>
+                    </div>
+
+                    <div class="category">
+                        <h2 data-ro="🍕 Pizza Orientală" data-en="🍕 Oriental Pizza">🍕 Pizza Orientală</h2>
+                        <div class="menu-item" data-name="Pizza Libaneză cu Carne" data-price="35" data-description="Aluat făină, carne mânzat, ceapă, ardei, roșii, sos rodii" data-prep-time="18">
+                            <div class="item-info">
+                                <div class="item-name">Pizza Libaneză cu Carne</div>
+                                <div class="item-description" data-ro="Aluat făină, carne mânzat, ceapă, ardei, roșii, sos rodii" data-en="Flour dough, beef, onion, peppers, tomatoes, pomegranate sauce">Aluat făină, carne mânzat, ceapă, ardei, roșii, sos rodii</div>
+                                <div class="prep-time" data-ro="⏱️ 18 min" data-en="⏱️ 18 min">⏱️ 18 min</div>
+                            </div>
+                            <div class="item-price">35 RON</div>
+                            <button class="add-btn" data-ro="Adaugă" data-en="Add">Adaugă</button>
+                        </div>
+
+                        <div class="menu-item" data-name="Pizza cu Sumac și Susan" data-price="28" data-description="Pizza libaneză cu cimbru sumac, susan, castraveți, roșii" data-prep-time="15">
+                            <div class="item-info">
+                                <div class="item-name">Pizza cu Sumac și Susan</div>
+                                <div class="item-description" data-ro="Pizza libaneză cu cimbru sumac, susan, castraveți, roșii" data-en="Lebanese pizza with sumac thyme, sesame, cucumbers, tomatoes">Pizza libaneză cu cimbru sumac, susan, castraveți, roșii</div>
+                                <div class="prep-time" data-ro="⏱️ 15 min" data-en="⏱️ 15 min">⏱️ 15 min</div>
+                            </div>
+                            <div class="item-price">28 RON</div>
+                            <button class="add-btn" data-ro="Adaugă" data-en="Add">Adaugă</button>
+                        </div>
+                    </div>
+
+                    <div class="category">
+                        <h2 data-ro="🥘 Garnituri" data-en="🥘 Side Dishes">🥘 Garnituri</h2>
+                        <div class="menu-item" data-name="Orez Basmati" data-price="12" data-description="Orez basmati cu pătrunjel și măsline negre" data-prep-time="10">
+                            <div class="item-info">
+                                <div class="item-name">Orez Basmati</div>
+                                <div class="item-description" data-ro="Orez basmati cu pătrunjel și măsline negre" data-en="Basmati rice with parsley and black olives">Orez basmati cu pătrunjel și măsline negre</div>
+                                <div class="prep-time" data-ro="⏱️ 10 min" data-en="⏱️ 10 min">⏱️ 10 min</div>
+                            </div>
+                            <div class="item-price">12 RON</div>
+                            <button class="add-btn" data-ro="Adaugă" data-en="Add">Adaugă</button>
+                        </div>
+
+                        <div class="menu-item" data-name="Bulgur cu Legume" data-price="19" data-description="Bulgur din grâu cu roșii, ceapă, ardei și condimente" data-prep-time="12">
+                            <div class="item-info">
+                                <div class="item-name">Bulgur cu Legume</div>
+                                <div class="item-description" data-ro="Bulgur din grâu cu roșii, ceapă, ardei și condimente" data-en="Wheat bulgur with tomatoes, onion, peppers and spices">Bulgur din grâu cu roșii, ceapă, ardei și condimente</div>
+                                <div class="prep-time" data-ro="⏱️ 12 min" data-en="⏱️ 12 min">⏱️ 12 min</div>
+                            </div>
+                            <div class="item-price">19 RON</div>
+                            <button class="add-btn" data-ro="Adaugă" data-en="Add">Adaugă</button>
+                        </div>
+                    </div>
+
+                    <div class="category">
+                        <h2 data-ro="🥤 Băuturi" data-en="🥤 Beverages">🥤 Băuturi</h2>
+                        <div class="menu-item" data-name="Ceai cu Mentă" data-price="12" data-description="Ceai tradițional libanez cu mentă proaspătă" data-prep-time="3">
+                            <div class="item-info">
+                                <div class="item-name">Ceai cu Mentă</div>
+                                <div class="item-description" data-ro="Ceai tradițional libanez cu mentă proaspătă" data-en="Traditional Lebanese tea with fresh mint">Ceai tradițional libanez cu mentă proaspătă</div>
+                                <div class="prep-time" data-ro="⏱️ 3 min" data-en="⏱️ 3 min">⏱️ 3 min</div>
+                            </div>
+                            <div class="item-price">12 RON</div>
+                            <button class="add-btn" data-ro="Adaugă" data-en="Add">Adaugă</button>
+                        </div>
+
+                        <div class="menu-item" data-name="Limonadă cu Rodie" data-price="18" data-description="Limonadă proaspătă cu sirop de rodie" data-prep-time="5">
+                            <div class="item-info">
+                                <div class="item-name">Limonadă cu Rodie</div>
+                                <div class="item-description" data-ro="Limonadă proaspătă cu sirop de rodie" data-en="Fresh lemonade with pomegranate syrup">Limonadă proaspătă cu sirop de rodie</div>
+                                <div class="prep-time" data-ro="⏱️ 5 min" data-en="⏱️ 5 min">⏱️ 5 min</div>
+                            </div>
+                            <div class="item-price">18 RON</div>
+                            <button class="add-btn" data-ro="Adaugă" data-en="Add">Adaugă</button>
+                        </div>
+
+                        <div class="menu-item" data-name="Apă Minerală" data-price="8" data-description="Apă minerală 500ml" data-prep-time="1">
+                            <div class="item-info">
+                                <div class="item-name">Apă Minerală</div>
+                                <div class="item-description" data-ro="Apă minerală 500ml" data-en="Mineral water 500ml">Apă minerală 500ml</div>
+                                <div class="prep-time" data-ro="⏱️ 1 min" data-en="⏱️ 1 min">⏱️ 1 min</div>
+                            </div>
+                            <div class="item-price">8 RON</div>
+                            <button class="add-btn" data-ro="Adaugă" data-en="Add">Adaugă</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="cart">
+                    <h3 data-ro="🛒 Comanda Ta" data-en="🛒 Your Order">🛒 Comanda Ta</h3>
+                    <div id="cartItems">
+                        <div class="empty-cart" data-ro="Coșul este gol" data-en="Cart is empty">Coșul este gol</div>
+                    </div>
+                    
+                    <div class="payment-method">
+                        <h4 data-ro="💳 Modalitate de plată:" data-en="💳 Payment method:">💳 Modalitate de plată:</h4>
+                        <div class="payment-option">
+                            <input type="radio" id="cash" name="payment" value="cash" checked>
+                            <label for="cash" data-ro="💵 Cash" data-en="💵 Cash">💵 Cash</label>
+                        </div>
+                        <div class="payment-option">
+                            <input type="radio" id="card" name="payment" value="card">
+                            <label for="card" data-ro="💳 Card" data-en="💳 Card">💳 Card</label>
+                        </div>
+                    </div>
+                    
+                    <div class="cart-total">
+                        <div class="total-amount">Total: <span id="totalAmount">0</span> RON</div>
+                        <button class="order-btn" id="orderBtn" disabled data-ro="📱 Trimite Comanda" data-en="📱 Send Order">📱 Trimite Comanda</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Reservations Section -->
+        <div id="reservations" class="content-section">
+            <div class="reservation-form">
+                <h2 data-ro="📅 Rezervare Masă" data-en="📅 Table Reservation">📅 Rezervare Masă</h2>
+                <form id="reservationForm">
+                    <div class="form-group">
+                        <label for="name" data-ro="Nume complet:" data-en="Full name:">Nume complet:</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="phone" data-ro="Telefon:" data-en="Phone:">Telefon:</label>
+                        <input type="tel" id="phone" name="phone" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email" data-ro="Email:" data-en="Email:">Email:</label>
+                        <input type="email" id="email" name="email">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="date" data-ro="Data:" data-en="Date:">Data:</label>
+                        <input type="date" id="date" name="date" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="time" data-ro="Ora:" data-en="Time:">Ora:</label>
+                        <select id="time" name="time" required>
+                            <option value="">Selectează ora</option>
+                            <option value="12:00">12:00</option>
+                            <option value="12:30">12:30</option>
+                            <option value="13:00">13:00</option>
+                            <option value="13:30">13:30</option>
+                            <option value="14:00">14:00</option>
+                            <option value="18:00">18:00</option>
+                            <option value="18:30">18:30</option>
+                            <option value="19:00">19:00</option>
+                            <option value="19:30">19:30</option>
+                            <option value="20:00">20:00</option>
+                            <option value="20:30">20:30</option>
+                            <option value="21:00">21:00</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="guests" data-ro="Numărul de persoane:" data-en="Number of guests:">Numărul de persoane:</label>
+                        <select id="guests" name="guests" required>
+                            <option value="">Selectează</option>
+                            <option value="1">1 persoană</option>
+                            <option value="2">2 persoane</option>
+                            <option value="3">3 persoane</option>
+                            <option value="4">4 persoane</option>
+                            <option value="5">5 persoane</option>
+                            <option value="6">6 persoane</option>
+                            <option value="7">7 persoane</option>
+                            <option value="8">8 persoane</option>
+                            <option value="9+">9+ persoane</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="special" data-ro="Cerințe speciale:" data-en="Special requirements:">Cerințe speciale:</label>
+                        <textarea id="special" name="special" rows="3" placeholder="Alergii, preferințe, ocazie specială..."></textarea>
+                    </div>
+                    
+                    <button type="submit" class="order-btn" data-ro="📞 Trimite Rezervarea" data-en="📞 Send Reservation">📞 Trimite Rezervarea</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Feedback Section -->
+        <div id="feedback" class="content-section">
+            <div class="feedback-section">
+                <h2 data-ro="⭐ Lasă-ne Feedback" data-en="⭐ Leave Feedback">⭐ Lasă-ne Feedback</h2>
+                
+                <form id="feedbackForm">
+                    <div class="form-group">
+                        <label data-ro="Evaluează experiența:" data-en="Rate your experience:">Evaluează experiența:</label>
+                        <div class="rating-stars" id="ratingStars">
+                            <span class="star" data-rating="1">⭐</span>
+                            <span class="star" data-rating="2">⭐</span>
+                            <span class="star" data-rating="3">⭐</span>
+                            <span class="star" data-rating="4">⭐</span>
+                            <span class="star" data-rating="5">⭐</span>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="feedbackName" data-ro="Nume (opțional):" data-en="Name (optional):">Nume (opțional):</label>
+                        <input type="text" id="feedbackName" name="feedbackName">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="feedbackText" data-ro="Comentariul tău:" data-en="Your comment:">Comentariul tău:</label>
+                        <textarea id="feedbackText" name="feedbackText" rows="4" required placeholder="Spune-ne cum a fost experiența ta..."></textarea>
+                    </div>
+                    
+                    <button type="submit" class="order-btn" data-ro="📝 Trimite Feedback" data-en="📝 Send Feedback">📝 Trimite Feedback</button>
+                </form>
+
+                <div class="reviews">
+                    <h3 data-ro="💬 Recenzii Recent" data-en="💬 Recent Reviews">💬 Recenzii Recente</h3>
+                    <div class="review-item">
+                        <div class="review-header">
+                            <strong>Maria P.</strong>
+                            <div class="review-stars">⭐⭐⭐⭐⭐</div>
+                        </div>
+                        <p>Mâncarea este delicioasă și autentică! Hummus-ul este cel mai bun din București. Personalul foarte amabil și atmosfera plăcută.</p>
+                    </div>
+                    
+                    <div class="review-item">
+                        <div class="review-header">
+                            <strong>Alexandru M.</strong>
+                            <div class="review-stars">⭐⭐⭐⭐⭐</div>
+                        </div>
+                        <p>Shawarma de pui extraordinară! Ingrediente proaspete și porții generoase. Cu siguranță voi reveni!</p>
+                    </div>
+                    
+                    <div class="review-item">
+                        <div class="review-header">
+                            <strong>Ioana D.</strong>
+                            <div class="review-stars">⭐⭐⭐⭐</div>
+                        </div>
+                        <p>Restaurant foarte frumos cu mâncare delicioasă. Singura problemă a fost că a trebuit să așteptăm puțin, dar a meritat.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
 
-  <div id="supe" class="tab-content">
-    <div class="menu-card">
-      <h2>Supă cremă de linte</h2>
-      <p>Ingrediente: linte, ceapă, morcovi, cartofi, usturoi, ulei, chimion, concentrat de legume, sare, piper, pastă de roșii, lămâie</p>
-      <p>Alergeni: —</p>
-      <p>300g — 12.80 lei | 500g — 21.30 lei</p>
-      <button class="add-btn" onclick="adaugaInCos('Supă cremă de linte 300g', 12.80)">Adaugă în coș</button>
-      <button class="add-btn" onclick="adaugaInCos('Supă cremă de linte 500g', 21.30)">Adaugă în coș</button>
+    <!-- Admin Panel -->
+    <div class="admin-panel" id="adminPanel">
+        <div class="admin-header">
+            <h2>⚙️ Admin Panel</h2>
+            <button class="close-admin" onclick="toggleAdmin()">✕</button>
+        </div>
+        
+        <div class="admin-section">
+            <h3>📊 Statistici</h3>
+            <p><strong>Comenzi astăzi:</strong> <span id="todayOrders">23</span></p>
+            <p><strong>Vânzări totale:</strong> <span id="todaySales">1,847</span> RON</p>
+            <p><strong>Masa cea mai activă:</strong> <span id="mostActiveTable">Masa 3</span></p>
+        </div>
+        
+        <div class="admin-section">
+            <h3>🎯 Promoții</h3>
+            <div class="form-group">
+                <label>Status promoție salate:</label>
+                <button onclick="togglePromotion()" id="promotionToggle" class="order-btn">Activează Promoția</button>
+            </div>
+        </div>
+        
+        <div class="admin-section">
+            <h3>💰 Actualizare Prețuri</h3>
+            <div class="form-group">
+                <label>Produs:</label>
+                <select id="productSelect">
+                    <option value="Hummus Beirut">Hummus Beirut</option>
+                    <option value="Baba Ganoush">Baba Ganoush</option>
+                    <option value="Shawarma de Pui">Shawarma de Pui</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Preț nou (RON):</label>
+                <input type="number" id="newPrice" placeholder="25">
+            </div>
+            <button onclick="updatePrice()" class="order-btn">Actualizează Prețul</button>
+        </div>
+        
+        <div class="admin-section">
+            <h3>⏰ Timpul de Preparare</h3>
+            <div class="form-group">
+                <label>Produs:</label>
+                <select id="prepProductSelect">
+                    <option value="Hummus Beirut">Hummus Beirut</option>
+                    <option value="Baba Ganoush">Baba Ganoush</option>
+                    <option value="Shawarma de Pui">Shawarma de Pui</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Timp nou (minute):</label>
+                <input type="number" id="newPrepTime" placeholder="10">
+            </div>
+            <button onclick="updatePrepTime()" class="order-btn">Actualizează Timpul</button>
+        </div>
     </div>
-  </div>
 
-  <div id="gatite" class="tab-content">
-    <div class="menu-card">
-      <h2>Chiftele marinate</h2>
-      <p>Ingrediente: carne tocată, ceapă, morcovi, ouă, pesmet, roșii, condimente</p>
-      <p>Alergeni: Gluten, Ouă</p>
-      <p>300g — 22.00 lei</p>
-      <button class="add-btn" onclick="adaugaInCos('Chiftele marinate', 22.00)">Adaugă în coș</button>
+    <!-- Notification -->
+    <div class="notification" id="notification">
+        Produs adăugat în coș!
     </div>
-  </div>
 
-  <div id="salate" class="tab-content">
-    <div class="menu-card">
-      <h2>Salată Coleslaw</h2>
-      <p>Ingrediente: varză, ridichi, morcovi, ceapă roșie, maioneză, muștar, oțet, zahăr, condimente</p>
-      <p>Alergeni: Ouă, Muștar</p>
-      <p>300g — 15.00 lei</p>
-      <button class="add-btn" onclick="adaugaInCos('Salată Coleslaw', 15.00)">Adaugă în coș</button>
-    </div>
-  </div>
+    <script>
+        let cart = [];
+        let tableNumber = null;
+        let currentLanguage = 'ro';
+        let selectedRating = 0;
+        let promotionActive = false;
 
-  <div id="cos" class="tab-content">
-    <div class="menu-card">
-      <h2>Coșul de comandă</h2>
-      <div id="cosContent"></div>
-      <div id="total"></div>
-      <label for="plata">Metodă de plată:</label>
-      <select id="plata">
-        <option value="Cash">Cash</option>
-        <option value="Card">Card</option>
-      </select>
-      <br><br>
-      <button onclick="trimiteComanda()">Trimite comanda</button>
-    </div>
-  </div>
+        // Funcție pentru a obține parametrii URL
+        function getURLParams() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const table = urlParams.get('masa');
+            if (table) {
+                tableNumber = table;
+                document.getElementById('tableNumber').textContent = table;
+            } else {
+                // Pentru demo, setăm masa 5
+                tableNumber = '5';
+                document.getElementById('tableNumber').textContent = '5';
+            }
+        }
 
-  <div id="notificare"></div>
+        // Funcție pentru schimbarea limbii
+        function switchLanguage(lang) {
+            currentLanguage = lang;
+            
+            // Actualizează butoanele de limbă
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Actualizează toate textele
+            document.querySelectorAll('[data-' + lang + ']').forEach(element => {
+                element.textContent = element.getAttribute('data-' + lang);
+            });
+            
+            showNotification(lang === 'ro' ? 'Limba schimbată în română' : 'Language changed to English');
+        }
 
-  <div class="link-sumac">
-    <a href="https://sumac.ro" target="_blank">&larr; Înapoi la sumac.ro</a>
-  </div>
+        // Funcție pentru afișarea secțiunilor
+        function showSection(sectionName) {
+            // Ascunde toate secțiunile
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Actualizează tab-urile
+            document.querySelectorAll('.nav-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Afișează secțiunea selectată
+            document.getElementById(sectionName).classList.add('active');
+            event.target.classList.add('active');
+        }
 
-  <script>
-    function switchTab(id) {
-      document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-      document.getElementById(id).classList.add('active');
-    }
+        // Funcție pentru toggle admin panel
+        function toggleAdmin() {
+            const panel = document.getElementById('adminPanel');
+            panel.classList.toggle('open');
+        }
 
-    const params = new URLSearchParams(window.location.search);
-    const masa = params.get("masa") || "-";
-    document.getElementById("masa").innerText = masa;
+        // Funcție pentru toggle promoție
+        function togglePromotion() {
+            promotionActive = !promotionActive;
+            const banner = document.getElementById('promotionBanner');
+            const toggle = document.getElementById('promotionToggle');
+            
+            if (promotionActive) {
+                banner.style.display = 'block';
+                toggle.textContent = 'Dezactivează Promoția';
+                updatePromotionPrices(true);
+                showNotification('Promoția a fost activată!', 'success');
+            } else {
+                banner.style.display = 'none';
+                toggle.textContent = 'Activează Promoția';
+                updatePromotionPrices(false);
+                showNotification('Promoția a fost dezactivată!', 'success');
+            }
+        }
 
-    let cos = [];
+        // Funcție pentru actualizarea prețurilor promoționale
+        function updatePromotionPrices(activate) {
+            document.querySelectorAll('.menu-item.promotion').forEach(item => {
+                if (activate) {
+                    item.style.display = 'flex';
+                } else {
+                    item.classList.remove('promotion');
+                    const badge = item.querySelector('.promotion-badge');
+                    const originalPrice = item.querySelector('.original-price');
+                    if (badge) badge.style.display = 'none';
+                    if (originalPrice) originalPrice.style.display = 'none';
+                }
+            });
+        }
 
-    function adaugaInCos(produs, pret) {
-      cos.push({ produs, pret });
-      afiseazaCos();
-      document.getElementById("notificare").innerText = `✔ ${produs} a fost adăugat în coș.`;
-      setTimeout(() => document.getElementById("notificare").innerText = "", 3000);
-    }
+        // Funcție pentru actualizarea prețurilor
+        function updatePrice() {
+            const product = document.getElementById('productSelect').value;
+            const newPrice = document.getElementById('newPrice').value;
+            
+            if (!newPrice) {
+                showNotification('Te rog introdu un preț valid!', 'error');
+                return;
+            }
+            
+            const menuItem = document.querySelector(`[data-name="${product}"]`);
+            if (menuItem) {
+                menuItem.setAttribute('data-price', newPrice);
+                menuItem.querySelector('.item-price').textContent = newPrice + ' RON';
+                showNotification(`Prețul pentru ${product} a fost actualizat la ${newPrice} RON`, 'success');
+            }
+        }
 
-    function afiseazaCos() {
-      const container = document.getElementById("cosContent");
-      const totalEl = document.getElementById("total");
-      container.innerHTML = "";
-      let total = 0;
-      cos.forEach(item => {
-        const div = document.createElement("div");
-        div.className = "cart-item";
-        div.textContent = `${item.produs} — ${item.pret.toFixed(2)} lei`;
-        container.appendChild(div);
-        total += item.pret;
-      });
-      totalEl.textContent = `Total: ${total.toFixed(2)} lei`;
-    }
+        // Funcție pentru actualizarea timpului de preparare
+        function updatePrepTime() {
+            const product = document.getElementById('prepProductSelect').value;
+            const newTime = document.getElementById('newPrepTime').value;
+            
+            if (!newTime) {
+                showNotification('Te rog introdu un timp valid!', 'error');
+                return;
+            }
+            
+            const menuItem = document.querySelector(`[data-name="${product}"]`);
+            if (menuItem) {
+                menuItem.setAttribute('data-prep-time', newTime);
+                const prepTimeElement = menuItem.querySelector('.prep-time');
+                if (prepTimeElement) {
+                    prepTimeElement.textContent = `⏱️ ${newTime} min`;
+                }
+                showNotification(`Timpul de preparare pentru ${product} a fost actualizat la ${newTime} minute`, 'success');
+            }
+        }
 
-    function trimiteComanda() {
-      let total = cos.reduce((acc, cur) => acc + cur.pret, 0);
-      const metodaPlata = document.getElementById("plata").value;
-      const comandaText = `Comandă masa ${masa} (%20plată%20cu%20${metodaPlata}):%0A` +
-        cos.map(c => `• ${c.produs} — ${c.pret.toFixed(2)} lei`).join('%0A') +
-        `%0A%0ATotal: ${total.toFixed(2)} lei`;
-      const link = `https://wa.me/40766362943?text=${comandaText}`;
-      window.open(link, '_blank');
-    }
-  </script>
+        // Funcție pentru rating
+        function setRating(rating) {
+            selectedRating = rating;
+            document.querySelectorAll('.star').forEach((star, index) => {
+                if (index < rating) {
+                    star.classList.add('active');
+                } else {
+                    star.classList.remove('active');
+                }
+            });
+        }
+
+        // Funcție pentru afișarea notificării
+        function showNotification(message, type = 'default') {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.className = 'notification show';
+            
+            if (type === 'error') {
+                notification.classList.add('error');
+            } else if (type === 'success') {
+                notification.classList.add('success');
+            }
+            
+            setTimeout(() => {
+                notification.className = 'notification';
+            }, 3000);
+        }
+
+        // Funcție pentru a adăuga produs în coș
+        function addToCart(name, price, description, prepTime) {
+            const existingItem = cart.find(item => item.name === name);
+            
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({
+                    name: name,
+                    price: parseFloat(price),
+                    description: description,
+                    prepTime: prepTime,
+                    quantity: 1
+                });
+            }
+            
+            updateCartDisplay();
+            showNotification(`${name} adăugat în coș!`, 'success');
+        }
+
+        // Funcție pentru a actualiza afișarea coșului
+        function updateCartDisplay() {
+            const cartItems = document.getElementById('cartItems');
+            const totalAmount = document.getElementById('totalAmount');
+            const orderBtn = document.getElementById('orderBtn');
+            
+            if (cart.length === 0) {
+                cartItems.innerHTML = `<div class="empty-cart" data-ro="Coșul este gol" data-en="Cart is empty">${currentLanguage === 'ro' ? 'Coșul este gol' : 'Cart is empty'}</div>`;
+                totalAmount.textContent = '0';
+                orderBtn.disabled = true;
+                return;
+            }
+            
+            let total = 0;
+            let cartHTML = '';
+            
+            cart.forEach((item, index) => {
+                const itemTotal = item.price * item.quantity;
+                total += itemTotal;
+                
+                cartHTML += `
+                    <div class="cart-item">
+                        <div class="cart-item-name">${item.name}</div>
+                        <div class="quantity-controls">
+                            <button class="qty-btn" onclick="changeQuantity(${index}, -1)">−</button>
+                            <span class="quantity">${item.quantity}</span>
+                            <button class="qty-btn" onclick="changeQuantity(${index}, 1)">+</button>
+                        </div>
+                        <div class="cart-item-price">${itemTotal} RON</div>
+                    </div>
+                `;
+            });
+            
+            cartItems.innerHTML = cartHTML;
+            totalAmount.textContent = total.toFixed(0);
+            orderBtn.disabled = false;
+        }
+
+        // Funcție pentru a schimba cantitatea
+        function changeQuantity(index, change) {
+            cart[index].quantity += change;
+            
+            if (cart[index].quantity <= 0) {
+                cart.splice(index, 1);
+                showNotification('Produs eliminat din coș', 'success');
+            }
+            
+            updateCartDisplay();
+        }
+
+        // Funcție pentru a obține modalitatea de plată
+        function getPaymentMethod() {
+            const paymentMethod = document.querySelector('input[name="payment"]:checked').value;
+            return paymentMethod === 'cash' ? 'Cash' : 'Card';
+        }
+
+        // Funcție pentru a trimite comanda
+        function sendOrder() {
+            if (cart.length === 0) return;
+            
+            const paymentMethod = getPaymentMethod();
+            let totalPrepTime = Math.max(...cart.map(item => parseInt(item.prepTime) || 0));
+            
+            let orderText = `🍽️ *COMANDĂ NOUĂ - MASA ${tableNumber}*%0A%0A`;
+            let total = 0;
+            
+            cart.forEach(item => {
+                const itemTotal = item.price * item.quantity;
+                total += itemTotal;
+                orderText += `• ${item.name} x${item.quantity} = ${itemTotal} RON%0A`;
+            });
+            
+            orderText += `%0A*TOTAL: ${total} RON*%0A`;
+            orderText += `*Masa: ${tableNumber}*%0A`;
+            orderText += `*Modalitate plată: ${paymentMethod}*%0A`;
+            orderText += `*Timp estimat preparare: ${totalPrepTime} minute*%0A`;
+            orderText += `%0A_Comandă trimisă prin meniul virtual_`;
+            
+            // Numărul de WhatsApp actualizat
+            const whatsappNumber = '+40766362943';
+            const whatsappURL = `https://wa.me/${whatsappNumber}?text=${orderText}`;
+            
+            window.open(whatsappURL, '_blank');
+            
+            // Resetăm coșul după trimiterea comenzii
+            cart = [];
+            updateCartDisplay();
+            showNotification('Comanda a fost trimisă! Vă mulțumim!', 'success');
+        }
+
+        // Funcție pentru trimiterea rezervării
+        function sendReservation(formData) {
+            let reservationText = `📅 *REZERVARE NOUĂ*%0A%0A`;
+            reservationText += `*Nume:* ${formData.name}%0A`;
+            reservationText += `*Telefon:* ${formData.phone}%0A`;
+            if (formData.email) reservationText += `*Email:* ${formData.email}%0A`;
+            reservationText += `*Data:* ${formData.date}%0A`;
+            reservationText += `*Ora:* ${formData.time}%0A`;
+            reservationText += `*Persoane:* ${formData.guests}%0A`;
+            if (formData.special) reservationText += `*Cerințe speciale:* ${formData.special}%0A`;
+            reservationText += `%0A_Rezervare trimisă prin meniul virtual_`;
+            
+            const whatsappNumber = '+40766362943';
+            const whatsappURL = `https://wa.me/${whatsappNumber}?text=${reservationText}`;
+            
+            window.open(whatsappURL, '_blank');
+            
+            // Resetează formularul
+            document.getElementById('reservationForm').reset();
+            showNotification('Rezervarea a fost trimisă! Vă vom contacta pentru confirmare.', 'success');
+        }
+
+        // Funcție pentru trimiterea feedback-ului
+        function sendFeedback(formData) {
+            let feedbackText = `⭐ *FEEDBACK NOU*%0A%0A`;
+            feedbackText += `*Rating:* ${selectedRating}/5 ⭐%0A`;
+            if (formData.feedbackName) feedbackText += `*Nume:* ${formData.feedbackName}%0A`;
+            feedbackText += `*Comentariu:* ${formData.feedbackText}%0A`;
+            feedbackText += `%0A_Feedback trimis prin meniul virtual_`;
+            
+            const whatsappNumber = '+40766362943';
+            const whatsappURL = `https://wa.me/${whatsappNumber}?text=${feedbackText}`;
+            
+            window.open(whatsappURL, '_blank');
+            
+            // Resetează formularul și rating-ul
+            document.getElementById('feedbackForm').reset();
+            selectedRating = 0;
+            document.querySelectorAll('.star').forEach(star => star.classList.remove('active'));
+            showNotification('Feedback-ul a fost trimis! Vă mulțumim!', 'success');
+        }
+
+        // Event listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            getURLParams();
+            
+            // Setează data minimă pentru rezervări (astăzi)
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('date').setAttribute('min', today);
+            
+            // Adăugare event listeners pentru butoanele de adăugare
+            document.querySelectorAll('.add-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    const menuItem = this.parentElement;
+                    const name = menuItem.dataset.name;
+                    const price = menuItem.dataset.price;
+                    const description = menuItem.dataset.description;
+                    const prepTime = menuItem.dataset.prepTime;
+                    
+                    addToCart(name, price, description, prepTime);
+                });
+            });
+            
+            // Event listener pentru butonul de comandă
+            document.getElementById('orderBtn').addEventListener('click', sendOrder);
+            
+            // Event listeners pentru rating
+            document.querySelectorAll('.star').forEach((star, index) => {
+                star.addEventListener('click', () => setRating(index + 1));
+                star.addEventListener('mouseover', () => {
+                    document.querySelectorAll('.star').forEach((s, i) => {
+                        if (i <= index) {
+                            s.style.color = '#FFD700';
+                        } else {
+                            s.style.color = '#ddd';
+                        }
+                    });
+                });
+            });
+            
+            // Event listener pentru formularul de rezervare
+            document.getElementById('reservationForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const formData = new FormData(this);
+                const data = Object.fromEntries(formData);
+                sendReservation(data);
+            });
+            
+            // Event listener pentru formularul de feedback
+            document.getElementById('feedbackForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                if (selectedRating === 0) {
+                    showNotification('Te rog selectează un rating!', 'error');
+                    return;
+                }
+                const formData = new FormData(this);
+                const data = Object.fromEntries(formData);
+                sendFeedback(data);
+            });
+            
+            // Reset culoarea stelelor la mouse leave
+            document.getElementById('ratingStars').addEventListener('mouseleave', () => {
+                document.querySelectorAll('.star').forEach((star, index) => {
+                    if (index < selectedRating) {
+                        star.style.color = '#FFD700';
+                    } else {
+                        star.style.color = '#ddd';
+                    }
+                });
+            });
+            
+            // Închide admin panel când se dă click în afară
+            document.addEventListener('click', function(e) {
+                const adminPanel = document.getElementById('adminPanel');
+                const adminToggle = document.querySelector('.admin-toggle');
+                
+                if (!adminPanel.contains(e.target) && !adminToggle.contains(e.target)) {
+                    adminPanel.classList.remove('open');
+                }
+            });
+            
+            // Activează promoția implicit pentru demo
+            setTimeout(() => {
+                if (!promotionActive) {
+                    togglePromotion();
+                }
+            }, 2000);
+            
+            // Simulează actualizarea statisticilor admin
+            setInterval(() => {
+                const todayOrders = document.getElementById('todayOrders');
+                const todaySales = document.getElementById('todaySales');
+                
+                if (todayOrders && todaySales) {
+                    const currentOrders = parseInt(todayOrders.textContent);
+                    const currentSales = parseInt(todaySales.textContent.replace(',', ''));
+                    
+                    // Simulează creșterea comenzilor și vânzărilor
+                    if (Math.random() > 0.7) {
+                        todayOrders.textContent = currentOrders + 1;
+                        todaySales.textContent = (currentSales + Math.floor(Math.random() * 100) + 20).toLocaleString();
+                    }
+                }
+            }, 30000); // Actualizează la fiecare 30 secunde
+        });
+
+        // Funcții pentru plăți online (placeholder pentru integrare viitoare)
+        function initializePaymentGateway() {
+            // Aici s-ar integra cu un gateway de plăți precum Stripe, PayPal, etc.
+            console.log('Payment gateway initialization placeholder');
+        }
+
+        function processOnlinePayment(amount) {
+            // Logica pentru procesarea plăților online
+            showNotification('Funcția de plată online va fi disponibilă în curând!', 'error');
+        }
+
+        // Funcții pentru gestionarea meniurilor dinamice (viitoare)
+        function loadMenuFromAPI() {
+            // Placeholder pentru încărcarea dinamică a meniurilor
+            console.log('Dynamic menu loading placeholder');
+        }
+
+        function saveMenuToDatabase() {
+            // Placeholder pentru salvarea modificărilor în baza de date
+            console.log('Menu saving placeholder');
+        }
+
+        // Funcție pentru export rapoarte (admin)
+        function exportDailyReport() {
+            const date = new Date().toLocaleDateString('ro-RO');
+            const reportData = {
+                date: date,
+                orders: document.getElementById('todayOrders').textContent,
+                sales: document.getElementById('todaySales').textContent,
+                mostActiveTable: document.getElementById('mostActiveTable').textContent
+            };
+            
+            const reportText = `📊 RAPORT ZILNIC - ${date}\n\n`;
+            reportText += `Comenzi: ${reportData.orders}\n`;
+            reportText += `Vânzări: ${reportData.sales} RON\n`;
+            reportText += `Masa cea mai activă: ${reportData.mostActiveTable}\n`;
+            
+            // Creează și downloadează fișierul
+            const blob = new Blob([reportText], { type: 'text/plain' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `raport-${date}.txt`;
+            a.click();
+            window.URL.revokeObjectURL(url);
+            
+            showNotification('Raportul a fost exportat!', 'success');
+        }
+
+        // Implementare PWA (Progressive Web App) pentru viitor
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                // Aici s-ar înregistra service worker-ul pentru funcționalitate offline
+                console.log('PWA service worker registration placeholder');
+            });
+        }
+    </script>
 </body>
 </html>
