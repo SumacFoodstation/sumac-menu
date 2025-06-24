@@ -195,6 +195,37 @@
             background: #4ECDC4;
         }
 
+        /* Image Management */
+        .item-image-container {
+            width: 80px;
+            height: 60px;
+            margin-right: 15px;
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .item-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .image-placeholder {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            color: #adb5bd;
+            border: 2px dashed #dee2e6;
+            border-radius: 10px;
+        }
+
         .menu-item {
             display: flex;
             justify-content: space-between;
@@ -711,8 +742,12 @@
                             <button class="add-btn" data-ro="Adaugă" data-en="Add">Adaugă</button>
                         </div>
 
-                        <div class="menu-item promotion" data-name="Salata Fattoush" data-price="27" data-original-price="34" data-description="Roșii, castraveți, ardei gras, ceapă, pătrunjel, rodie, sumac" data-prep-time="8">
+                        <div class="menu-item promotion" data-name="Salata Fattoush" data-price="27" data-original-price="34" data-description="Roșii, castraveți, ardei gras, ceapă, pătrunjel, rodie, sumac" data-prep-time="8" data-image="">
                             <div class="promotion-badge" data-ro="REDUCERE!" data-en="SALE!">REDUCERE!</div>
+                            <div class="item-image-container">
+                                <img class="item-image" src="" alt="Salata Fattoush" style="display: none;">
+                                <div class="image-placeholder">📸</div>
+                            </div>
                             <div class="item-info">
                                 <div class="item-name">Salata Fattoush</div>
                                 <div class="item-description" data-ro="Roșii, castraveți, ardei gras, ceapă, pătrunjel, rodie, sumac" data-en="Tomatoes, cucumbers, bell peppers, onion, parsley, pomegranate, sumac">Roșii, castraveți, ardei gras, ceapă, pătrunjel, rodie, sumac</div>
@@ -722,6 +757,34 @@
                                 <span class="original-price">34 RON</span>
                                 27 RON
                             </div>
+                            <button class="add-btn" data-ro="Adaugă" data-en="Add">Adaugă</button>
+                        </div>
+
+                        <div class="menu-item" data-name="Muhammara" data-price="28" data-description="Gustare picantă din nuci, ardei roșu, melasă de rodie și pesmet" data-prep-time="5" data-image="">
+                            <div class="item-image-container">
+                                <img class="item-image" src="" alt="Muhammara" style="display: none;">
+                                <div class="image-placeholder">📸</div>
+                            </div>
+                            <div class="item-info">
+                                <div class="item-name">Muhammara</div>
+                                <div class="item-description" data-ro="Gustare picantă din nuci, ardei roșu, melasă de rodie și pesmet" data-en="Spicy dip made from nuts, red pepper, pomegranate molasses and breadcrumbs">Gustare picantă din nuci, ardei roșu, melasă de rodie și pesmet</div>
+                                <div class="prep-time" data-ro="⏱️ 5 min" data-en="⏱️ 5 min">⏱️ 5 min</div>
+                            </div>
+                            <div class="item-price">28 RON</div>
+                            <button class="add-btn" data-ro="Adaugă" data-en="Add">Adaugă</button>
+                        </div>
+
+                        <div class="menu-item" data-name="Labneh cu Zaatar" data-price="25" data-description="Iaurt grecesc, zaatar, mentă uscată, fulgi de ardei, chipsuri din lipie" data-prep-time="3" data-image="">
+                            <div class="item-image-container">
+                                <img class="item-image" src="" alt="Labneh cu Zaatar" style="display: none;">
+                                <div class="image-placeholder">📸</div>
+                            </div>
+                            <div class="item-info">
+                                <div class="item-name">Labneh cu Zaatar</div>
+                                <div class="item-description" data-ro="Iaurt grecesc, zaatar, mentă uscată, fulgi de ardei, chipsuri din lipie" data-en="Greek yogurt, zaatar, dried mint, pepper flakes, pita chips">Iaurt grecesc, zaatar, mentă uscată, fulgi de ardei, chipsuri din lipie</div>
+                                <div class="prep-time" data-ro="⏱️ 3 min" data-en="⏱️ 3 min">⏱️ 3 min</div>
+                            </div>
+                            <div class="item-price">25 RON</div>
                             <button class="add-btn" data-ro="Adaugă" data-en="Add">Adaugă</button>
                         </div>
                     </div>
@@ -1045,20 +1108,38 @@
         </div>
         
         <div class="admin-section">
-            <h3>⏰ Timpul de Preparare</h3>
+            <h3>📸 Gestionare Imagini</h3>
             <div class="form-group">
                 <label>Produs:</label>
-                <select id="prepProductSelect">
+                <select id="imageProductSelect">
                     <option value="Hummus Beirut">Hummus Beirut</option>
                     <option value="Baba Ganoush">Baba Ganoush</option>
+                    <option value="Salata Tabbouleh">Salata Tabbouleh</option>
+                    <option value="Salata Fattoush">Salata Fattoush</option>
+                    <option value="Muhammara">Muhammara</option>
+                    <option value="Labneh cu Zaatar">Labneh cu Zaatar</option>
                     <option value="Shawarma de Pui">Shawarma de Pui</option>
+                    <option value="Kibbeh cu Carne">Kibbeh cu Carne</option>
+                    <option value="Pui la Grătar">Pui la Grătar</option>
+                    <option value="Falafel Wrap">Falafel Wrap</option>
                 </select>
             </div>
             <div class="form-group">
-                <label>Timp nou (minute):</label>
-                <input type="number" id="newPrepTime" placeholder="10">
+                <label>URL Imagine:</label>
+                <input type="url" id="imageURL" placeholder="https://exemple.com/imagine.jpg">
+                <small style="color: #666; font-size: 0.8em;">
+                    💡 Tip: Încarcă imaginea pe imgur.com, cloudinary.com sau folosește URL direct
+                </small>
             </div>
-            <button onclick="updatePrepTime()" class="order-btn">Actualizează Timpul</button>
+            <button onclick="updateProductImage()" class="order-btn">Actualizează Imaginea</button>
+            
+            <div style="margin-top: 15px; padding: 10px; background: #e3f2fd; border-radius: 8px;">
+                <strong>📝 Instrucțiuni rapide:</strong><br>
+                1. Încarcă poza pe <a href="https://imgur.com" target="_blank">imgur.com</a><br>
+                2. Copiază link-ul direct (.jpg/.png)<br>
+                3. Lipește în câmpul de mai sus<br>
+                4. Click "Actualizează Imaginea"
+            </div>
         </div>
     </div>
 
@@ -1178,6 +1259,69 @@
                 menuItem.setAttribute('data-price', newPrice);
                 menuItem.querySelector('.item-price').textContent = newPrice + ' RON';
                 showNotification(`Prețul pentru ${product} a fost actualizat la ${newPrice} RON`, 'success');
+            }
+        }
+
+        // Funcție pentru actualizarea imaginii produsului
+        function updateProductImage() {
+            const product = document.getElementById('imageProductSelect').value;
+            const imageURL = document.getElementById('imageURL').value.trim();
+            
+            if (!imageURL) {
+                showNotification('Te rog introdu un URL valid pentru imagine!', 'error');
+                return;
+            }
+            
+            // Validează URL-ul
+            if (!isValidImageURL(imageURL)) {
+                showNotification('URL-ul nu pare să fie o imagine validă! Folosește .jpg, .png, .gif sau .webp', 'error');
+                return;
+            }
+            
+            const menuItem = document.querySelector(`[data-name="${product}"]`);
+            if (menuItem) {
+                const imageContainer = menuItem.querySelector('.item-image-container');
+                const image = menuItem.querySelector('.item-image');
+                const placeholder = menuItem.querySelector('.image-placeholder');
+                
+                if (imageContainer) {
+                    // Setează URL-ul imaginii
+                    menuItem.setAttribute('data-image', imageURL);
+                    image.src = imageURL;
+                    
+                    // Test încărcarea imaginii
+                    image.onload = function() {
+                        image.style.display = 'block';
+                        placeholder.style.display = 'none';
+                        showNotification(`Imaginea pentru ${product} a fost actualizată cu succes!`, 'success');
+                    };
+                    
+                    image.onerror = function() {
+                        showNotification('Eroare la încărcarea imaginii! Verifică URL-ul.', 'error');
+                        image.style.display = 'none';
+                        placeholder.style.display = 'flex';
+                    };
+                }
+                
+                // Resetează câmpul
+                document.getElementById('imageURL').value = '';
+            }
+        }
+
+        // Funcție pentru validarea URL-ului imaginii
+        function isValidImageURL(url) {
+            const imageExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.webp', '.svg'];
+            const urlLower = url.toLowerCase();
+            
+            // Verifică dacă URL-ul se termină cu o extensie de imagine
+            const hasValidExtension = imageExtensions.some(ext => urlLower.includes(ext));
+            
+            // Verifică dacă este un URL valid
+            try {
+                new URL(url);
+                return hasValidExtension || urlLower.includes('imgur') || urlLower.includes('cloudinary') || urlLower.includes('unsplash');
+            } catch {
+                return false;
             }
         }
 
