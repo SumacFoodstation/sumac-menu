@@ -7,13 +7,15 @@
   <style>
     body { font-family: sans-serif; background: #f8f8f8; color: #222; margin: 0; padding: 1em; }
     h1, h2, h3 { text-align: center; }
-    .tabs { display: flex; justify-content: center; gap: 1em; margin-bottom: 1em; }
+    .tabs { display: flex; justify-content: center; gap: 1em; margin-bottom: 1em; flex-wrap: wrap; }
     .tab-content { display: none; padding: 1em; border: 1px solid #ccc; background: #fff; border-radius: 0.5em; }
     .tab-content.active { display: block; }
     .menu-card { margin: 1em auto; max-width: 600px; background: #fff; padding: 1em; border-radius: 0.5em; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
     .qr, .cart { text-align: center; margin-top: 2em; }
     .cart-item { margin: 0.5em 0; }
     button.add-btn { margin-top: 0.5em; }
+    #notificare { text-align: center; color: green; margin-top: 1em; font-weight: bold; }
+    #total { font-weight: bold; margin-top: 1em; }
   </style>
 </head>
 <body>
@@ -69,7 +71,7 @@
   <div id="salate" class="tab-content">
     <div class="menu-card">
       <h2>Salată Coleslaw</h2>
-      <p>Ingrediente: varză, ridichi, morcovi, ceapă roșie, maioneză, muștar, oșet, zahăr, condimente</p>
+      <p>Ingrediente: varză, ridichi, morcovi, ceapă roșie, maioneză, muștar, oțet, zahăr, condimente</p>
       <p>Alergeni: Ouă, Muștar</p>
       <p>300g — 15.00 lei</p>
       <button class="add-btn" onclick="adaugaInCos('Salată Coleslaw', 15.00)">Adaugă în coș</button>
@@ -80,9 +82,12 @@
     <div class="menu-card">
       <h2>Coșul de comandă</h2>
       <div id="cosContent"></div>
+      <div id="total"></div>
       <button onclick="trimiteComanda()">Trimite comanda</button>
     </div>
   </div>
+
+  <div id="notificare"></div>
 
   <div class="qr">
     <h3>Scanează codul QR pentru a comanda</h3>
@@ -98,28 +103,35 @@
     const params = new URLSearchParams(window.location.search);
     const masa = params.get("masa") || "-";
     document.getElementById("masa").innerText = masa;
-    document.getElementById("qrcode").src = `https://api.qrserver.com/v1/create-qr-code/?data=https://sumac.ro/?masa=${masa}&size=150x150`;
+    document.getElementById("qrcode").src = `https://api.qrserver.com/v1/create-qr-code/?data=https://sumacfoodstation.github.io/sumac-menu/?masa=${masa}&size=150x150`;
 
     let cos = [];
 
     function adaugaInCos(produs, pret) {
       cos.push({ produs, pret });
       afiseazaCos();
+      document.getElementById("notificare").innerText = `✔ ${produs} a fost adăugat în coș.`;
+      setTimeout(() => document.getElementById("notificare").innerText = "", 3000);
     }
 
     function afiseazaCos() {
       const container = document.getElementById("cosContent");
+      const totalEl = document.getElementById("total");
       container.innerHTML = "";
+      let total = 0;
       cos.forEach(item => {
         const div = document.createElement("div");
         div.className = "cart-item";
         div.textContent = `${item.produs} — ${item.pret.toFixed(2)} lei`;
         container.appendChild(div);
+        total += item.pret;
       });
+      totalEl.textContent = `Total: ${total.toFixed(2)} lei`;
     }
 
     function trimiteComanda() {
-      const comandaText = `Comandă masa ${masa}:%0A` + cos.map(c => `• ${c.produs} — ${c.pret.toFixed(2)} lei`).join('%0A');
+      let total = cos.reduce((acc, cur) => acc + cur.pret, 0);
+      const comandaText = `Comandă masa ${masa}:%0A` + cos.map(c => `• ${c.produs} — ${c.pret.toFixed(2)} lei`).join('%0A') + `%0A%0ATotal: ${total.toFixed(2)} lei`;
       const link = `https://wa.me/40766362943?text=${comandaText}`;
       window.open(link, '_blank');
     }
