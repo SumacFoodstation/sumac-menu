@@ -464,11 +464,73 @@
             font-size: 0.9em;
         }
 
-        .payment-method {
-            margin: 24px 0;
+        .customer-name-section {
+            margin: 16px 0;
             padding: 16px;
             background: var(--light-gray);
             border-radius: 12px;
+            border: 1px solid var(--border-light);
+        }
+
+        .customer-name-section h4 {
+            margin-bottom: 12px;
+            color: var(--primary-dark);
+            font-weight: 500;
+            font-size: 0.9em;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .name-input-group {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .name-input {
+            flex: 1;
+            padding: 8px 12px;
+            border: 1px solid var(--border-light);
+            border-radius: 6px;
+            font-size: 0.85em;
+            background: var(--pure-white);
+            transition: border-color 0.2s ease;
+        }
+
+        .name-input:focus {
+            outline: none;
+            border-color: var(--accent-orange);
+        }
+
+        .name-input::placeholder {
+            color: var(--text-light);
+            font-style: italic;
+        }
+
+        .skip-name-btn {
+            background: transparent;
+            color: var(--text-light);
+            border: 1px solid var(--border-light);
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.8em;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .skip-name-btn:hover {
+            background: var(--light-gray);
+            color: var(--primary-dark);
+        }
+
+        .name-preview {
+            color: var(--accent-green);
+            font-weight: 500;
+            font-size: 0.85em;
+            margin-top: 8px;
+            display: none;
         }
 
         .payment-method h4 {
@@ -1244,6 +1306,16 @@
                     <div class="empty-cart">coșul este gol</div>
                 </div>
 
+                <!-- Customer Name Section -->
+                <div class="customer-name-section">
+                    <h4>👤 personalizează comanda (opțional)</h4>
+                    <div class="name-input-group">
+                        <input type="text" id="customerName" class="name-input" placeholder="prenumele tău..." maxlength="20">
+                        <button class="skip-name-btn" onclick="clearCustomerName()">sari</button>
+                    </div>
+                    <div class="name-preview" id="namePreview"></div>
+                </div>
+
                 <div class="payment-method">
                     <h4>modalitate de plată</h4>
                     <div class="payment-option">
@@ -1292,6 +1364,16 @@
                 <div class="empty-cart">coșul este gol</div>
             </div>
 
+            <!-- Customer Name Section (Mobile) -->
+            <div class="customer-name-section">
+                <h4>👤 personalizează comanda (opțional)</h4>
+                <div class="name-input-group">
+                    <input type="text" id="mobileCustomerName" class="name-input" placeholder="prenumele tău..." maxlength="20">
+                    <button class="skip-name-btn" onclick="clearMobileCustomerName()">sari</button>
+                </div>
+                <div class="name-preview" id="mobileNamePreview"></div>
+            </div>
+
             <div class="payment-method">
                 <h4>modalitate de plată</h4>
                 <div class="payment-option">
@@ -1320,13 +1402,61 @@
         let total = 0;
         let maxPrepTime = 0;
         let tableNumber = '?';
+        let customerName = '';
 
         // Initialize on page load
         document.addEventListener('DOMContentLoaded', function() {
             console.log('🚀 Initializing page...');
             detectTableNumber();
             updateCart();
+            setupNameInputs();
         });
+
+        // Setup customer name inputs
+        function setupNameInputs() {
+            const desktopInput = document.getElementById('customerName');
+            const mobileInput = document.getElementById('mobileCustomerName');
+            
+            // Sync between desktop and mobile inputs
+            desktopInput.addEventListener('input', function() {
+                customerName = this.value.trim();
+                mobileInput.value = this.value;
+                updateNamePreview();
+            });
+            
+            mobileInput.addEventListener('input', function() {
+                customerName = this.value.trim();
+                desktopInput.value = this.value;
+                updateNamePreview();
+            });
+        }
+
+        function updateNamePreview() {
+            const desktopPreview = document.getElementById('namePreview');
+            const mobilePreview = document.getElementById('mobileNamePreview');
+            
+            if (customerName) {
+                const previewText = `✓ Comanda pentru ${customerName} de la masa ${tableNumber}`;
+                desktopPreview.textContent = previewText;
+                mobilePreview.textContent = previewText;
+                desktopPreview.style.display = 'block';
+                mobilePreview.style.display = 'block';
+            } else {
+                desktopPreview.style.display = 'none';
+                mobilePreview.style.display = 'none';
+            }
+        }
+
+        function clearCustomerName() {
+            customerName = '';
+            document.getElementById('customerName').value = '';
+            document.getElementById('mobileCustomerName').value = '';
+            updateNamePreview();
+        }
+
+        function clearMobileCustomerName() {
+            clearCustomerName();
+        }
 
         // Detect table number from URL
         function detectTableNumber() {
@@ -1492,6 +1622,12 @@
             const mobilePayment = document.querySelector('input[name="mobilePayment"]:checked').value;
             document.querySelector(`input[name="payment"][value="${mobilePayment}"]`).checked = true;
             
+            // Sync customer name
+            const mobileCustomerName = document.getElementById('mobileCustomerName').value.trim();
+            customerName = mobileCustomerName;
+            document.getElementById('customerName').value = mobileCustomerName;
+            updateNamePreview();
+            
             // Call the main WhatsApp function
             sendToWhatsApp();
             
@@ -1526,6 +1662,7 @@
             console.log('📱 Sending to WhatsApp...');
             console.log('🛒 Current cart:', cart);
             console.log('🏷️ Table number:', tableNumber);
+            console.log('👤 Customer name:', customerName);
             
             if (Object.keys(cart).length === 0) {
                 showMessage('Coșul este gol! Adaugă produse pentru a comanda.', 'error');
@@ -1537,7 +1674,15 @@
             
             // Create order message
             let message = `🍽️ *COMANDĂ NOUĂ*\n\n`;
-            message += `📍 *Masa:* ${tableNumber}\n`;
+            
+            // Add customer info
+            if (customerName) {
+                message += `👤 *Client:* ${customerName}\n`;
+                message += `📍 *Masa:* ${tableNumber}\n`;
+            } else {
+                message += `📍 *Masa:* ${tableNumber}\n`;
+            }
+            
             message += `💳 *Plată:* ${paymentText}\n`;
             message += `⏰ *Timp estimat:* ${maxPrepTime} min\n\n`;
             message += `📝 *Comandă:*\n`;
@@ -1565,13 +1710,18 @@
                 
                 if (newWindow) {
                     console.log('✅ WhatsApp opened successfully');
-                    showMessage('Comanda trimisă pe WhatsApp! Vă va contacta ospătarul pentru confirmare.', 'success');
+                    const successMessage = customerName ? 
+                        `Comanda pentru ${customerName} trimisă pe WhatsApp! Vă va contacta ospătarul pentru confirmare.` :
+                        'Comanda trimisă pe WhatsApp! Vă va contacta ospătarul pentru confirmare.';
+                    showMessage(successMessage, 'success');
                     
                     // Clear cart after delay
                     setTimeout(() => {
                         cart = {};
+                        customerName = '';
+                        clearCustomerName();
                         updateCart();
-                        console.log('🧹 Cart cleared');
+                        console.log('🧹 Cart and customer info cleared');
                     }, 3000);
                 } else {
                     console.log('❌ Failed to open WhatsApp window');
