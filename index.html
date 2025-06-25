@@ -106,6 +106,23 @@
             height: 20px;
         }
 
+        /* Admin Button */
+        .admin-button {
+            background: var(--soft-black);
+            color: var(--pure-white);
+            border: none;
+            border-radius: 8px;
+            padding: 8px 12px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background 0.2s ease;
+            margin-left: 15px; /* Adjust positioning */
+            flex-shrink: 0; /* Prevent shrinking */
+        }
+        .admin-button:hover {
+            background: var(--warm-gray);
+        }
+
         /* Navigation Tabs (Categories) */
         .nav-tabs-wrapper {
             background: var(--pure-white);
@@ -756,6 +773,10 @@
             .header-content {
                 justify-content: center; /* Center logo when contact info is hidden */
             }
+            .header-content .admin-button {
+                position: absolute;
+                right: 15px;
+            }
 
             .product-grid {
                 grid-template-columns: repeat(2, 1fr); /* Force 2 columns on mobile */
@@ -876,6 +897,7 @@
                     WhatsApp
                 </a>
             </div>
+            <button id="adminModeBtn" class="admin-button" onclick="promptAdminPassword()">Admin</button>
         </div>
         <div class="nav-tabs-wrapper">
             <div class="nav-tabs" id="categoryTabs">
@@ -1042,18 +1064,24 @@
 
         // --- INITIALIZATION ---
         document.addEventListener('DOMContentLoaded', () => {
-            // Check for admin mode using URL hash
-            const hash = window.location.hash;
-            if (hash === '#admin') {
-                enterAdminMode();
-            } else {
-                renderMenu();
-                updateMiniCart(); // Initialize mini-cart state
-                window.addEventListener('scroll', toggleHeaderShadow);
-                document.getElementById('categoryTabs').addEventListener('scroll', checkScrollButtons);
-                checkScrollButtons(); // Initial check
-            }
+            renderMenu(); // Always render public menu first
+            updateMiniCart();
+            window.addEventListener('scroll', toggleHeaderShadow);
+            document.getElementById('categoryTabs').addEventListener('scroll', checkScrollButtons);
+            checkScrollButtons(); // Initial check
         });
+
+        // --- ADMIN PASSWORD FUNCTION ---
+        function promptAdminPassword() {
+            const password = prompt("Introduceți parola de administrator:");
+            if (password === "sumacadmin") { // Parola pentru acces
+                enterAdminMode();
+                document.getElementById('adminModeBtn').style.display = 'none'; // Ascunde butonul după logare
+                showMessage("Acces admin acordat!", "success");
+            } else {
+                showMessage("Parola incorectă!", "error");
+            }
+        }
 
         // --- UI FUNCTIONS ---
 
@@ -1145,11 +1173,8 @@
             `;
             mainContent.appendChild(cartSection);
 
-            // Activate the first category or the one specified in URL hash
-            const initialCategory = window.location.hash.substring(1).split('-content')[0];
-            if (initialCategory && menuData.categories.some(cat => cat.id === initialCategory)) {
-                showCategory(initialCategory);
-            } else if (menuData.categories.length > 0) {
+            // Activate the first category
+            if (menuData.categories.length > 0) {
                 showCategory(menuData.categories[0].id);
             }
 
@@ -1175,11 +1200,6 @@
             const activeContent = document.getElementById(`${categoryId}-content`);
             if (activeContent) {
                 activeContent.classList.add('active');
-            }
-
-            // Update URL hash (only for public view)
-            if (window.location.hash !== '#admin') {
-                window.location.hash = categoryId;
             }
         }
 
@@ -1461,13 +1481,20 @@
         }
 
         function editCategory(id) {
-            const newName = prompt('Editează numele categoriei:', menuData.categories.find(c => c.id === id).name);
-            if (newName !== null && newName.trim() !== '') {
-                menuData.categories.find(c => c.id === id).name = newName.trim();
-                updateAdminDisplay();
-                showMessage('Categorie actualizată!', 'success');
-            } else if (newName !== null) {
-                showMessage('Numele categoriei nu poate fi gol.', 'error');
+            const currentCategory = menuData.categories.find(c => c.id === id);
+            if (!currentCategory) {
+                showMessage('Categoria nu a fost găsită.', 'error');
+                return;
+            }
+            const newName = prompt('Editează numele categoriei:', currentCategory.name);
+            if (newName !== null) { // User didn't click cancel
+                if (newName.trim() !== '') {
+                    currentCategory.name = newName.trim();
+                    updateAdminDisplay();
+                    showMessage('Categorie actualizată!', 'success');
+                } else {
+                    showMessage('Numele categoriei nu poate fi gol.', 'error');
+                }
             }
         }
 
