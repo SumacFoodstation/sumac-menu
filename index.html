@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🌿 Restaurant Sumac</title>
     <style>
+        /* General Styles & Variables */
         * {
             margin: 0;
             padding: 0;
@@ -33,377 +34,307 @@
             color: var(--primary-dark);
             line-height: 1.5;
             font-weight: 400;
-            padding-top: 120px;
-            overflow-x: hidden;
-        }
-
-        .header {
-            background: var(--header-gray);
-            border-bottom: 1px solid var(--border-light);
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            width: 100%;
-            z-index: 1000;
-            transition: all 0.3s ease;
-        }
-
-        .header-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 40px;
-        }
-
-        .logo {
-            font-size: 1.8em;
-            font-weight: 700;
-            letter-spacing: -0.02em;
-            color: var(--primary-dark);
-            text-transform: lowercase;
-        }
-
-        .header-right {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .table-info {
-            background: var(--primary-dark);
-            color: var(--pure-white);
-            padding: 8px 16px;
-            border-radius: 50px;
-            font-weight: 500;
-            font-size: 0.9em;
-            letter-spacing: 0.01em;
-        }
-
-        .nav-container {
-            background: var(--pure-white);
-            border-bottom: 1px solid var(--border-light);
-            position: fixed;
-            top: 80px;
-            left: 0;
-            right: 0;
-            width: 100%;
-            z-index: 999;
-        }
-
-        .nav-tabs {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            padding: 0 40px;
-            gap: 0;
-        }
-
-        .nav-tab {
-            background: transparent;
-            border: none;
-            padding: 16px 24px;
-            cursor: pointer;
-            font-weight: 500;
-            color: var(--text-light);
-            transition: all 0.2s ease;
-            border-bottom: 2px solid transparent;
-            font-size: 0.9em;
-            letter-spacing: 0.01em;
-        }
-
-        .nav-tab.active {
-            color: var(--primary-dark);
-            border-bottom-color: var(--accent-orange);
-        }
-
-        .nav-tab:hover {
-            color: var(--primary-dark);
+            padding-top: 120px; /* Space for fixed header and nav */
+            padding-bottom: 80px; /* Space for fixed mini-cart */
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 60px 40px;
+            padding: 0 15px; /* Consistent padding */
         }
 
-        .menu-layout {
-            display: grid;
-            grid-template-columns: 1fr 320px;
-            gap: 80px;
+        /* Header */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: var(--pure-white);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            z-index: 1000;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary-dark);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .logo img {
+            height: 30px;
+            vertical-align: middle;
+        }
+
+        .contact-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .contact-info a {
+            color: var(--soft-black);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .contact-info a:hover {
+            color: var(--primary-brown);
+        }
+
+        .contact-info .icon {
+            width: 20px;
+            height: 20px;
+        }
+
+        /* Navigation Tabs (Categories) */
+        .nav-tabs-wrapper {
+            background: var(--pure-white);
+            border-bottom: 1px solid var(--border-light);
+            padding: 10px 0;
+            position: relative; /* For scroll buttons */
+            box-shadow: 0 1px 4px rgba(0,0,0,0.03);
+        }
+        
+        .nav-tabs {
+            display: flex;
+            overflow-x: auto; /* Enable horizontal scrolling */
+            -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+            scroll-behavior: smooth; /* Smooth scroll on click */
+            padding: 0 15px; /* Padding for content */
+            scrollbar-width: none; /* Hide scrollbar for Firefox */
+            -ms-overflow-style: none;  /* Hide scrollbar for IE/Edge */
+            margin: 0 auto;
+            max-width: 1200px;
+            position: relative;
+        }
+
+        /* Hide scrollbar for Webkit browsers */
+        .nav-tabs::-webkit-scrollbar {
+            display: none;
+        }
+
+        .nav-tab {
+            flex-shrink: 0; /* Prevent tabs from shrinking */
+            padding: 8px 15px;
+            margin-right: 10px;
+            border-radius: 20px;
+            background: var(--light-gray);
+            color: var(--text-light);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            white-space: nowrap; /* Keep tab text on one line */
+            font-size: 15px;
+        }
+
+        .nav-tab:last-child {
+            margin-right: 0;
+        }
+
+        .nav-tab.active {
+            background: var(--primary-brown);
+            color: var(--pure-white);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+
+        .nav-tab:hover:not(.active) {
+            background: var(--header-gray);
+            color: var(--soft-black);
+        }
+
+        .scroll-button {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.8);
+            border: 1px solid var(--border-light);
+            border-radius: 50%;
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 10;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: opacity 0.3s ease;
+        }
+
+        .scroll-button.left {
+            left: 5px;
+        }
+
+        .scroll-button.right {
+            right: 5px;
+        }
+
+        .scroll-button:hover {
+            background: var(--primary-brown);
+            color: var(--pure-white);
+            border-color: var(--primary-brown);
+        }
+
+        .scroll-button.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* Menu Section & Products Grid */
+        .menu-section {
+            padding: 30px 0;
         }
 
         .tab-content {
             display: none;
+            animation: fadeIn 0.5s ease-in-out;
         }
 
         .tab-content.active {
             display: block;
         }
 
-        .category {
-            margin-bottom: 80px;
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .category-title {
-            color: var(--primary-dark);
-            font-size: 2em;
-            font-weight: 600;
-            margin-bottom: 40px;
-            letter-spacing: -0.02em;
-            position: relative;
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--soft-black);
+            margin-bottom: 25px;
+            text-align: center;
         }
 
-        .category-title::after {
-            content: '';
-            position: absolute;
-            bottom: -12px;
-            left: 0;
-            width: 40px;
-            height: 2px;
-            background: var(--accent-orange);
-        }
-
-        /* CONSISTENT GRID FOR ALL SECTIONS */
-        .menu-grid {
+        .product-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 16px;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); /* Default for smaller screens, adjusts automatically */
+            gap: 20px;
         }
 
-        .menu-card {
+        .product-card {
             background: var(--pure-white);
             border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
             overflow: hidden;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-            transition: all 0.3s ease;
-            position: relative;
-            width: 100%;
-        }
-
-        .menu-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
-        }
-
-        .menu-card.promotion {
-            box-shadow: 0 2px 8px rgba(80, 200, 120, 0.1);
-            background: linear-gradient(135deg, #ffffff 0%, #f8fff9 100%);
-        }
-
-        .menu-card.promotion::before {
-            content: 'REDUCERE';
-            position: absolute;
-            top: 8px;
-            right: 8px;
-            background: var(--accent-green);
-            color: var(--pure-white);
-            padding: 2px 6px;
-            border-radius: 8px;
-            font-size: 0.6em;
-            font-weight: 600;
-            z-index: 2;
-        }
-
-        .card-image {
-            width: 100%;
-            height: 100px;
-            position: relative;
-            overflow: hidden;
-            background: var(--light-gray);
-        }
-
-        .image-placeholder {
-            width: 100%;
-            height: 100%;
             display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5em;
-            color: var(--text-light);
-            opacity: 0.6;
+            flex-direction: column;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
 
-        .card-content {
-            padding: 12px;
+        .product-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
 
-        .card-title {
-            font-size: 0.85em;
-            font-weight: 600;
-            color: var(--primary-dark);
-            margin-bottom: 4px;
-            letter-spacing: -0.01em;
-            text-transform: capitalize;
-            line-height: 1.2;
-        }
-
-        .card-description {
-            color: var(--text-light);
-            font-size: 0.7em;
-            line-height: 1.3;
-            margin-bottom: 8px;
-            height: auto;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
-
-        .card-meta {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 8px;
-        }
-
-        .prep-time {
-            background: var(--light-gray);
-            color: var(--text-light);
-            padding: 2px 6px;
-            border-radius: 8px;
-            font-size: 0.6em;
-            font-weight: 500;
-        }
-
-        .card-weight {
-            background: var(--accent-blue);
-            color: var(--pure-white);
-            padding: 2px 6px;
-            border-radius: 8px;
-            font-size: 0.6em;
-            font-weight: 500;
-        }
-
-        .card-price {
-            font-size: 0.9em;
-            font-weight: 600;
-            color: var(--primary-dark);
-            letter-spacing: -0.01em;
-        }
-
-        .original-price {
-            text-decoration: line-through;
-            color: var(--text-light);
-            font-size: 0.75em;
-            margin-right: 4px;
-        }
-
-        .add-to-cart {
-            background: var(--accent-orange);
-            color: var(--pure-white);
-            border: none;
-            padding: 6px 12px;
-            border-radius: 6px;
-            font-weight: 500;
-            cursor: pointer;
+        .product-image {
             width: 100%;
-            transition: all 0.2s ease;
-            font-size: 0.75em;
-            letter-spacing: 0.01em;
-        }
-
-        .add-to-cart:hover {
-            background: #e55a2b;
-            transform: translateY(-1px);
-        }
-
-        .cart-sidebar {
-            background: var(--pure-white);
-            border-radius: 16px;
-            padding: 24px;
-            position: sticky;
-            top: 180px;
-            height: fit-content;
-            max-height: calc(100vh - 200px);
-            overflow-y: auto;
-            border: 1px solid var(--border-light);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-        }
-
-        .cart-header {
-            display: flex;
-            align-items: center;
-            margin-bottom: 24px;
-            padding-bottom: 16px;
+            height: 180px;
+            object-fit: cover;
             border-bottom: 1px solid var(--border-light);
         }
 
-        .cart-header h3 {
-            color: var(--primary-dark);
-            font-size: 1.1em;
-            font-weight: 600;
-            margin-left: 8px;
-            letter-spacing: -0.01em;
+        .product-info {
+            padding: 15px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
         }
 
-        .empty-cart {
-            text-align: center;
+        .product-name {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--soft-black);
+            margin-bottom: 5px;
+            line-height: 1.3;
+        }
+
+        .product-description {
+            font-size: 14px;
             color: var(--text-light);
-            font-style: italic;
-            padding: 40px 20px;
-            font-size: 0.9em;
-        }
-
-        .total-amount {
-            font-size: 1.4em;
-            font-weight: 600;
-            color: var(--primary-dark);
             margin-bottom: 10px;
-            text-align: center;
-            letter-spacing: -0.01em;
+            flex-grow: 1;
         }
 
-        .prep-time-total {
-            font-size: 0.9em;
-            color: var(--text-light);
-            text-align: center;
-            margin-bottom: 20px;
+        .product-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
         }
 
-        .checkout-btn {
-            background: var(--whatsapp-green);
+        .product-price {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary-brown);
+        }
+
+        .add-to-cart-btn {
+            background: var(--primary-brown);
             color: var(--pure-white);
             border: none;
-            padding: 16px 24px;
-            border-radius: 12px;
-            font-size: 1em;
+            border-radius: 8px;
+            padding: 8px 15px;
+            font-size: 15px;
             font-weight: 600;
             cursor: pointer;
-            width: 100%;
-            transition: all 0.2s ease;
-            letter-spacing: 0.01em;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
+            transition: background 0.2s ease;
         }
 
-        .checkout-btn:hover:not(:disabled) {
-            background: #20BA5A;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(37, 211, 102, 0.3);
+        .add-to-cart-btn:hover {
+            background: #a87648; /* Slightly darker brown */
         }
 
-        .checkout-btn:disabled {
-            background: var(--text-light);
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
+        /* Cart Section */
+        .cart-section {
+            background: var(--pure-white);
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 25px;
+            margin-top: 30px;
+        }
+
+        .cart-section h2 {
+            font-size: 26px;
+            font-weight: 700;
+            color: var(--soft-black);
+            margin-bottom: 20px;
+            text-align: center;
         }
 
         .cart-items {
-            margin-bottom: 24px;
+            list-style: none;
+            padding: 0;
+            margin-bottom: 20px;
         }
 
         .cart-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 16px 0;
+            padding: 10px 0;
             border-bottom: 1px solid var(--border-light);
+            font-size: 16px;
         }
 
         .cart-item:last-child {
@@ -411,1979 +342,1053 @@
         }
 
         .item-details {
-            flex: 1;
-        }
-
-        .item-name {
-            font-weight: 500;
-            color: var(--primary-dark);
-            margin-bottom: 4px;
-            font-size: 0.9em;
-        }
-
-        .quantity-controls {
             display: flex;
             align-items: center;
-            gap: 12px;
-            margin: 8px 0;
+            flex-grow: 1;
+            margin-right: 10px;
         }
 
-        .qty-btn {
-            background: var(--light-gray);
-            color: var(--primary-dark);
+        .item-quantity-controls {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-right: 15px;
+        }
+
+        .quantity-btn {
+            background: var(--header-gray);
             border: none;
+            border-radius: 50%;
             width: 28px;
             height: 28px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 500;
-            font-size: 0.9em;
-            transition: all 0.2s ease;
             display: flex;
             align-items: center;
             justify-content: center;
-        }
-
-        .qty-btn:hover {
-            background: var(--accent-orange);
-            color: var(--pure-white);
-        }
-
-        .quantity {
-            font-weight: 500;
-            min-width: 20px;
-            text-align: center;
-            color: var(--primary-dark);
-            font-size: 0.9em;
-        }
-
-        .item-price {
+            cursor: pointer;
+            font-size: 18px;
             font-weight: 600;
-            color: var(--primary-dark);
-            margin-left: 16px;
-            font-size: 0.9em;
-        }
-
-        .customer-name-section {
-            margin: 16px 0;
-            padding: 16px;
-            background: var(--light-gray);
-            border-radius: 12px;
-            border: 1px solid var(--border-light);
-        }
-
-        .customer-name-section h4 {
-            margin-bottom: 12px;
-            color: var(--primary-dark);
-            font-weight: 500;
-            font-size: 0.9em;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .name-input-group {
-            display: flex;
-            gap: 8px;
-            align-items: center;
-        }
-
-        .name-input {
-            flex: 1;
-            padding: 8px 12px;
-            border: 1px solid var(--border-light);
-            border-radius: 6px;
-            font-size: 0.85em;
-            background: var(--pure-white);
-            transition: border-color 0.2s ease;
-        }
-
-        .name-input:focus {
-            outline: none;
-            border-color: var(--accent-orange);
-        }
-
-        .name-input::placeholder {
-            color: var(--text-light);
-            font-style: italic;
-        }
-
-        .skip-name-btn {
-            background: transparent;
-            color: var(--text-light);
-            border: 1px solid var(--border-light);
-            padding: 8px 12px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 0.8em;
-            transition: all 0.2s ease;
-            white-space: nowrap;
-        }
-
-        .skip-name-btn:hover {
-            background: var(--light-gray);
-            color: var(--primary-dark);
-        }
-
-        .name-preview {
-            color: var(--accent-green);
-            font-weight: 500;
-            font-size: 0.85em;
-            margin-top: 8px;
-            display: none;
-        }
-
-        .payment-method h4 {
-            margin-bottom: 12px;
-            color: var(--primary-dark);
-            font-weight: 500;
-            font-size: 0.9em;
-        }
-
-        .payment-option {
-            display: flex;
-            align-items: center;
-            margin-bottom: 8px;
-            cursor: pointer;
-            padding: 4px;
-            border-radius: 6px;
+            color: var(--soft-black);
             transition: background 0.2s ease;
         }
 
-        .payment-option:hover {
-            background: rgba(255, 107, 53, 0.1);
+        .quantity-btn:hover {
+            background: var(--border-light);
         }
 
-        .payment-option input[type="radio"] {
-            margin-right: 8px;
-            accent-color: var(--accent-orange);
-        }
-
-        .payment-option label {
-            font-weight: 400;
-            color: var(--primary-dark);
+        .remove-item-btn {
+            background: none;
+            border: none;
+            color: #E53935;
             cursor: pointer;
-            font-size: 0.9em;
-        }
-
-        /* Sticky Bottom Cart Bar for Mobile */
-        .sticky-cart-bar {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: var(--whatsapp-green);
-            color: var(--pure-white);
-            padding: 12px 20px;
-            display: none;
-            align-items: center;
-            justify-content: space-between;
-            z-index: 1100;
-            box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.15);
-            border-radius: 12px 12px 0 0;
-        }
-
-        .sticky-cart-info {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            flex: 1;
-        }
-
-        .cart-badge {
-            background: var(--pure-white);
-            color: var(--whatsapp-green);
-            font-weight: 700;
-            font-size: 0.8em;
-            padding: 4px 8px;
-            border-radius: 12px;
-            min-width: 24px;
-            text-align: center;
+            font-size: 20px;
+            padding: 5px;
+            margin-left: 10px;
         }
 
         .cart-summary {
-            font-weight: 600;
-            font-size: 0.9em;
-        }
-
-        .view-cart-btn {
-            background: var(--pure-white);
-            color: var(--whatsapp-green);
-            border: none;
-            padding: 8px 16px;
-            border-radius: 8px;
-            font-weight: 600;
-            font-size: 0.85em;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .view-cart-btn:hover {
-            background: #f5f5f7;
-        }
-
-        /* Show sticky bar only on mobile when cart has items */
-        @media (max-width: 768px) {
-            .sticky-cart-bar.show {
-                display: flex;
-            }
-            
-            /* Add bottom padding to body when sticky bar is visible */
-            body.has-sticky-cart {
-                padding-bottom: 80px;
-            }
-        }
-
-        /* Hide regular cart sidebar on mobile when sticky bar is shown */
-        @media (max-width: 768px) {
-            .cart-sidebar.mobile-hidden {
-                display: none;
-            }
-        }
-
-        /* Mobile cart modal */
-        .mobile-cart-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 2000;
-            display: none;
-            align-items: flex-end;
-        }
-
-        .mobile-cart-content {
-            background: var(--pure-white);
-            border-radius: 16px 16px 0 0;
-            width: 100%;
-            max-height: 80vh;
-            overflow-y: auto;
-            padding: 24px;
-            transform: translateY(100%);
-            transition: transform 0.3s ease;
-        }
-
-        .mobile-cart-modal.show .mobile-cart-content {
-            transform: translateY(0);
-        }
-
-        .mobile-cart-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 16px;
-            border-bottom: 1px solid var(--border-light);
+            font-size: 20px;
+            font-weight: 700;
+            padding-top: 15px;
+            border-top: 2px solid var(--primary-brown);
         }
 
-        .close-modal-btn {
-            background: var(--light-gray);
-            color: var(--primary-dark);
+        .checkout-btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background: var(--whatsapp-green);
+            color: var(--pure-white);
             border: none;
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: 600;
             cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            margin-top: 25px;
+            transition: background 0.2s ease;
+        }
+
+        .checkout-btn:hover {
+            background: #1DA851;
+        }
+
+        .empty-cart-message {
+            text-align: center;
+            color: var(--text-light);
+            font-style: italic;
+            padding: 20px 0;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 30px 15px;
+            color: var(--text-light);
+            font-size: 14px;
+            margin-top: 40px;
+        }
+
+        /* Message Overlay */
+        #messageContainer {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 2000;
             display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2em;
+            flex-direction: column;
+            gap: 10px;
+            pointer-events: none; /* Allows clicks to pass through */
         }
 
-        .message.success {
-            background: var(--accent-green);
-        }
-
-        .message.error {
-            background: #ff4757;
+        .message {
+            background: var(--primary-dark);
+            color: var(--pure-white);
+            padding: 12px 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            text-align: center;
+            font-size: 15px;
+            pointer-events: auto; /* Re-enable pointer events for the message itself */
         }
 
         .message.show {
-            transform: translateX(0);
+            opacity: 1;
+            transform: translateY(0);
         }
 
-        /* Responsive Design */
-        @media (max-width: 1024px) {
-            .menu-grid {
-                grid-template-columns: repeat(3, 1fr);
-            }
+        .message.success { background: var(--accent-green); }
+        .message.error { background: #E53935; }
+        .message.info { background: var(--accent-blue); }
+
+        /* Admin Panel Styles */
+        body.admin-mode {
+            padding-top: 15px;
+            padding-bottom: 15px;
         }
 
+        #adminPanel {
+            background: var(--pure-white);
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 25px;
+            margin: 30px auto;
+            max-width: 900px;
+        }
+
+        #adminPanel h1 {
+            font-size: 32px;
+            color: var(--soft-black);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .admin-section {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .admin-section:last-of-type {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .admin-section h2 {
+            font-size: 22px;
+            color: var(--soft-black);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .admin-controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .admin-controls button, .admin-controls input[type="text"] {
+            padding: 10px 15px;
+            border-radius: 8px;
+            border: 1px solid var(--border-light);
+            background: var(--light-gray);
+            color: var(--soft-black);
+            cursor: pointer;
+            font-size: 15px;
+            transition: background 0.2s ease, border-color 0.2s ease;
+        }
+
+        .admin-controls button:hover {
+            background: var(--header-gray);
+        }
+
+        .admin-controls button.add { background: var(--accent-green); color: var(--pure-white); border-color: var(--accent-green); }
+        .admin-controls button.add:hover { background: #45B16B; }
+        .admin-controls button.danger { background: #E53935; color: var(--pure-white); border-color: #E53935; }
+        .admin-controls button.danger:hover { background: #C62828; }
+
+        .admin-controls input[type="text"] {
+            flex-grow: 1;
+            padding: 10px;
+        }
+        .admin-controls input[type="text"]:focus {
+            outline: none;
+            border-color: var(--primary-brown);
+        }
+
+        .list-container {
+            border: 1px solid var(--border-light);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .list-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 15px;
+            border-bottom: 1px solid var(--border-light);
+            background: var(--pure-white);
+        }
+
+        .list-item:last-child {
+            border-bottom: none;
+        }
+
+        .list-item-name {
+            font-weight: 500;
+            flex-grow: 1;
+            margin-right: 15px;
+        }
+
+        .list-item-actions {
+            display: flex;
+            gap: 5px;
+        }
+
+        .list-item-actions button {
+            background: none;
+            border: none;
+            font-size: 18px;
+            cursor: pointer;
+            color: var(--text-light);
+            padding: 5px;
+            transition: color 0.2s ease;
+        }
+
+        .list-item-actions button:hover {
+            color: var(--soft-black);
+        }
+
+        .list-item-actions button.delete:hover {
+            color: #E53935;
+        }
+
+        .product-editor-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+        }
+
+        .product-editor-card {
+            background: var(--pure-white);
+            border: 1px solid var(--border-light);
+            border-radius: 8px;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .product-editor-card input,
+        .product-editor-card textarea,
+        .product-editor-card select {
+            width: 100%;
+            padding: 8px 10px;
+            border: 1px solid var(--border-light);
+            border-radius: 6px;
+            font-size: 14px;
+            color: var(--soft-black);
+            background: var(--light-gray);
+        }
+        .product-editor-card input:focus,
+        .product-editor-card textarea:focus,
+        .product-editor-card select:focus {
+            outline: none;
+            border-color: var(--primary-brown);
+        }
+
+        .product-editor-card .price-input {
+            width: calc(50% - 5px); /* Adjust width for price and grams */
+        }
+        .product-editor-card .grams-input {
+            width: calc(50% - 5px);
+        }
+
+        .product-editor-card .input-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        .product-editor-card textarea {
+            min-height: 60px;
+            resize: vertical;
+        }
+
+        .product-editor-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .product-editor-actions button {
+            flex-grow: 1;
+            padding: 10px;
+            border-radius: 8px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .product-editor-actions .save-btn { background: var(--accent-green); color: var(--pure-white); }
+        .product-editor-actions .save-btn:hover { background: #45B16B; }
+        .product-editor-actions .delete-btn { background: #E53935; color: var(--pure-white); }
+        .product-editor-actions .delete-btn:hover { background: #C62828; }
+        .product-editor-actions .cancel-btn { background: var(--header-gray); color: var(--soft-black); }
+        .product-editor-actions .cancel-btn:hover { background: var(--border-light); }
+
+        #jsonOutput {
+            background: var(--soft-black);
+            color: var(--whatsapp-green);
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'SF Mono', 'Consolas', 'Monaco', monospace;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            font-size: 14px;
+            max-height: 400px;
+            overflow-y: auto;
+            margin-top: 20px;
+        }
+
+        /* Mini Cart Styles */
+        .mini-cart {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: var(--pure-white);
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 999;
+            padding: 10px 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transform: translateY(100%);
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .mini-cart.active {
+            transform: translateY(0);
+        }
+
+        .mini-cart-info {
+            display: flex;
+            flex-direction: column;
+            color: var(--soft-black);
+        }
+
+        .mini-cart-info .item-count {
+            font-size: 14px;
+            color: var(--text-light);
+        }
+
+        .mini-cart-info .total-price {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--primary-brown);
+        }
+
+        .mini-cart-button {
+            background: var(--whatsapp-green);
+            color: var(--pure-white);
+            border: none;
+            border-radius: 8px;
+            padding: 8px 15px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .mini-cart-button:hover {
+            background: #1DA851;
+        }
+        
+        .mini-cart-message {
+            font-size: 14px;
+            color: var(--text-light);
+            text-align: center;
+            flex-grow: 1;
+        }
+
+        /* Responsive Adjustments */
         @media (max-width: 768px) {
-            body {
-                padding-top: 100px;
+            .contact-info {
+                display: none; /* Hide contact info on small screens */
             }
 
             .header-content {
-                padding: 16px 20px;
+                justify-content: center; /* Center logo when contact info is hidden */
             }
 
-            .logo {
-                font-size: 1.5em;
+            .product-grid {
+                grid-template-columns: repeat(2, 1fr); /* Force 2 columns on mobile */
             }
 
-            .nav-container {
-                top: 68px;
+            .nav-tabs-wrapper {
+                padding: 10px 0; /* Adjust padding for scroll buttons */
             }
-
             .nav-tabs {
-                padding: 0 20px;
+                padding: 0 45px; /* Make space for buttons */
             }
 
-            .nav-tab {
-                padding: 12px 16px;
-                font-size: 0.85em;
+            .scroll-button {
+                display: flex; /* Show scroll buttons on mobile */
             }
 
-            .container {
-                padding: 40px 20px;
+            body {
+                padding-bottom: 70px; /* Adjust for smaller mini-cart */
             }
-
-            .menu-layout {
-                grid-template-columns: 1fr;
-                gap: 40px;
+            .mini-cart {
+                height: 60px;
+                padding: 0 15px;
             }
+            .mini-cart-info .item-count { font-size: 13px; }
+            .mini-cart-info .total-price { font-size: 16px; }
+            .mini-cart-button { padding: 6px 12px; font-size: 14px; }
+        }
 
-            .cart-sidebar {
-                position: static;
-                margin-top: 0;
-                max-height: none;
-                order: 2;
-            }
-
-            .menu-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 12px;
-            }
-
-            .category-title {
-                font-size: 1.6em;
-            }
-
-            .category {
-                margin-bottom: 60px;
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .product-grid {
+                grid-template-columns: repeat(3, 1fr); /* 3 columns on tablet */
             }
         }
 
-        html {
-            scroll-behavior: smooth;
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
+        @media (min-width: 1025px) {
+            .product-grid {
+                grid-template-columns: repeat(4, 1fr); /* 4 columns on larger desktops */
             }
-            to {
-                opacity: 1;
-                transform: translateY(0);
+
+            .scroll-button {
+                display: flex; /* Show scroll buttons on desktop */
             }
+
+            .mini-cart {
+                width: 300px; /* Fixed width for desktop mini-cart */
+                right: 20px; /* Position on the right */
+                left: auto; /* Override left:0 */
+                bottom: 20px; /* Lift from bottom */
+                border-radius: 12px;
+                flex-direction: column; /* Stack info and button */
+                padding: 20px;
+                align-items: stretch; /* Stretch button */
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+                transform: translateX(calc(100% + 20px)); /* Hide off-screen by default */
+            }
+            
+            .mini-cart.active {
+                transform: translateX(0); /* Slide in */
+            }
+
+            .mini-cart-info {
+                align-items: center;
+                margin-bottom: 15px;
+            }
+            .mini-cart-button {
+                justify-content: center;
+                padding: 12px 15px;
+            }
+             .mini-cart-message {
+                margin-bottom: 15px;
+             }
         }
 
-        .menu-card {
-            animation: fadeInUp 0.4s ease forwards;
+        /* Icon styling */
+        .icon-phone, .icon-whatsapp, .icon-cart, .icon-arrow {
+            /* Basic styling for SVG/font icons */
+            display: inline-block;
+            width: 1em; /* Adjust as needed */
+            height: 1em; /* Adjust as needed */
+            vertical-align: middle;
+            fill: currentColor;
+        }
+        .icon-cart-badge {
+            font-size: 12px;
+            background: #E53935;
+            color: var(--pure-white);
+            border-radius: 50%;
+            padding: 3px 6px;
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 20px;
+            height: 20px;
         }
 
-        .menu-card:nth-child(even) {
-            animation-delay: 0.1s;
-        }
     </style>
 </head>
 <body>
-    <!-- Header -->
-    <div class="header">
-        <div class="header-content">
-            <div class="logo">🌿 sumac</div>
-            <div class="header-right">
-                <div class="table-info" id="tableInfo">masa ?</div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Navigation -->
-    <div class="nav-container">
-        <div class="nav-tabs">
-            <button class="nav-tab active" onclick="switchTab('menu')">meniu</button>
-            <button class="nav-tab" onclick="switchTab('info')">info</button>
-        </div>
-    </div>
-
-    <!-- Container -->
-    <div class="container">
-        <div class="menu-layout">
-            <!-- Menu Tab Content -->
-            <div class="tab-content active" id="menu-content">
-                <div class="menu-content">
-                    <!-- Startere Section -->
-                    <div class="category">
-                        <h2 class="category-title">startere</h2>
-                        <div class="menu-grid">
-                            <div class="menu-card">
-                                <div class="card-image">
-                                    <div class="image-placeholder">🍞</div>
-                                </div>
-                                <div class="card-content">
-                                    <div class="card-title">khatchapuri cu ou</div>
-                                    <div class="card-description">specialitate georgiană cu brânză și ou</div>
-                                    <div class="card-meta">
-                                        <div class="card-weight">220g</div>
-                                        <div class="card-price">17 ron</div>
-                                    </div>
-                                    <button class="add-to-cart" onclick="addToCart('Khatchapuri cu Ou', 17, 8)">adaugă</button>
-                                </div>
-                            </div>
-
-                            <div class="menu-card">
-                                <div class="card-image">
-                                    <div class="image-placeholder">🥗</div>
-                                </div>
-                                <div class="card-content">
-                                    <div class="card-title">hummus cu carne</div>
-                                    <div class="card-description">hummus tradițional cu carne de vită</div>
-                                    <div class="card-meta">
-                                        <div class="card-weight">270g</div>
-                                        <div class="card-price">30 ron</div>
-                                    </div>
-                                    <button class="add-to-cart" onclick="addToCart('Hummus cu Carne', 30, 8)">adaugă</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Salate Section -->
-                    <div class="category">
-                        <h2 class="category-title">salate</h2>
-                        <div class="menu-grid">
-                            <div class="menu-card">
-                                <div class="card-image">
-                                    <div class="image-placeholder">🥗</div>
-                                </div>
-                                <div class="card-content">
-                                    <div class="card-title">salată coleslaw</div>
-                                    <div class="card-description">varză albă, morcovi, ulei, oțet, sare, zahăr</div>
-                                    <div class="card-meta">
-                                        <div class="card-weight">300g</div>
-                                        <div class="card-price">15 ron</div>
-                                    </div>
-                                    <button class="add-to-cart" onclick="addToCart('Salată Coleslaw', 15, 5)">adaugă</button>
-                                </div>
-                            </div>
-
-                            <div class="menu-card">
-                                <div class="card-image">
-                                    <div class="image-placeholder">🥬</div>
-                                </div>
-                                <div class="card-content">
-                                    <div class="card-title">salată ușoară</div>
-                                    <div class="card-description">mix de salată verde proaspătă</div>
-                                    <div class="card-meta">
-                                        <div class="card-weight">300g</div>
-                                        <div class="card-price">21 ron</div>
-                                    </div>
-                                    <button class="add-to-cart" onclick="addToCart('Salată Ușoară', 21, 5)">adaugă</button>
-                                </div>
-                            </div>
-
-                            <div class="menu-card">
-                                <div class="card-image">
-                                    <div class="image-placeholder">🥗</div>
-                                </div>
-                                <div class="card-content">
-                                    <div class="card-title">salată armenească</div>
-                                    <div class="card-description">salată tradițională armenească cu legume</div>
-                                    <div class="card-meta">
-                                        <div class="card-weight">300g</div>
-                                        <div class="card-price">22 ron</div>
-                                    </div>
-                                    <button class="add-to-cart" onclick="addToCart('Salată Armenească', 22, 6)">adaugă</button>
-                                </div>
-                            </div>
-
-                            <div class="menu-card">
-                                <div class="card-image">
-                                    <div class="image-placeholder">🥗</div>
-                                </div>
-                                <div class="card-content">
-                                    <div class="card-title">salată fattoush</div>
-                                    <div class="card-description">salată libaneză cu pâine prăjită și sumac</div>
-                                    <div class="card-meta">
-                                        <div class="card-weight">300g</div>
-                                        <div class="card-price">24 ron</div>
-                                    </div>
-                                    <button class="add-to-cart" onclick="addToCart('Salată Fattoush', 24, 7)">adaugă</button>
-                                </div>
-                            </div>
-
-                            <div class="menu-card">
-                                <div class="card-image">
-                                    <div class="image-placeholder">🥗</div>
-                                </div>
-                                <div class="card-content">
-                                    <div class="card-title">salată grecească</div>
-                                    <div class="card-description">roșii, castraveți, brânză feta, măsline</div>
-                                    <div class="card-meta">
-                                        <div class="card-weight">300g</div>
-                                        <div class="card-price">26 ron</div>
-                                    </div>
-                                    <button class="add-to-cart" onclick="addToCart('Salată Grecească', 26, 6)">adaugă</button>
-                                </div>
-                            </div>
-
-                            <div class="menu-card">
-                                <div class="card-image">
-                                    <div class="image-placeholder">🌿</div>
-                                </div>
-                                <div class="card-content">
-                                    <div class="card-title">salată tabbouleh</div>
-                                    <div class="card-description">pătrunjel, roșii, bulgur, mentă, lămâie</div>
-                                    <div class="card-meta">
-                                        <div class="card-weight">250g</div>
-                                        <div class="card-price">30 ron</div>
-                                    </div>
-                                    <button class="add-to-cart" onclick="addToCart('Salată Tabbouleh', 30, 8)">adaugă</button>
-                                </div>
-                            </div>
-
-                            <div class="menu-card">
-                                <div class="card-image">
-                                    <div class="image-placeholder">🧀</div>
-                                </div>
-                                <div class="card-content">
-                                    <div class="card-title">salată ciobăniță</div>
-                                    <div class="card-description">salată cu brânză și legume proaspete</div>
-                                    <div class="card-meta">
-                                        <div class="card-weight">300g</div>
-                                        <div class="card-price">32 ron</div>
-                                    </div>
-                                    <button class="add-to-cart" onclick="addToCart('Salată Ciobăniță', 32, 7)">adaugă</button>
-                                </div>
-                            </div>
-
-                            <div class="menu-card">
-                                <div class="card-image">
-                                    <div class="image-placeholder">🥗</div>
-                                </div>
-                                <div class="card-content">
-                                    <div class="card-title">salată caesar cu pui</div>
-                                    <div class="card-description">salată caesar clasică cu piept de pui la grătar</div>
-                                    <div class="card-meta">
-                                        <div class="card-weight">300g</div>
-                                        <div class="card-price">33 ron</div>
-                                    </div>
-                                    <button class="add-to-cart" onclick="addToCart('Salată Caesar cu Pui', 33, 10)">adaugă</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Supe & Ciorbe Section -->
-                    <div class="category">
-                        <h2 class="category-title">supe & ciorbe</h2>
-                        <div class="menu-grid">
-                            <div class="menu-card">
-                                <div class="card-image">
-                                    <div class="image-placeholder">🍲</div>
-                                </div>
-                                <div class="card-content">
-                                    <div class="card-title">supă de pui cu tăiței</div>
-                                    <div class="card-description">supă clasică de pui cu tăiței de casă</div>
-                                    <div class="card-meta">
-                                        <div class="card-weight">300g</div>
-                                        <div class="card-price">17 ron</div>
-                                    </div>
-                                    <button class="add-to-cart" onclick="addToCart('Supă de Pui cu Tăiței 300g', 17, 12)">adaugă</button>
-                                </div>
-                            </div>
-
-                            <div class="menu-card">
-                                <div class="card-image">
-                                    <div class="image-placeholder">🍲</div>
-                                </div>
-                                <div class="card-content">
-                                    <div class="card-title">supă de pui cu găluște</div>
-                                    <div class="card-description">supă de pui cu găluște pufoase</div>
-                                    <div class="card-meta">
-                                        <div class="card-weight">300g</div>
-                                        <div class="card-price">17 ron</div>
-                                    </div>
-                                    <button class="add-to-cart" onclick="addToCart('Supă de Pui cu Găluște 300g', 17, 12)">adaugă</button>
-                                </div>
-                            </div>
-
-                            <div class="menu-card">
-                                <div class="card-image">
-                                    <div class="image-placeholder">🍲</div>
-                                </div>
-                                <div class="card-content">
-                                    <div class="card-title">ciorbă de pui</div>
-                                    <div class="card-description">ciorbă de pui cu legume și leuștean</div>
-                                    <div class="card-meta">
-                                        <div class="card-weight">300g</div>
-                                        <div class="card-price">18 ron</div>
-                                    </div>
-                                    <button class="add-to-cart" onclick="addToCart('Ciorbă de Pui 300g', 18, 12)">adaugă</button>
-                                </div>
-                            </div>
-
-                            <div class="menu-card">
-                                <div class="card-image">
-                                    <div class="image-placeholder">🍲</div>
-                                </div>
-                                <div class="card-content">
-                                    <div class="card-title">ciorbă de perișoare</div>
-                                    <div class="card-description">ciorbă tradițională cu perișoare și leuștean</div>
-                                    <div class="card-meta">
-                                        <div class="card-weight">300g</div>
-                                        <div class="card-price">18 ron</div>
-                                    </div>
-                                    <button class="add-to-cart" onclick="addToCart('Ciorbă de Perișoare 300g', 18, 15)">adaugă</button>
-                                </div>
-                            </div>
-
-                            <div class="menu-card">
-                                <div class="card-image">
-                                    <div class="image-placeholder">🍲</div>
-                                </div>
-                                <div class="card-content">
-                                    <div class="card-title">supă de linte</div>
-                                    <div class="card-description">linte roșie, roșii, țelină, ceapă, busuioc, cimbru, oregano</div>
-                                    <div class="card-meta">
-                                        <div class="card-weight">300g</div>
-                                        <div class="card-price">14 ron</div>
-                                    </div>
-                                    <button class="add-to-cart" onclick="addToCart('Supă de Linte 300g', 14, 12)">adaugă</button>
-                                </div>
-                            </div>
-
-                            <div class="menu-card">
-                                <div class="card-image">
-                                    <div class="image-placeholder">🥣</div>
-                                </div>
-                                <div class="card-content">
-                                    <div class="card-title">supă cremă de ciuperci</div>
-                                    <div class="card-description">ciuperci proaspete, smântână, ceapă, usturoi, cimbru</div>
-                                    <div class="card-meta">
-                                        <div class="card-weight">300g</div>
-                                        <div class="card-price">19 ron</div>
-                                    </div>
-                                    <button class="add-to-cart" onclick="addToCart('Supă Cremă de Ciuperci 300g', 19, 10)">adaugă</button>
-                                </div>
-                            </div>
-
-                            <div class="menu-card">
-                                <div class="card-image">
-                                    <div class="image-placeholder">🍲</div>
-                                </div>
-                                <div class="card-content">
-                                    <div class="card-title">ciorbă de legume</div>
-                                    <div class="card-description">mix de legume proaspete, leuștean, ulei, sare și condimente</div>
-                                    <div class="card-meta">
-                                        <div class="card-weight">300g</div>
-                                        <div class="card-price">15 ron</div>
-                                    </div>
-                                    <button class="add-to-cart" onclick="addToCart('Ciorbă de Legume 300g', 15, 15)">adaugă</button>
-                                </div>
-                            </div>
-
-                            <div class="menu-card">
-                                <div class="card-image">
-                                    <div class="image-placeholder">🍲</div>
-                                </div>
-                                <div class="card-content">
-                                    <div class="card-title">ciorbă de vită</div>
-                                    <div class="card-description">ciorbă de vită cu legume și leuștean</div>
-                                    <div class="card-meta">
-                                        <div class="card-weight">300g</div>
-                                        <div class="card-price">21 ron</div>
-                                    </div>
-                                    <button class="add-to-cart" onclick="addToCart('Ciorbă de Vită 300g', 21, 18)">adaugă</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Sandwichuri Section -->
-                    <div class="category">
-                        <h2 class="category-title">sandwichuri</h2>
-                        <div class="menu-grid">
-                            <div class="menu-card">
-                                <div class="card-image">
-                                    <div class="image-placeholder">🌯</div>
-                                </div>
-                                <div class="card-content">
-                                    <div class="card-title">shaorma pui junior</div>
-                                    <div class="card-description">shaorma de pui în format junior</div>
-                                    <div class="card-meta">
-                                        <div class="card-weight">210g</div>
-                                        <div class="card-price">18 ron</div>
-                                    </div>
-                                    <button class="add-to-cart" onclick="addToCart('Shaorma Pui Junior', 18, 8)">adaugă</button>
-                                </div>
-                            </div>
-
-                            <div class="menu-card">
-                                <div class="card-image">
-                                    <div class="image-placeholder">🌯</div>
-                                </div>
-                                <div class="card-content">
-                                    <div class="card-title">twisted roll classic</div>
-                                    <div class="card-description">wrap cu pui și garnitură clasică</div>
-                                    <div class="card-meta">
-                                        <div class="card-weight">230g</div>
-                                        <div class="card-price">22 ron</div>
-                                    </div>
-                                    <button class="add-to-cart" onclick="addToCart('Twisted Roll Classic', 22, 10)">adaugă</button>
-                                </div>
-                            </div>
-
-                            <div class="menu-card">
-                                <div class="card-image">
-                                    <div class="image-placeholder">🌯</div>
-                                </div>
-                                <div class="card-content">
-                                    <div class="card-title">green wrap</div>
-                                    <div class="card-description">wrap vegetarian cu legume proaspete</div>
-                                    <div class="card-meta">
-                                        <div class="card-weight">270g</div>
-                                        <div class="card-price">22 ron</div>
-                                    </div>
-                                    <button class="add-to-cart" onclick="addToCart('Green Wrap', 22, 8)">adaugă</button>
-                                </div>
-                            </div>
-
-                            <div class="menu-card">
-                                <div class="card-image">
-                                    <div class="image-placeholder">🧆</div>
-                                </div>
-                                <div class="card-content">
-                                    <div class="card-title">falafel delight</div>
-                                    <div class="card-description">falafel în lipie cu roșii, pătrunjel, murături, sos tahini</div>
-                                    <div class="card-meta">
-                                        <div class="card-weight">270g</div>
-                                        <div class="card-price">22 ron</div>
-                                    </div>
-                                    <button class="add-to-cart" onclick="addToCart('Falafel Delight', 22, 12)">adaugă</button>
-                                </div>
-                            </div>
-
-                            <div class="menu-card">
-                                <div class="card-image">
-                                    <div class="image-placeholder">🌯</div>
-                                </div>
-                                <div class="card-content">
-                                    <div class="card-title">twisted roll feta</div>
-                                    <div class="card-description">wrap cu pui și brânză feta</div>
-                                    <div class="card-meta">
-                                        <div class="card-weight">250g</div>
-                                        <div class="card-price">24 ron</div>
-                                    </div>
-                                    <button class="add-to-cart" onclick="addToCart('Twisted Roll Feta', 24, 10)">adaugă</button>
-                                </div>
-                            </div>
-
-                            <div class="menu-card">
-                                <div class="card-image">
-                                    <div class="image-placeholder">🌯</div>
-                                </div>
-                                <div class="card-content">
-                                    <div class="card-title">shaorma vită junior</div>
-                                    <div class="card-description">shaorma de vită în format junior</div>
-                                    <div class="card-meta">
-                                        <div class="card-weight">220g</div>
-                                        <div class="card-price">28 ron</div>
-                                    </div>
-                                    <button class="add-to-cart" onclick="addToCart('Shaorma Vită Junior', 28, 10)">adaugă</button>
-                                </div>
-                            </div>
-
-                            <div class="menu-card">
-                                <div class="card-image">
-                                    <div class="image-placeholder">🌯</div>
-                                </div>
-                                <div class="card-content">
-                                    <div class="card-title">twisted roll bacon</div>
-                                    <div class="card-description">wrap cu pui și bacon</div>
-                                    <div class="card-meta">
-                                        <div class="card-weight">250g</div>
-                                        <div class="card-price">28 ron</div>
-                                    </div>
-                                    <button class="add-to-cart" onclick="addToCart('Twisted Roll Bacon', 28, 12)">adaugă</button>
-                                </div>
-                            </div>
-
-                            <div class="menu-card">
-                                <div class="card-image">
-                                    <div class="image-placeholder">🌯</div>
-                                </div>
-                                <div class="card-content">
-                                    <div class="card-title">twisted shaorma pui</div>
-                                    <div class="card-description">shaorma de pui în stil twisted</div>
-                                    <div class="card-meta">
-                                        <div class="card-weight">300g</div>
-                                        <div class="card-price">28 ron</div>
-                                    </div>
-                                    <button class="add-to-cart" onclick="addToCart('Twisted Shaorma Pui', 28, 12)">adaugă</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Burgeri Section -->
-                    <div class="category">
-                        <h2 class="category-title">burgeri</h2>
-                        <div class="menu-grid">
-                            <div class="menu-card">
-                                <div class="card-image">
-                                    <div class="image-placeholder">🍔</div>
-                                </div>
-                                <div class="card-content">
-                                    <div class="card-title">burger cockerel</div>
-                                    <div class="card-description">burger de pui clasic</div>
-                                    <div class="card-meta">
-                                        <div class="card-weight">200g</div>
-                                        <div class="card-price">20 ron</div>
-                                    </div>
-                                    <button class="add-to-cart" onclick="addToCart('Burger Cockerel', 20, 12)">adaugă</button>
-                                </div>
-                            </div>
-
-                            <div class="menu-card">
-                                <div class="card-image">
-                                    <div class="image-placeholder">🍔</div>
-                                </div>
-                                <div class="card-content">
-                                    <div class="card-title">burger caesar grill</div>
-                                    <div class="card-description">burger cu pui la grătar și sos caesar</div>
-                                    <div class="card-meta">
-                                        <div class="card-weight">270g</div>
-                                        <div class="card-price">28 ron</div>
-                                    </div>
-                                    <button class="add-to-cart" onclick="addToCart('Burger Caesar Grill', 28, 15)">adaugă</button>
-                                </div>
-                            </div>
-
-                            <div class="menu-card">
-                                <div class="card-image">
-                                    <div class="image-placeholder">🍔</div>
-                                </div>
-                                <div class="card-content">
-                                    <div class="card-title">burger extra</div>
-                                    <div class="card-description">burger de vită cu garnitură extra</div>
-                                    <div class="card-meta">
-                                        <div class="card-weight">260g</div>
-                                        <div class="card-price">32 ron</div>
-                                    </div>
-                                    <button class="add-to-cart" onclick="addToCart('Burger Extra', 32, 18)">adaugă</button>
-                                </div>
-                            </div>
-
-                            <div class="menu-card">
-                                <div class="card-image">
-                                    <div class="image-placeholder">🍔</div>
-                                </div>
-                                <div class="card-content">
-                                    <div class="card-title">burger crunchy chicken</div>
-                                    <div class="card-description">burger cu pui crocant</div>
-                                    <div class="card-meta">
-                                        <div class="card-weight">280g</div>
-                                        <div class="card-price">32 ron</div>
-                                    </div>
-                                    <button class="add-to-cart" onclick="addToCart('Burger Crunchy Chicken', 32, 15)">adaugă</button>
-                                </div>
-                            </div>
-
-                            <div class="menu-card">
-                                <div class="card-image">
-                                    <div class="image-placeholder">🍔</div>
-                                </div>
-                                <div class="card-content">
-                                    <div class="card-title">burger premium</div>
-                                    <div class="card-description">burger premium de vită</div>
-                                    <div class="card-meta">
-                                        <div class="card-weight">280g</div>
-                                        <div class="card-price">33 ron</div>
-                                    </div>
-                                    <button class="add-to-cart" onclick="addToCart('Burger Premium', 33, 18)">adaugă</button>
-                                </div>
-                            </div>
-
-                            <div class="menu-card">
-                                <div class="card-image">
-                                    <div class="image-placeholder">🍔</div>
-                                </div>
-                                <div class="card-content">
-                                    <div class="card-title">burger deluxe</div>
-                                    <div class="card-description">burger deluxe cu ingrediente premium</div>
-                                    <div class="card-meta">
-                                        <div class="card-weight">350g</div>
-                                        <div class="card-price">48 ron</div>
-                                    </div>
-                                    <button class="add-to-cart" onclick="addToCart('Burger Deluxe', 48, 20)">adaugă</button>
-                                </div>
-                            </div>
-
-                            <div class="menu-card">
-                                <div class="card-image">
-                                    <div class="image-placeholder">🍔</div>
-                                </div>
-                                <div class="card-content">
-                                    <div class="card-title">burger tasty grill</div>
-                                    <div class="card-description">burger la grătar cu ingrediente speciale</div>
-                                    <div class="card-meta">
-                                        <div class="card-weight">370g</div>
-                                        <div class="card-price">49 ron</div>
-                                    </div>
-                                    <button class="add-to-cart" onclick="addToCart('Burger Tasty Grill', 49, 22)">adaugă</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Preparate din Pui Section -->
-                    <div class="category">
-                        <h2 class="category-title">preparate din pui</h2>
-                        <div class="menu-grid">
-                            <div class="menu-card">
-                                <div class="card-image">
-                                    <div class="image-placeholder">🍗</div>
-                                </div>
-                                <div class="card-content">
-                                    <div class="card-title">șnițel parizian pui</div>
-                                    <div class="card-description">șnițel de pui în stil parizian</div>
-                                    <div class="card-meta">
-                                        <div class="card-weight">240g</div>
-                                        <div class="card-price">29 ron</div>
-                                    </div>
-                                    <button class="add-to-cart" onclick="addToCart('Șnițel Parizian Pui', 29, 18)">adaugă</button>
-                                </div>
-                            </div>
-
-                            <div class="menu-card">
-                                <div class="card-image">
-                                    <div class="image-placeholder">🍗</div>
-                                </div>
-                                <div class="card-content">
-                                    <div class="card-title">pui shanghai</div>
-                                    <div class="card-description">pui în stil chinezesc cu legume</div>
-                                    <div class="card-meta">
-                                        <div class="card-weight">240g</div>
-                                        <div class="card-price">29 ron</div>
-                                    </div>
-                                    <button class="add-to-cart" onclick="addToCart('Pui Shanghai', 29, 20)">adaugă</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Feluri Principale Section -->
-                    <div class="category">
-                        <h2 class="category-title">feluri principale</h2>
-                        <div class="menu-grid">
-                            <div class="menu-card">
-                                <div class="card-image">
-                                    <div class="image-placeholder">🍗</div>
-                                </div>
-                                <div class="card-content">
-                                    <div class="card-title">ficăței de pui cu ceapă</div>
-                                    <div class="card-description">ficăței de pui înăbușiți cu ceapă</div>
-                                    <div class="card-meta">
-                                        <div class="card-weight">400g</div>
-                                        <div class="card-price">22 ron</div>
-                                    </div>
-                                    <button class="add-to-cart" onclick="addToCart('Ficăței de Pui cu Ceapă', 22, 15)">adaugă</button>
-                                </div>
-                            </div>
-
-                            <div class="menu-card">
-                                <div class="card-image">
-                                    <div class="image-placeholder">🥬</div>
-                                </div>
-                                <div class="card-content">
-                                    <div class="card-title">sarmale de post</div>
-                                    <div class="card-description">sarmale vegetariene cu ciuperci și orez</div>
-                                    <div class="card-meta">
-                                        <div class="card-weight">400g</div>
-                                        <div class="card-price">22 ron</div>
-                                    </div>
-                                    <button class="add-to-cart" onclick="addToCart('Sarmale de Post', 22, 25)">adaugă</button>
-                                </div>
-                            </div>
-
-                            <div class="menu-card">
-                                <div class="card-image">
-                                    <div class="image-placeholder">🥬</div>
-                                </div>
-                                <div class="card-content">
-                                    <div class="card-title">sarmale cu varză acră</div>
-                                    <div class="card-description">sarmale tradiționale cu carne și varză acră</div>
-                                    <div class="card-meta">
-                                        <div class="card-weight">400g</div>
-                                        <div class="card-price">24 ron</div>
-                                    </div>
-                                    <button class="add-to-cart" onclick="addToCart('Sarmale cu Varză Acră', 24, 30)">adaugă</button>
-                                </div>
-                            </div>
-
-                            <div class="menu-card">
-                                <div class="card-image">
-                                    <div class="image-placeholder">🍖</div>
-                                </div>
-                                <div class="card-content">
-                                    <div class="card-title">gulaș de porc</div>
-                                    <div class="card-description">gulaș tradițional de porc cu cartofi</div>
-                                    <div class="card-meta">
-                                        <div class="card-weight">400g</div>
-                                        <div class="card-price">24 ron</div>
-                                    </div>
-                                    <button class="add-to-cart" onclick="addToCart('Gulaș de Porc', 24, 35)">adaugă</button>
-                                </div>
-                            </div>
-
-                            <div class="menu-card">
-                                <div class="card-image">
-                                    <div class="image-placeholder">🍖</div>
-                                </div>
-                                <div class="card-content">
-                                    <div class="card-title">purcel cu varză dulce</div>
-                                    <div class="card-description">carne de purcel cu varză dulce</div>
-                                    <div class="card-meta">
-                                        <div class="card-weight">400g</div>
-                                        <div class="card-price">24 ron</div>
-                                    </div>
-                                    <button class="add-to-cart" onclick="addToCart('Purcel cu Varză Dulce', 24, 30)">adaugă</button>
-                                </div>
-                            </div>
-
-                            <div class="menu-card">
-                                <div class="card-image">
-                                    <div class="image-placeholder">🥩</div>
-                                </div>
-                                <div class="card-content">
-                                    <div class="card-title">chiftele marinate</div>
-                                    <div class="card-description">chiftele în sos de roșii cu condimente</div>
-                                    <div class="card-meta">
-                                        <div class="card-weight">400g</div>
-                                        <div class="card-price">27 ron</div>
-                                    </div>
-                                    <button class="add-to-cart" onclick="addToCart('Chiftele Marinate', 27, 25)">adaugă</button>
-                                </div>
-                            </div>
-
-                            <div class="menu-card">
-                                <div class="card-image">
-                                    <div class="image-placeholder">🌶️</div>
-                                </div>
-                                <div class="card-content">
-                                    <div class="card-title">ardei umpluți</div>
-                                    <div class="card-description">ardei umpluți cu carne și orez</div>
-                                    <div class="card-meta">
-                                        <div class="card-weight">400g</div>
-                                        <div class="card-price">27 ron</div>
-                                    </div>
-                                    <button class="add-to-cart" onclick="addToCart('Ardei Umpluți', 27, 30)">adaugă</button>
-                                </div>
-                            </div>
-
-                            <div class="menu-card">
-                                <div class="card-image">
-                                    <div class="image-placeholder">🫘</div>
-                                </div>
-                                <div class="card-content">
-                                    <div class="card-title">fasole cu ciolan</div>
-                                    <div class="card-description">fasole tradițională cu ciolan afumat</div>
-                                    <div class="card-meta">
-                                        <div class="card-weight">400g</div>
-                                        <div class="card-price">27 ron</div>
-                                    </div>
-                                    <button class="add-to-cart" onclick="addToCart('Fasole cu Ciolan', 27, 35)">adaugă</button>
-                                </div>
-                            </div>
-
-                            <div class="menu-card">
-                                <div class="card-image">
-                                    <div class="image-placeholder">🍗</div>
-                                </div>
-                                <div class="card-content">
-                                    <div class="card-title">pui cu cartofi</div>
-                                    <div class="card-description">pui la cuptor cu cartofi și condimente</div>
-                                    <div class="card-meta">
-                                        <div class="card-weight">400g</div>
-                                        <div class="card-price">27 ron</div>
-                                    </div>
-                                    <button class="add-to-cart" onclick="addToCart('Pui cu Cartofi', 27, 25)">adaugă</button>
-                                </div>
-                            </div>
-
-                            <div class="menu-card">
-                                <div class="card-image">
-                                    <div class="image-placeholder">🍗</div>
-                                </div>
-                                <div class="card-content">
-                                    <div class="card-title">pulpe de pui la tigaie</div>
-                                    <div class="card-description">pulpe de pui la tigaie cu condimente</div>
-                                    <div class="card-meta">
-                                        <div class="card-weight">400g</div>
-                                        <div class="card-price">27 ron</div>
-                                    </div>
-                                    <button class="add-to-cart" onclick="addToCart('Pulpe de Pui la Tigaie', 27, 25)">adaugă</button>
-                                </div>
-                            </div>
-
-                            <div class="menu-card">
-                                <div class="card-image">
-                                    <div class="image-placeholder">🍗</div>
-                                </div>
-                                <div class="card-content">
-                                    <div class="card-title">ciulama de pui</div>
-                                    <div class="card-description">ciulama de pui cu ciuperci și smântână</div>
-                                    <div class="card-meta">
-                                        <div class="card-weight">400g</div>
-                                        <div class="card-price">27 ron</div>
-                                    </div>
-                                    <button class="add-to-cart" onclick="addToCart('Ciulama de Pui', 27, 25)">adaugă</button>
-                                </div>
-                            </div>
-
-                            <div class="menu-card">
-                                <div class="card-image">
-                                    <div class="image-placeholder">🥩</div>
-                                </div>
-                                <div class="card-content">
-                                    <div class="card-title">tochitură</div>
-                                    <div class="card-description">tochitură moldovenească cu mămăliguță</div>
-                                    <div class="card-meta">
-                                        <div class="card-weight">400g</div>
-                                        <div class="card-price">28 ron</div>
-                                    </div>
-                                    <button class="add-to-cart" onclick="addToCart('Tochitură', 28, 30)">adaugă</button>
-                                </div>
-                            </div>
-
-                            <div class="menu-card">
-                                <div class="card-image">
-                                    <div class="image-placeholder">🍗</div>
-                                </div>
-                                <div class="card-content">
-                                    <div class="card-title">ras as four de pui</div>
-                                    <div class="card-description">pui la cuptor în stil libanez</div>
-                                    <div class="card-meta">
-                                        <div class="card-weight">400g</div>
-                                        <div class="card-price">29 ron</div>
-                                    </div>
-                                    <button class="add-to-cart" onclick="addToCart('Ras As Four de Pui', 29, 35)">adaugă</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Garnituri Section -->
-                    <div class="category">
-                        <h2 class="category-title">garnituri</h2>
-                        <div class="menu-grid">
-                            <div class="menu-card">
-                                <div class="card-image">
-                                    <div class="image-placeholder">🥔</div>
-                                </div>
-                                <div class="card-content">
-                                    <div class="card-title">cartofi prăjiți</div>
-                                    <div class="card-description">cartofi proaspeți prăjiți în ulei de floarea soarelui</div>
-                                    <div class="card-meta">
-                                        <div class="card-weight">150g</div>
-                                        <div class="card-price">14 ron</div>
-                                    </div>
-                                    <button class="add-to-cart" onclick="addToCart('Cartofi Prăjiți', 14, 8)">adaugă</button>
-                                </div>
-                            </div>
-
-                            <div class="menu-card">
-                                <div class="card-image">
-                                    <div class="image-placeholder">🥔</div>
-                                </div>
-                                <div class="card-content">
-                                    <div class="card-title">piure de cartofi</div>
-                                    <div class="card-description">piure de cartofi cremos cu lapte și unt</div>
-                                    <div class="card-meta">
-                                        <div class="card-weight">300g</div>
-                                        <div class="card-price">16 ron</div>
-                                    </div>
-                                    <button class="add-to-cart" onclick="addToCart('Piure de Cartofi', 16, 10)">adaugă</button>
-                                </div>
-                            </div>
-
-                            <div class="menu-card">
-                                <div class="card-image">
-                                    <div class="image-placeholder">🍚</div>
-                                </div>
-                                <div class="card-content">
-                                    <div class="card-title">orez libanez</div>
-                                    <div class="card-description">orez, fidea, usturoi, ceapă, unt</div>
-                                    <div class="card-meta">
-                                        <div class="card-weight">300g</div>
-                                        <div class="card-price">18 ron</div>
-                                    </div>
-                                    <button class="add-to-cart" onclick="addToCart('Orez Libanez', 18, 8)">adaugă</button>
-                                </div>
-                            </div>
-
-                            <div class="menu-card">
-                                <div class="card-image">
-                                    <div class="image-placeholder">🥔</div>
-                                </div>
-                                <div class="card-content">
-                                    <div class="card-title">cartofi cu mentă și usturoi</div>
-                                    <div class="card-description">cartofi cu mentă proaspătă și usturoi</div>
-                                    <div class="card-meta">
-                                        <div class="card-weight">250g</div>
-                                        <div class="card-price">18 ron</div>
-                                    </div>
-                                    <button class="add-to-cart" onclick="addToCart('Cartofi cu Mentă și Usturoi', 18, 12)">adaugă</button>
-                                </div>
-                            </div>
-
-                            <div class="menu-card">
-                                <div class="card-image">
-                                    <div class="image-placeholder">🍠</div>
-                                </div>
-                                <div class="card-content">
-                                    <div class="card-title">batata hara</div>
-                                    <div class="card-description">batată libanez cu condimente picante</div>
-                                    <div class="card-meta">
-                                        <div class="card-weight">250g</div>
-                                        <div class="card-price">18 ron</div>
-                                    </div>
-                                    <button class="add-to-cart" onclick="addToCart('Batata Hara', 18, 15)">adaugă</button>
-                                </div>
-                            </div>
-
-                            <div class="menu-card">
-                                <div class="card-image">
-                                    <div class="image-placeholder">🍚</div>
-                                </div>
-                                <div class="card-content">
-                                    <div class="card-title">orez cu legume și stafide</div>
-                                    <div class="card-description">orez cu mix de legume și stafide</div>
-                                    <div class="card-meta">
-                                        <div class="card-weight">300g</div>
-                                        <div class="card-price">20 ron</div>
-                                    </div>
-                                    <button class="add-to-cart" onclick="addToCart('Orez cu Legume și Stafide', 20, 10)">adaugă</button>
-                                </div>
-                            </div>
-
-                            <div class="menu-card">
-                                <div class="card-image">
-                                    <div class="image-placeholder">🍚</div>
-                                </div>
-                                <div class="card-content">
-                                    <div class="card-title">orez cu pui</div>
-                                    <div class="card-description">orez cu bucățele de pui și condimente</div>
-                                    <div class="card-meta">
-                                        <div class="card-weight">300g</div>
-                                        <div class="card-price">23 ron</div>
-                                    </div>
-                                    <button class="add-to-cart" onclick="addToCart('Orez cu Pui', 23, 15)">adaugă</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Desert Section -->
-                    <div class="category">
-                        <h2 class="category-title">deserturi</h2>
-                        <div class="menu-grid">
-                            <div class="menu-card">
-                                <div class="card-image">
-                                    <div class="image-placeholder">🥧</div>
-                                </div>
-                                <div class="card-content">
-                                    <div class="card-title">plăcintă de casă cu mere</div>
-                                    <div class="card-description">plăcintă tradițională cu mere și scorțișoară</div>
-                                    <div class="card-meta">
-                                        <div class="card-weight">250g</div>
-                                        <div class="card-price">16 ron</div>
-                                    </div>
-                                    <button class="add-to-cart" onclick="addToCart('Plăcintă de Casă cu mere', 16, 5)">adaugă</button>
-                                </div>
-                            </div>
-
-                            <div class="menu-card">
-                                <div class="card-image">
-                                    <div class="image-placeholder">🥧</div>
-                                </div>
-                                <div class="card-content">
-                                    <div class="card-title">plăcintă de casă cu brânză</div>
-                                    <div class="card-description">plăcintă tradițională cu brânză dulce</div>
-                                    <div class="card-meta">
-                                        <div class="card-weight">250g</div>
-                                        <div class="card-price">16 ron</div>
-                                    </div>
-                                    <button class="add-to-cart" onclick="addToCart('Plăcintă de Casă cu Brânză', 16, 5)">adaugă</button>
-                                </div>
-                            </div>
-
-                            <div class="menu-card">
-                                <div class="card-image">
-                                    <div class="image-placeholder">🥧</div>
-                                </div>
-                                <div class="card-content">
-                                    <div class="card-title">poale'n brâu</div>
-                                    <div class="card-description">desert tradițional românesc cu brânză</div>
-                                    <div class="card-meta">
-                                        <div class="card-weight">250g</div>
-                                        <div class="card-price">16 ron</div>
-                                    </div>
-                                    <button class="add-to-cart" onclick="addToCart('Poale\'n Brâu', 16, 5)">adaugă</button>
-                                </div>
-                            </div>
-
-                            <div class="menu-card">
-                                <div class="card-image">
-                                    <div class="image-placeholder">🍮</div>
-                                </div>
-                                <div class="card-content">
-                                    <div class="card-title">katayef cu cremă de lapte</div>
-                                    <div class="card-description">desert libanez cu cremă de lapte</div>
-                                    <div class="card-meta">
-                                        <div class="card-weight">250g</div>
-                                        <div class="card-price">19 ron</div>
-                                    </div>
-                                    <button class="add-to-cart" onclick="addToCart('Katayef cu Cremă de Lapte', 19, 8)">adaugă</button>
-                                </div>
-                            </div>
-
-                            <div class="menu-card">
-                                <div class="card-image">
-                                    <div class="image-placeholder">🌰</div>
-                                </div>
-                                <div class="card-content">
-                                    <div class="card-title">katayef cu nucă</div>
-                                    <div class="card-description">desert libanez cu nucă și miere</div>
-                                    <div class="card-meta">
-                                        <div class="card-weight">250g</div>
-                                        <div class="card-price">20 ron</div>
-                                    </div>
-                                    <button class="add-to-cart" onclick="addToCart('Katayef cu Nucă', 20, 8)">adaugă</button>
-                                </div>
-                            </div>
-
-                            <div class="menu-card">
-                                <div class="card-image">
-                                    <div class="image-placeholder">🍰</div>
-                                </div>
-                                <div class="card-content">
-                                    <div class="card-title">halawet bil jibne</div>
-                                    <div class="card-description">desert libanez cu brânză și sirop</div>
-                                    <div class="card-meta">
-                                        <div class="card-weight">250g</div>
-                                        <div class="card-price">23 ron</div>
-                                    </div>
-                                    <button class="add-to-cart" onclick="addToCart('Halawet Bil Jibne', 23, 10)">adaugă</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Băuturi Section -->
-                    <div class="category">
-                        <h2 class="category-title">băuturi</h2>
-                        <div class="menu-grid">
-                            <div class="menu-card">
-                                <div class="card-image">
-                                    <div class="image-placeholder">🥤</div>
-                                </div>
-                                <div class="card-content">
-                                    <div class="card-title">mazagran</div>
-                                    <div class="card-description">băutură răcoritoare cu cafea</div>
-                                    <div class="card-meta">
-                                        <div class="card-weight">250ml</div>
-                                        <div class="card-price">8 ron</div>
-                                    </div>
-                                    <button class="add-to-cart" onclick="addToCart('Mazagran', 8, 3)">adaugă</button>
-                                </div>
-                            </div>
-
-                            <div class="menu-card">
-                                <div class="card-image">
-                                    <div class="image-placeholder">🍋</div>
-                                </div>
-                                <div class="card-content">
-                                    <div class="card-title">limonadă</div>
-                                    <div class="card-description">limonadă proaspătă cu lămâie</div>
-                                    <div class="card-meta">
-                                        <div class="card-weight">250ml</div>
-                                        <div class="card-price">8 ron</div>
-                                    </div>
-                                    <button class="add-to-cart" onclick="addToCart('Limonadă', 8, 3)">adaugă</button>
-                                </div>
-                            </div>
-
-                            <div class="menu-card">
-                                <div class="card-image">
-                                    <div class="image-placeholder">🥛</div>
-                                </div>
-                                <div class="card-content">
-                                    <div class="card-title">ayran</div>
-                                    <div class="card-description">băutură tradițională cu iaurt și sare</div>
-                                    <div class="card-meta">
-                                        <div class="card-weight">250ml</div>
-                                        <div class="card-price">8 ron</div>
-                                    </div>
-                                    <button class="add-to-cart" onclick="addToCart('Ayran', 8, 2)">adaugă</button>
-                                </div>
-                            </div>
-
-                            <div class="menu-card">
-                                <div class="card-image">
-                                    <div class="image-placeholder">☕</div>
-                                </div>
-                                <div class="card-content">
-                                    <div class="card-title">cafea</div>
-                                    <div class="card-description">cafea proaspăt măcinată</div>
-                                    <div class="card-meta">
-                                        <div class="card-weight">80ml</div>
-                                        <div class="card-price">10 ron</div>
-                                    </div>
-                                    <button class="add-to-cart" onclick="addToCart('Cafea', 10, 5)">adaugă</button>
-                                </div>
-                            </div>
-
-                            <div class="menu-card">
-                                <div class="card-image">
-                                    <div class="image-placeholder">🥤</div>
-                                </div>
-                                <div class="card-content">
-                                    <div class="card-title">pepsi doză</div>
-                                    <div class="card-description">pepsi cola în doză</div>
-                                    <div class="card-meta">
-                                        <div class="card-weight">330ml</div>
-                                        <div class="card-price">10 ron</div>
-                                    </div>
-                                    <button class="add-to-cart" onclick="addToCart('Pepsi Doză', 10, 1)">adaugă</button>
-                                </div>
-                            </div>
-
-                            <div class="menu-card">
-                                <div class="card-image">
-                                    <div class="image-placeholder">☕</div>
-                                </div>
-                                <div class="card-content">
-                                    <div class="card-title">cafea cu lapte</div>
-                                    <div class="card-description">cafea cu lapte spumos</div>
-                                    <div class="card-meta">
-                                        <div class="card-weight">120ml</div>
-                                        <div class="card-price">15 ron</div>
-                                    </div>
-                                    <button class="add-to-cart" onclick="addToCart('Cafea cu Lapte', 15, 5)">adaugă</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Info Tab Content -->
-            <div class="tab-content" id="info-content">
-                <div style="background: var(--pure-white); border-radius: 16px; padding: 32px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);">
-                    <h2 class="category-title">informații restaurant</h2>
-                    <h3 style="color: var(--primary-dark); margin-bottom: 20px; font-size: 1.3em;">despre sumac</h3>
-                    <p style="color: var(--text-light); line-height: 1.6; margin-bottom: 24px;">
-                        Sumac este un restaurant libanez autentic, dedicat să vă ofere o experiență culinară de neuitat prin preparate tradiționale și ingrediente proaspete. Ne mândrim cu rețetele noastre tradiționale și atmosfera caldă.
-                    </p>
-                    
-                    <h3 style="color: var(--primary-dark); margin-bottom: 16px; font-size: 1.2em;">informații contact</h3>
-                    <div style="display: grid; gap: 12px;">
-                        <div style="display: flex; align-items: center; color: var(--text-light);">
-                            <span style="margin-right: 12px; font-size: 1.2em;">🕒</span>
-                            <span>L-D: 11:00 - 23:00</span>
-                        </div>
-                        <div style="display: flex; align-items: center; color: var(--text-light);">
-                            <span style="margin-right: 12px; font-size: 1.2em;">📧</span>
-                            <span>contact@sumac.ro</span>
-                        </div>
-                    </div>
-
-                    <h3 style="color: var(--primary-dark); margin: 24px 0 16px; font-size: 1.2em;">cum funcționează</h3>
-                    <div style="color: var(--text-light); line-height: 1.6;">
-                        <p style="margin-bottom: 12px;">1. Adaugă produsele dorite în coș</p>
-                        <p style="margin-bottom: 12px;">2. Verifică comanda și alege metoda de plată</p>
-                        <p style="margin-bottom: 12px;">3. Apasă "Trimite comanda pe WhatsApp"</p>
-                        <p>4. Confirmă comanda direct cu ospătarul</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Cart Sidebar -->
-            <div class="cart-sidebar">
-                <div class="cart-header">
-                    <span style="font-size: 1.2em;">🛒</span>
-                    <h3>comanda ta</h3>
-                </div>
-                
-                <div class="cart-items" id="cartItems">
-                    <div class="empty-cart">coșul este gol</div>
-                </div>
-
-                <!-- Customer Name Section -->
-                <div class="customer-name-section">
-                    <h4>👤 personalizează comanda (opțional)</h4>
-                    <div class="name-input-group">
-                        <input type="text" id="customerName" class="name-input" placeholder="prenumele tău..." maxlength="20">
-                        <button class="skip-name-btn" onclick="clearCustomerName()">sari</button>
-                    </div>
-                    <div class="name-preview" id="namePreview"></div>
-                </div>
-
-                <div class="payment-method">
-                    <h4>modalitate de plată</h4>
-                    <div class="payment-option">
-                        <input type="radio" id="cash" name="payment" value="cash" checked>
-                        <label for="cash">💵 numerar</label>
-                    </div>
-                    <div class="payment-option">
-                        <input type="radio" id="card" name="payment" value="card">
-                        <label for="card">💳 card</label>
-                    </div>
-                </div>
-                
-                <div class="total-amount" id="totalAmount">total: 0 ron</div>
-                <div class="prep-time-total" id="prepTimeTotal">timp estimat: -</div>
-                
-                <button class="checkout-btn" id="checkoutBtn" disabled onclick="sendToWhatsApp()">
-                    <span>📱</span>
-                    <span>trimite comanda pe WhatsApp</span>
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Message Container -->
     <div id="messageContainer"></div>
 
-    <!-- Sticky Bottom Cart Bar (Mobile Only) -->
-    <div class="sticky-cart-bar" id="stickyCartBar">
-        <div class="sticky-cart-info">
-            <span>🛒</span>
-            <div class="cart-badge" id="stickyCartBadge">0</div>
-            <div class="cart-summary" id="stickyCartSummary">coșul este gol</div>
+    <header class="header" id="mainHeader">
+        <div class="header-content">
+            <a href="#" class="logo">
+                <img src="https://assets.website-files.com/64019a0a149c4d2919932145/64019a0a149c4d2621932152_Frame%20163.png" alt="Sumac Logo">
+                Restaurant Sumac
+            </a>
+            <div class="contact-info">
+                <a href="tel:+40748123456">
+                    <svg class="icon icon-phone" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.47.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+                    0748 123 456
+                </a>
+                <a href="https://wa.me/40748123456" target="_blank">
+                    <svg class="icon icon-whatsapp" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.016 16.035c-.156.402-.602.488-1.002.308-.4-.18-.87-.36-1.332-.508-.43-.134-.906-.214-1.396-.214-.62 0-1.07.134-1.504.308-.434.174-.75.402-1.002.668-.252.266-.412.48-.508.64-.096.16-.212.274-.342.342-.128.068-.276.082-.44.04-.162-.04-.306-.15-.436-.32-.128-.168-.216-.388-.264-.66-.046-.27-.08-.54-.08-.81s.004-.542.008-.812c.004-.27.008-.54.008-.81s-.044-.542-.116-.812c-.07-.27-.198-.54-.38-.81-.182-.27-.412-.5-.69-.69-.278-.19-.594-.316-.952-.384-.36-.066-.694-.09-1.004-.07-.31.02-.594.094-.852.218-.258.124-.48.3-.66.52-.18.22-.304.45-.372.69s-.11.458-.11.69c0 .232.062.474.186.722.124.248.31.52.558.814.248.294.55.614.906.96.356.348.77.74 1.242 1.176.474.434.978.892 1.512 1.374.534.482 1.072.934 1.614 1.35.542.416 1.07.784 1.584 1.104.514.318.99.566 1.43.74.44.172.83.258 1.17.258.34 0 .622-.054.846-.162.224-.108.406-.26.546-.456.14-.196.254-.42.342-.672.086-.25.14-.498.164-.744.024-.246.036-.492.036-.738s-.012-.492-.036-.738c-.024-.246-.078-.494-.164-.744-.088-.25-.202-.474-.342-.672-.14-.196-.322-.348-.546-.456-.224-.108-.506-.162-.846-.162z"/></svg>
+                    WhatsApp
+                </a>
+            </div>
         </div>
-        <button class="view-cart-btn" onclick="openMobileCart()">Vezi coșul</button>
+        <div class="nav-tabs-wrapper">
+            <div class="nav-tabs" id="categoryTabs">
+                </div>
+            <button class="scroll-button left hidden" id="scrollLeft"><svg class="icon icon-arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6z"/></svg></button>
+            <button class="scroll-button right hidden" id="scrollRight"><svg class="icon icon-arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12l-4.58-4.59L10 6l6 6-6 6z"/></svg></button>
+        </div>
+    </header>
+
+    <main class="container" id="mainContent">
+        </main>
+
+    <div class="mini-cart" id="miniCart">
+        <div class="mini-cart-info">
+            <span class="item-count">0 produse</span>
+            <span class="total-price">0.00 lei</span>
+        </div>
+        <div class="mini-cart-message" id="miniCartMessage">Personalizează comanda...</div>
+        <button class="mini-cart-button" onclick="showCartSection()">
+            Vezi coșul
+            <svg class="icon icon-cart" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2zm-1.75-2l.01-1.49c0-.28-.22-.51-.5-.51H8.72c-.28 0-.5.23-.5.51L8.25 16H6.54c-.98 0-1.81-.66-1.98-1.63L3.13 6.03C3.04 5.51 3.42 5 3.96 5H21c.55 0 1 .45 1 1s-.45 1-1 1H6.26l1.37 7.01c.08.4.45.69.86.69H16.25zM17 9H9V7h8v2z"/></svg>
+            <span id="miniCartBadge" class="icon-cart-badge">0</span>
+        </button>
     </div>
 
-    <!-- Mobile Cart Modal -->
-    <div class="mobile-cart-modal" id="mobileCartModal">
-        <div class="mobile-cart-content">
-            <div class="mobile-cart-header">
-                <h3>🛒 Comanda ta</h3>
-                <button class="close-modal-btn" onclick="closeMobileCart()">×</button>
-            </div>
-            
-            <div class="cart-items" id="mobileCartItems">
-                <div class="empty-cart">coșul este gol</div>
-            </div>
+    <div id="adminPanel" style="display: none;">
+        <h1>Admin Panou Meniu</h1>
 
-            <!-- Customer Name Section (Mobile) -->
-            <div class="customer-name-section">
-                <h4>👤 personalizează comanda (opțional)</h4>
-                <div class="name-input-group">
-                    <input type="text" id="mobileCustomerName" class="name-input" placeholder="prenumele tău..." maxlength="20">
-                    <button class="skip-name-btn" onclick="clearMobileCustomerName()">sari</button>
-                </div>
-                <div class="name-preview" id="mobileNamePreview"></div>
+        <div class="admin-section">
+            <h2>Categorii</h2>
+            <div class="admin-controls">
+                <input type="text" id="newCategoryName" placeholder="Nume Categorie" onkeypress="handleCategoryInput(event)">
+                <button onclick="addCategory()" class="add">Adaugă Categorie</button>
             </div>
+            <div class="list-container" id="categoryList">
+                </div>
+        </div>
 
-            <div class="payment-method">
-                <h4>modalitate de plată</h4>
-                <div class="payment-option">
-                    <input type="radio" id="mobileCash" name="mobilePayment" value="cash" checked>
-                    <label for="mobileCash">💵 numerar</label>
-                </div>
-                <div class="payment-option">
-                    <input type="radio" id="mobileCard" name="mobilePayment" value="card">
-                    <label for="mobileCard">💳 card</label>
-                </div>
+        <div class="admin-section">
+            <h2>Produse</h2>
+            <div class="admin-controls">
+                <button onclick="addProduct()" class="add">Adaugă Produs Nou</button>
             </div>
-            
-            <div class="total-amount" id="mobileTotal">total: 0 ron</div>
-            <div class="prep-time-total" id="mobilePrepTime">timp estimat: -</div>
-            
-            <button class="checkout-btn" id="mobileCheckoutBtn" disabled onclick="sendToWhatsAppFromMobile()">
-                <span>📱</span>
-                <span>trimite comanda pe WhatsApp</span>
-            </button>
+            <div class="product-editor-grid" id="productList">
+                </div>
+        </div>
+
+        <div class="admin-section">
+            <h2>Gestionează Date</h2>
+            <div class="admin-controls">
+                <button onclick="copyToClipboard()">Copiază JSON în Clipboard</button>
+                <button onclick="downloadJSON()">Descarcă JSON (menu-data.js)</button>
+                <button onclick="clearAll()" class="danger">Șterge Tot Meniul</button>
+            </div>
+            <pre id="jsonOutput"></pre>
+        </div>
+
+        <div class="admin-section">
+            <h2>Instrucțiuni</h2>
+            <p><strong>1. Editează Meniul:</strong> Adaugă, editează sau șterge categorii și produse folosind formularele de mai sus.</p>
+            <p><strong>2. Copiază Codul:</strong> După ce ai terminat de editat, apasă "Copiază JSON în Clipboard". Acest cod conține structura actualizată a meniului tău.</p>
+            <p><strong>3. Actualizează `menuData`:</strong> În fișierul HTML principal (`index.html`), caută linia `const menuData = { ... };`. **Înlocuiește întregul conținut al acestei variabile** cu ce ai copiat din clipboard. Apoi salvează fișierul.</p>
+            <p><strong>4. Publică:</strong> Încarcă noul fișier `index.html` (cu datele actualizate) pe serverul tău web sau pe GitHub Pages. Meniul tău public va fi acum la zi!</p>
         </div>
     </div>
+
+    <footer class="footer">
+        © 2024 Restaurant Sumac. Toate drepturile rezervate.
+    </footer>
 
     <script>
-        // Global variables
-        let cart = {};
-        let total = 0;
-        let maxPrepTime = 0;
-        let tableNumber = '?';
-        let customerName = '';
+        // --- DATA SECTION ---
+        // Acest obiect `menuData` conține toate categoriile și produsele tale.
+        // Când editezi meniul prin panoul de administrare, vei copia și actualiza acest bloc.
+        let menuData = {
+            categories: [
+                { id: 'cat1', name: 'STARTERE' },
+                { id: 'cat2', name: 'SALATE' },
+                { id: 'cat3', name: 'SUPE & CIORBE' },
+                { id: 'cat4', name: 'FELURI PRINCIPALE' },
+                { id: 'cat5', name: 'GARNITURI' },
+                { id: 'cat6', name: 'SOSURI & EXTRA' },
+                { id: 'cat7', name: 'DESERT' },
+                { id: 'cat8', name: 'BĂUTURI' }
+            ],
+            products: [
+                { id: 'prod1', categoryId: 'cat1', name: 'Khatchapuri cu ou', description: '220g', price: 17 },
+                { id: 'prod2', categoryId: 'cat1', name: 'Hummus', description: '240g', price: 22 },
+                { id: 'prod3', categoryId: 'cat1', name: 'Hummus Beirut', description: '240g', price: 22 },
+                { id: 'prod4', categoryId: 'cat1', name: 'Salată de vinete', description: '240g', price: 24 },
+                { id: 'prod5', categoryId: 'cat1', name: 'Baba Ganoush', description: '240g', price: 25 },
+                { id: 'prod6', categoryId: 'cat1', name: 'Yalangi', description: '240g', price: 27 },
+                { id: 'prod7', categoryId: 'cat1', name: 'Moutabal de vinete', description: '240g', price: 27 },
+                { id: 'prod8', categoryId: 'cat1', name: 'Muhammarah', description: '240g', price: 28 },
+                { id: 'prod9', categoryId: 'cat1', name: 'Hummus cu carne', description: '270g', price: 30 },
 
-        // Initialize on page load
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('🚀 Initializing page...');
-            detectTableNumber();
-            updateCart();
-            setupNameInputs();
+                { id: 'prod10', categoryId: 'cat2', name: 'Salată coleslaw', description: '300g', price: 15 },
+                { id: 'prod11', categoryId: 'cat2', name: 'Salată ușoară', description: '300g', price: 21 },
+                { id: 'prod12', categoryId: 'cat2', name: 'Salată armenească', description: '300g', price: 22 },
+                { id: 'prod13', categoryId: 'cat2', name: 'Salată fattoush', description: '300g', price: 24 },
+                { id: 'prod14', categoryId: 'cat2', name: 'Salată grecească', description: '300g', price: 26 },
+                { id: 'prod15', categoryId: 'cat2', name: 'Salată tabbouleh', description: '250g', price: 30 },
+                { id: 'prod16', categoryId: 'cat2', name: 'Salată ciobăniță', description: '300g', price: 32 },
+                { id: 'prod17', categoryId: 'cat2', name: 'Salată Caesar cu pui', description: '300g', price: 33 },
+
+                { id: 'prod18', categoryId: 'cat3', name: 'Supă de pui cu tăiței', description: '300g', price: 17 },
+                { id: 'prod19', categoryId: 'cat3', name: 'Supă de pui cu tăiței (mare)', description: '500g', price: 28 },
+                { id: 'prod20', categoryId: 'cat3', name: 'Supă de pui cu găluște', description: '300g', price: 17 },
+                { id: 'prod21', categoryId: 'cat3', name: 'Supă de pui cu găluște (mare)', description: '500g', price: 28 },
+                { id: 'prod22', categoryId: 'cat3', name: 'Ciorbă de burtă', description: '300g', price: 25 },
+                { id: 'prod23', categoryId: 'cat3', name: 'Ciorbă de burtă (mare)', description: '500g', price: 40 },
+
+                { id: 'prod24', categoryId: 'cat4', name: 'Mâncare de mazăre cu pui', description: '400g', price: 24 },
+                { id: 'prod25', categoryId: 'cat4', name: 'Chiftele marinate', description: '400g', price: 27 },
+                { id: 'prod26', categoryId: 'cat4', name: 'Ardei umpluți', description: '400g', price: 27 },
+                { id: 'prod27', categoryId: 'cat4', name: 'Fasole cu ciolan', description: '400g', price: 27 },
+                { id: 'prod28', categoryId: 'cat4', name: 'Pui cu cartofi', description: '400g', price: 27 },
+                { id: 'prod29', categoryId: 'cat4', name: 'Pulpe de pui la tigaie', description: '400g', price: 27 },
+                { id: 'prod30', categoryId: 'cat4', name: 'Ciulama de pui', description: '400g', price: 27 },
+                { id: 'prod31', categoryId: 'cat4', name: 'Tochitură', description: '400g', price: 28 },
+                { id: 'prod32', categoryId: 'cat4', name: 'Ras as four de pui', description: '400g', price: 29 },
+
+                { id: 'prod33', categoryId: 'cat5', name: 'Cartofi prăjiți', description: '150g', price: 14 },
+                { id: 'prod34', categoryId: 'cat5', name: 'Piure de cartofi', description: '300g', price: 16 },
+                { id: 'prod35', categoryId: 'cat5', name: 'Orez libanez', description: '300g', price: 18 },
+                { id: 'prod36', categoryId: 'cat5', name: 'Cartofi cu mentă și usturoi', description: '250g', price: 18 },
+                { id: 'prod37', categoryId: 'cat5', name: 'Batata Hara', description: '250g', price: 18 },
+                { id: 'prod38', categoryId: 'cat5', name: 'Orez cu legume și stafide', description: '300g', price: 20 },
+                { id: 'prod39', categoryId: 'cat5', name: 'Orez cu pui', description: '300g', price: 23 },
+
+                { id: 'prod40', categoryId: 'cat6', name: 'Mămăligă', description: '150g', price: 3 },
+                { id: 'prod41', categoryId: 'cat6', name: 'Chiflă', description: '80g', price: 3 },
+                { id: 'prod42', categoryId: 'cat6', name: 'Ardei iute verde', description: 'buc', price: 3 },
+                { id: 'prod43', categoryId: 'cat6', name: 'Ardei iute murat', description: 'buc', price: 3 },
+                { id: 'prod44', categoryId: 'cat6', name: 'Lămâie', description: '70g', price: 3 },
+                { id: 'prod45', categoryId: 'cat6', name: 'Pâine libaneză', description: '60g', price: 4 },
+                { id: 'prod46', categoryId: 'cat6', name: 'Usturoi', description: '50g', price: 5 },
+                { id: 'prod47', categoryId: 'cat6', name: 'Maioneză', description: '50g', price: 5 },
+                { id: 'prod48', categoryId: 'cat6', name: 'Ketchup', description: '50g', price: 5 },
+                { id: 'prod49', categoryId: 'cat6', name: 'Sos de rodie', description: '50g', price: 7 },
+                { id: 'prod50', categoryId: 'cat6', name: 'Sos de usturoi', description: '50g', price: 7 },
+                { id: 'prod51', categoryId: 'cat6', name: 'Sos de roșii', description: '50g', price: 7 },
+                { id: 'prod52', categoryId: 'cat6', name: 'Lipie', description: 'buc', price: 7 },
+                { id: 'prod53', categoryId: 'cat6', name: 'Extra Ciabatta', description: 'buc', price: 9 },
+
+                { id: 'prod54', categoryId: 'cat7', name: 'Cheesecake', description: '200g', price: 22 },
+                { id: 'prod55', categoryId: 'cat7', name: 'Tiramisu', description: '200g', price: 22 },
+                { id: 'prod56', categoryId: 'cat7', name: 'Baklava', description: '200g', price: 24 },
+                { id: 'prod57', categoryId: 'cat7', name: 'Knafeh', description: '250g', price: 26 },
+
+                { id: 'prod58', categoryId: 'cat8', name: 'Coca-Cola', description: '330ml', price: 9 },
+                { id: 'prod59', categoryId: 'cat8', name: 'Fanta', description: '330ml', price: 9 },
+                { id: 'prod60', categoryId: 'cat8', name: 'Sprite', description: '330ml', price: 9 },
+                { id: 'prod61', categoryId: 'cat8', name: 'Apă Minerală', description: '500ml', price: 7 },
+                { id: 'prod62', categoryId: 'cat8', name: 'Apă Plată', description: '500ml', price: 7 },
+                { id: 'prod63', categoryId: 'cat8', name: 'Bere Ciuc', description: '500ml', price: 10 },
+                { id: 'prod64', categoryId: 'cat8', name: 'Bere Timișoreana', description: '500ml', price: 10 }
+            ]
+        };
+
+        // --- GLOBAL VARIABLES ---
+        let currentCart = JSON.parse(localStorage.getItem('cart')) || [];
+        let editingProductId = null; // Used in admin panel
+
+        // --- INITIALIZATION ---
+        document.addEventListener('DOMContentLoaded', () => {
+            // Check for admin mode using URL hash
+            const hash = window.location.hash;
+            if (hash === '#admin') {
+                enterAdminMode();
+            } else {
+                renderMenu();
+                updateMiniCart(); // Initialize mini-cart state
+                window.addEventListener('scroll', toggleHeaderShadow);
+                document.getElementById('categoryTabs').addEventListener('scroll', checkScrollButtons);
+                checkScrollButtons(); // Initial check
+            }
         });
 
-        // Setup customer name inputs
-        function setupNameInputs() {
-            const desktopInput = document.getElementById('customerName');
-            const mobileInput = document.getElementById('mobileCustomerName');
-            
-            // Sync between desktop and mobile inputs
-            desktopInput.addEventListener('input', function() {
-                customerName = this.value.trim();
-                mobileInput.value = this.value;
-                updateNamePreview();
+        // --- UI FUNCTIONS ---
+
+        // Toggle header shadow on scroll
+        function toggleHeaderShadow() {
+            const header = document.getElementById('mainHeader');
+            if (window.scrollY > 0) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        }
+
+        // Render Menu (Public View)
+        function renderMenu() {
+            const mainContent = document.getElementById('mainContent');
+            mainContent.innerHTML = ''; // Clear previous content
+
+            const categoryTabsContainer = document.getElementById('categoryTabs');
+            categoryTabsContainer.innerHTML = ''; // Clear existing tabs
+
+            // Render category tabs
+            menuData.categories.forEach((category, index) => {
+                const tab = document.createElement('div');
+                tab.className = 'nav-tab';
+                tab.id = `tab-${category.id}`;
+                tab.textContent = category.name;
+                tab.onclick = () => showCategory(category.id);
+                categoryTabsContainer.appendChild(tab);
             });
-            
-            mobileInput.addEventListener('input', function() {
-                customerName = this.value.trim();
-                desktopInput.value = this.value;
-                updateNamePreview();
-            });
-        }
 
-        function updateNamePreview() {
-            const desktopPreview = document.getElementById('namePreview');
-            const mobilePreview = document.getElementById('mobileNamePreview');
-            
-            if (customerName) {
-                const previewText = `✓ Comanda pentru ${customerName} de la masa ${tableNumber}`;
-                desktopPreview.textContent = previewText;
-                mobilePreview.textContent = previewText;
-                desktopPreview.style.display = 'block';
-                mobilePreview.style.display = 'block';
-            } else {
-                desktopPreview.style.display = 'none';
-                mobilePreview.style.display = 'none';
-            }
-        }
+            // Render category sections and products
+            menuData.categories.forEach(category => {
+                const categorySection = document.createElement('section');
+                categorySection.id = `${category.id}-content`;
+                categorySection.className = 'tab-content container menu-section';
 
-        function clearCustomerName() {
-            customerName = '';
-            document.getElementById('customerName').value = '';
-            document.getElementById('mobileCustomerName').value = '';
-            updateNamePreview();
-        }
+                const title = document.createElement('h2');
+                title.className = 'category-title';
+                title.textContent = category.name;
+                categorySection.appendChild(title);
 
-        function clearMobileCustomerName() {
-            clearCustomerName();
-        }
+                const productGrid = document.createElement('div');
+                productGrid.className = 'product-grid';
 
-        // Detect table number from URL
-        function detectTableNumber() {
-            const params = new URLSearchParams(window.location.search);
-            const masa = params.get('masa');
-            const table = params.get('table');
-            
-            console.log('🔍 URL search params:', window.location.search);
-            console.log('🏷️ Masa param:', masa);
-            console.log('🏷️ Table param:', table);
-            
-            if (masa) {
-                tableNumber = masa;
-            } else if (table) {
-                tableNumber = table;
-            } else {
-                tableNumber = '?';
-            }
-            
-            document.getElementById('tableInfo').textContent = `masa ${tableNumber}`;
-            console.log('✅ Final table number:', tableNumber);
-        }
-
-        // Cart functionality
-        function addToCart(itemName, price, prepTime) {
-            console.log('➕ Adding to cart:', itemName, price, prepTime);
-            
-            if (cart[itemName]) {
-                cart[itemName].quantity += 1;
-            } else {
-                cart[itemName] = {
-                    price: price,
-                    quantity: 1,
-                    prepTime: prepTime || 0
-                };
-            }
-            updateCart();
-            showMessage(`${itemName} adăugat în coș!`, 'success');
-        }
-
-        function updateQuantity(itemName, change) {
-            console.log('🔄 Updating quantity:', itemName, change);
-            
-            if (cart[itemName]) {
-                cart[itemName].quantity += change;
-                if (cart[itemName].quantity <= 0) {
-                    delete cart[itemName];
-                    showMessage(`${itemName} eliminat din coș!`, 'success');
-                }
-                updateCart();
-            }
-        }
-
-        function updateCart() {
-            console.log('🛒 Updating cart display...');
-            
-            const cartItems = document.getElementById('cartItems');
-            const totalAmount = document.getElementById('totalAmount');
-            const prepTimeTotal = document.getElementById('prepTimeTotal');
-            const checkoutBtn = document.getElementById('checkoutBtn');
-            
-            // Mobile elements
-            const stickyCartBar = document.getElementById('stickyCartBar');
-            const stickyCartBadge = document.getElementById('stickyCartBadge');
-            const stickyCartSummary = document.getElementById('stickyCartSummary');
-            const mobileCartItems = document.getElementById('mobileCartItems');
-            const mobileTotal = document.getElementById('mobileTotal');
-            const mobilePrepTime = document.getElementById('mobilePrepTime');
-            const mobileCheckoutBtn = document.getElementById('mobileCheckoutBtn');
-            
-            const itemCount = Object.keys(cart).length;
-            const totalItems = Object.values(cart).reduce((sum, item) => sum + item.quantity, 0);
-            
-            if (itemCount === 0) {
-                // Desktop cart
-                cartItems.innerHTML = '<div class="empty-cart">coșul este gol</div>';
-                total = 0;
-                maxPrepTime = 0;
-                checkoutBtn.disabled = true;
-                
-                // Mobile cart
-                stickyCartBar.classList.remove('show');
-                document.body.classList.remove('has-sticky-cart');
-                mobileCartItems.innerHTML = '<div class="empty-cart">coșul este gol</div>';
-                mobileCheckoutBtn.disabled = true;
-                
-                console.log('🛒 Cart is empty');
-            } else {
-                let cartHTML = '';
-                total = 0;
-                maxPrepTime = 0;
-                
-                for (const [itemName, item] of Object.entries(cart)) {
-                    const itemTotal = item.price * item.quantity;
-                    total += itemTotal;
-                    if (item.prepTime && item.prepTime > maxPrepTime) {
-                        maxPrepTime = item.prepTime;
-                    }
-                    
-                    const cartItemHTML = `
-                        <div class="cart-item">
-                            <div class="item-details">
-                                <div class="item-name">${itemName}</div>
-                                <div class="quantity-controls">
-                                    <button class="qty-btn" onclick="updateQuantity('${itemName}', -1)">-</button>
-                                    <span class="quantity">${item.quantity}</span>
-                                    <button class="qty-btn" onclick="updateQuantity('${itemName}', 1)">+</button>
+                const productsInCategory = menuData.products.filter(p => p.categoryId === category.id);
+                if (productsInCategory.length === 0) {
+                    const noProductsMessage = document.createElement('p');
+                    noProductsMessage.textContent = "Nu sunt produse în această categorie.";
+                    noProductsMessage.style.textAlign = 'center';
+                    noProductsMessage.style.color = 'var(--text-light)';
+                    productGrid.appendChild(noProductsMessage);
+                } else {
+                    productsInCategory.forEach(product => {
+                        const productCard = document.createElement('div');
+                        productCard.className = 'product-card';
+                        productCard.innerHTML = `
+                            ${product.imageUrl ? `<img src="${product.imageUrl}" alt="${product.name}" class="product-image">` : '<img src="https://via.placeholder.com/400x180?text=Imagine+Produs" alt="Placeholder" class="product-image">'}
+                            <div class="product-info">
+                                <h3 class="product-name">${product.name}</h3>
+                                <p class="product-description">${product.description || ''}</p>
+                                <div class="product-meta">
+                                    <span class="product-price">${product.price.toFixed(2)} lei</span>
+                                    <button class="add-to-cart-btn" onclick="addToCart('${product.id}')">Adaugă</button>
                                 </div>
                             </div>
-                            <div class="item-price">${itemTotal} ron</div>
-                        </div>
-                    `;
-                    cartHTML += cartItemHTML;
+                        `;
+                        productGrid.appendChild(productCard);
+                    });
                 }
-                
-                // Desktop cart
-                cartItems.innerHTML = cartHTML;
-                checkoutBtn.disabled = false;
-                
-                // Mobile cart
-                mobileCartItems.innerHTML = cartHTML;
-                mobileCheckoutBtn.disabled = false;
-                
-                // Sticky bar
-                stickyCartBadge.textContent = totalItems;
-                stickyCartSummary.textContent = `${totalItems} ${totalItems === 1 ? 'produs' : 'produse'} - ${total} ron`;
-                
-                // Show sticky bar on mobile
-                if (window.innerWidth <= 768) {
-                    stickyCartBar.classList.add('show');
-                    document.body.classList.add('has-sticky-cart');
-                }
-                
-                console.log('🛒 Cart updated:', itemCount, 'items, total:', total);
+                categorySection.appendChild(productGrid);
+                mainContent.appendChild(categorySection);
+            });
+
+            // Create cart section (always present)
+            const cartSection = document.createElement('section');
+            cartSection.id = 'cartSection';
+            cartSection.className = 'container cart-section';
+            cartSection.innerHTML = `
+                <h2>Coșul tău</h2>
+                <ul class="cart-items" id="cartItemsList">
+                    </ul>
+                <p id="emptyCartMessage" class="empty-cart-message" style="display: none;">Coșul este gol. Adaugă produse pentru a începe o comandă!</p>
+                <div class="cart-summary">
+                    <span>Total:</span>
+                    <span id="cartTotal">0.00 lei</span>
+                </div>
+                <a href="#" class="checkout-btn" id="checkoutButton">Trimite Comanda pe WhatsApp</a>
+            `;
+            mainContent.appendChild(cartSection);
+
+            // Activate the first category or the one specified in URL hash
+            const initialCategory = window.location.hash.substring(1).split('-content')[0];
+            if (initialCategory && menuData.categories.some(cat => cat.id === initialCategory)) {
+                showCategory(initialCategory);
+            } else if (menuData.categories.length > 0) {
+                showCategory(menuData.categories[0].id);
             }
-            
-            const totalText = `total: ${total} ron`;
-            const timeText = maxPrepTime > 0 ? `timp estimat: ${maxPrepTime} min` : 'timp estimat: -';
-            
-            // Update all displays
-            totalAmount.textContent = totalText;
-            prepTimeTotal.textContent = timeText;
-            mobileTotal.textContent = totalText;
-            mobilePrepTime.textContent = timeText;
+
+            setupCategoryScrollButtons();
+            updateCartDisplay(); // Update cart display after rendering menu
         }
 
-        // Mobile cart functions
-        function openMobileCart() {
-            document.getElementById('mobileCartModal').classList.add('show');
-            document.getElementById('mobileCartModal').style.display = 'flex';
-        }
-
-        function closeMobileCart() {
-            const modal = document.getElementById('mobileCartModal');
-            modal.classList.remove('show');
-            setTimeout(() => {
-                modal.style.display = 'none';
-            }, 300);
-        }
-
-        function sendToWhatsAppFromMobile() {
-            // Sync mobile payment method with desktop
-            const mobilePayment = document.querySelector('input[name="mobilePayment"]:checked').value;
-            document.querySelector(`input[name="payment"][value="${mobilePayment}"]`).checked = true;
-            
-            // Sync customer name
-            const mobileCustomerName = document.getElementById('mobileCustomerName').value.trim();
-            customerName = mobileCustomerName;
-            document.getElementById('customerName').value = mobileCustomerName;
-            updateNamePreview();
-            
-            // Call the main WhatsApp function
-            sendToWhatsApp();
-            
-            // Close mobile cart
-            closeMobileCart();
-        }
-
-        // Handle window resize
-        window.addEventListener('resize', function() {
-            const stickyCartBar = document.getElementById('stickyCartBar');
-            
-            if (window.innerWidth > 768) {
-                // Desktop - hide sticky bar
-                stickyCartBar.classList.remove('show');
-                document.body.classList.remove('has-sticky-cart');
-                closeMobileCart();
-            } else if (Object.keys(cart).length > 0) {
-                // Mobile with items - show sticky bar
-                stickyCartBar.classList.add('show');
-                document.body.classList.add('has-sticky-cart');
-            }
-        });
-
-        // Close mobile cart when clicking outside
-        document.getElementById('mobileCartModal').addEventListener('click', function(e) {
-            if (e.target === this) {
-                closeMobileCart();
-            }
-        });
-
-        function sendToWhatsApp() {
-            console.log('📱 Sending to WhatsApp...');
-            console.log('🛒 Current cart:', cart);
-            console.log('🏷️ Table number:', tableNumber);
-            console.log('👤 Customer name:', customerName);
-            
-            if (Object.keys(cart).length === 0) {
-                showMessage('Coșul este gol! Adaugă produse pentru a comanda.', 'error');
-                return;
-            }
-            
-            const paymentMethod = document.querySelector('input[name="payment"]:checked').value;
-            const paymentText = paymentMethod === 'cash' ? 'numerar' : 'card';
-            
-            // Create order message
-            let message = `🍽️ *COMANDĂ NOUĂ*\n\n`;
-            
-            // Add customer info
-            if (customerName) {
-                message += `👤 *Client:* ${customerName}\n`;
-                message += `📍 *Masa:* ${tableNumber}\n`;
-            } else {
-                message += `📍 *Masa:* ${tableNumber}\n`;
-            }
-            
-            message += `💳 *Plată:* ${paymentText}\n`;
-            message += `⏰ *Timp estimat:* ${maxPrepTime} min\n\n`;
-            message += `📝 *Comandă:*\n`;
-            
-            for (const [itemName, item] of Object.entries(cart)) {
-                const itemTotal = item.price * item.quantity;
-                message += `• ${item.quantity}x ${itemName} - ${itemTotal} ron\n`;
-            }
-            
-            message += `\n💰 *TOTAL: ${total} ron*\n\n`;
-            message += `🕒 Comandă plasată la: ${new Date().toLocaleTimeString('ro-RO')}`;
-            
-            console.log('📝 WhatsApp message:', message);
-            
-            // WhatsApp phone number
-            const phoneNumber = '40766362943';
-            const encodedMessage = encodeURIComponent(message);
-            const whatsappURL = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
-            
-            console.log('🔗 WhatsApp URL:', whatsappURL);
-            
-            try {
-                // Open WhatsApp
-                const newWindow = window.open(whatsappURL, '_blank');
-                
-                if (newWindow) {
-                    console.log('✅ WhatsApp opened successfully');
-                    const successMessage = customerName ? 
-                        `Comanda pentru ${customerName} trimisă pe WhatsApp! Vă va contacta ospătarul pentru confirmare.` :
-                        'Comanda trimisă pe WhatsApp! Vă va contacta ospătarul pentru confirmare.';
-                    showMessage(successMessage, 'success');
-                    
-                    // Clear cart after delay
-                    setTimeout(() => {
-                        cart = {};
-                        customerName = '';
-                        clearCustomerName();
-                        updateCart();
-                        console.log('🧹 Cart and customer info cleared');
-                    }, 3000);
-                } else {
-                    console.log('❌ Failed to open WhatsApp window');
-                    showMessage('Nu s-a putut deschide WhatsApp. Verificați dacă aveți blocat popup-urile.', 'error');
-                }
-                
-            } catch (error) {
-                console.error('❌ Error opening WhatsApp:', error);
-                showMessage('Eroare la deschiderea WhatsApp. Încercați din nou.', 'error');
-            }
-        }
-
-        // Tab functionality
-        function switchTab(tabName) {
-            console.log('🔄 Switching to tab:', tabName);
-            
-            // Remove active class from all tabs and content
+        // Show specific category content
+        function showCategory(categoryId) {
+            // Remove active classes from all tabs and content
             document.querySelectorAll('.nav-tab').forEach(tab => tab.classList.remove('active'));
             document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
-            
+
             // Add active class to clicked tab
-            event.target.classList.add('active');
-            
+            const activeTab = document.getElementById(`tab-${categoryId}`);
+            if (activeTab) {
+                activeTab.classList.add('active');
+                // Scroll tab into view if needed
+                activeTab.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+            }
+
             // Show corresponding content
-            document.getElementById(tabName + '-content').classList.add('active');
+            const activeContent = document.getElementById(`${categoryId}-content`);
+            if (activeContent) {
+                activeContent.classList.add('active');
+            }
+
+            // Update URL hash (only for public view)
+            if (window.location.hash !== '#admin') {
+                window.location.hash = categoryId;
+            }
         }
 
-        // Message functionality
+        // Scroll category tabs
+        function setupCategoryScrollButtons() {
+            const navTabs = document.getElementById('categoryTabs');
+            const scrollLeftBtn = document.getElementById('scrollLeft');
+            const scrollRightBtn = document.getElementById('scrollRight');
+
+            if (!navTabs || !scrollLeftBtn || !scrollRightBtn) return;
+
+            const scrollAmount = 200; // Pixels to scroll
+
+            scrollLeftBtn.onclick = () => {
+                navTabs.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+            };
+            scrollRightBtn.onclick = () => {
+                navTabs.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+            };
+
+            navTabs.addEventListener('scroll', checkScrollButtons);
+            window.addEventListener('resize', checkScrollButtons); // Re-check on resize
+            checkScrollButtons(); // Initial check
+        }
+
+        function checkScrollButtons() {
+            const navTabs = document.getElementById('categoryTabs');
+            const scrollLeftBtn = document.getElementById('scrollLeft');
+            const scrollRightBtn = document.getElementById('scrollRight');
+
+            if (!navTabs || !scrollLeftBtn || !scrollRightBtn) return;
+
+            // Check if scroll buttons are even needed
+            if (navTabs.scrollWidth <= navTabs.clientWidth) {
+                scrollLeftBtn.classList.add('hidden');
+                scrollRightBtn.classList.add('hidden');
+                return;
+            }
+
+            // Show/hide based on scroll position
+            scrollLeftBtn.classList.toggle('hidden', navTabs.scrollLeft === 0);
+            scrollRightBtn.classList.toggle('hidden', navTabs.scrollLeft + navTabs.clientWidth >= navTabs.scrollWidth -1 ); /* -1 for minor precision issues */
+        }
+
+        // --- CART FUNCTIONS ---
+
+        function addToCart(productId) {
+            const product = menuData.products.find(p => p.id === productId);
+            if (!product) {
+                showMessage('Produsul nu a fost găsit.', 'error');
+                return;
+            }
+
+            const existingItem = currentCart.find(item => item.id === productId);
+            if (existingItem) {
+                existingItem.quantity++;
+            } else {
+                currentCart.push({
+                    id: product.id,
+                    name: product.name,
+                    price: product.price,
+                    quantity: 1
+                });
+            }
+            saveCart();
+            updateCartDisplay();
+            updateMiniCart();
+            showMessage(`"${product.name}" adăugat în coș!`, 'success');
+        }
+
+        function removeFromCart(productId) {
+            currentCart = currentCart.filter(item => item.id !== productId);
+            saveCart();
+            updateCartDisplay();
+            updateMiniCart();
+            showMessage('Produs eliminat din coș.', 'info');
+        }
+
+        function updateQuantity(productId, change) {
+            const item = currentCart.find(item => item.id === productId);
+            if (item) {
+                item.quantity += change;
+                if (item.quantity <= 0) {
+                    removeFromCart(productId);
+                } else {
+                    saveCart();
+                    updateCartDisplay();
+                    updateMiniCart();
+                }
+            }
+        }
+
+        function saveCart() {
+            localStorage.setItem('cart', JSON.stringify(currentCart));
+        }
+
+        function calculateCartTotal() {
+            return currentCart.reduce((total, item) => total + (item.price * item.quantity), 0);
+        }
+
+        function updateCartDisplay() {
+            const cartItemsList = document.getElementById('cartItemsList');
+            const cartTotalSpan = document.getElementById('cartTotal');
+            const emptyCartMessage = document.getElementById('emptyCartMessage');
+            const checkoutButton = document.getElementById('checkoutButton');
+
+            cartItemsList.innerHTML = ''; // Clear current items
+
+            if (currentCart.length === 0) {
+                emptyCartMessage.style.display = 'block';
+                cartTotalSpan.textContent = '0.00 lei';
+                checkoutButton.style.display = 'none';
+            } else {
+                emptyCartMessage.style.display = 'none';
+                checkoutButton.style.display = 'block';
+                currentCart.forEach(item => {
+                    const li = document.createElement('li');
+                    li.className = 'cart-item';
+                    li.innerHTML = `
+                        <div class="item-details">
+                            <span>${item.name}</span>
+                        </div>
+                        <div class="item-quantity-controls">
+                            <button class="quantity-btn" onclick="updateQuantity('${item.id}', -1)">-</button>
+                            <span>${item.quantity}</span>
+                            <button class="quantity-btn" onclick="updateQuantity('${item.id}', 1)">+</button>
+                        </div>
+                        <span>${(item.price * item.quantity).toFixed(2)} lei</span>
+                        <button class="remove-item-btn" onclick="removeFromCart('${item.id}')">
+                            &times;
+                        </button>
+                    `;
+                    cartItemsList.appendChild(li);
+                });
+                cartTotalSpan.textContent = `${calculateCartTotal().toFixed(2)} lei`;
+                generateWhatsAppLink();
+            }
+        }
+
+        function showCartSection() {
+            const cartSection = document.getElementById('cartSection');
+            if (cartSection) {
+                cartSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+
+        function updateMiniCart() {
+            const miniCart = document.getElementById('miniCart');
+            const itemCountSpan = miniCart.querySelector('.item-count');
+            const totalPriceSpan = miniCart.querySelector('.total-price');
+            const miniCartBadge = document.getElementById('miniCartBadge');
+            const miniCartMessage = document.getElementById('miniCartMessage');
+            const miniCartButton = miniCart.querySelector('.mini-cart-button');
+
+            const totalItems = currentCart.reduce((count, item) => count + item.quantity, 0);
+            const totalSum = calculateCartTotal();
+
+            if (totalItems > 0) {
+                miniCart.classList.add('active');
+                itemCountSpan.textContent = `${totalItems} ${totalItems === 1 ? 'produs' : 'produse'}`;
+                totalPriceSpan.textContent = `${totalSum.toFixed(2)} lei`;
+                miniCartBadge.textContent = totalItems;
+                miniCartBadge.style.display = 'flex'; // Show badge
+                miniCartMessage.style.display = 'none'; // Hide message
+                miniCartButton.style.display = 'flex'; // Show button
+            } else {
+                miniCart.classList.remove('active');
+                miniCartBadge.style.display = 'none'; // Hide badge
+                miniCartMessage.style.display = 'block'; // Show message
+                miniCartButton.style.display = 'none'; // Hide button if message is present for desktop
+                 if (window.innerWidth <= 1024) { /* Hide button on mobile if cart is empty */
+                    miniCartButton.style.display = 'none';
+                 }
+            }
+        }
+
+        function generateWhatsAppLink() {
+            let message = "Salut! Aș dori să plasez o comandă:\n\n";
+            let total = 0;
+
+            currentCart.forEach(item => {
+                message += `${item.quantity} x ${item.name} - ${(item.price * item.quantity).toFixed(2)} lei\n`;
+                total += (item.price * item.quantity);
+            });
+
+            message += `\nTotal: ${total.toFixed(2)} lei\n\nVă rog să confirmați comanda și detaliile de livrare.`;
+
+            const encodedMessage = encodeURIComponent(message);
+            const whatsappLink = `https://wa.me/40748123456?text=${encodedMessage}`;
+            document.getElementById('checkoutButton').href = whatsappLink;
+        }
+
+        // --- MESSAGE NOTIFICATIONS ---
+
         function showMessage(text, type = 'success') {
             console.log('💬 Showing message:', text, type);
-            
+
             const messageContainer = document.getElementById('messageContainer');
             const messageDiv = document.createElement('div');
             messageDiv.className = `message ${type}`;
             messageDiv.textContent = text;
-            
+
             messageContainer.appendChild(messageDiv);
-            
+
             // Show message
             setTimeout(() => {
                 messageDiv.classList.add('show');
             }, 100);
-            
+
             // Hide and remove message
             setTimeout(() => {
                 messageDiv.classList.remove('show');
@@ -2391,183 +1396,223 @@
                     if (messageContainer.contains(messageDiv)) {
                         messageContainer.removeChild(messageDiv);
                     }
-                }, 300);
+                }, 300); // Allow time for fade out transition
             }, 4000);
+        }
+
+        // --- ADMIN PANEL FUNCTIONS ---
+
+        function enterAdminMode() {
+            document.body.classList.add('admin-mode');
+            document.getElementById('mainHeader').style.display = 'none';
+            document.getElementById('mainContent').style.display = 'none';
+            document.getElementById('miniCart').style.display = 'none';
+            document.getElementById('adminPanel').style.display = 'block';
+            document.querySelector('footer').style.display = 'none'; // Hide footer in admin mode
+            updateAdminDisplay();
+        }
+
+        function updateAdminDisplay() {
+            displayCategoriesAdmin();
+            displayProductsAdmin();
+            updateJSONOutput();
+        }
+
+        // Category Admin Functions
+        function displayCategoriesAdmin() {
+            const categoryList = document.getElementById('categoryList');
+            categoryList.innerHTML = '';
+            if (menuData.categories.length === 0) {
+                categoryList.innerHTML = '<div class="list-item" style="justify-content: center; color: var(--text-light);">Nu există categorii.</div>';
+                return;
+            }
+            menuData.categories.forEach(cat => {
+                const li = document.createElement('div');
+                li.className = 'list-item';
+                li.innerHTML = `
+                    <span class="list-item-name">${cat.name}</span>
+                    <div class="list-item-actions">
+                        <button onclick="editCategory('${cat.id}')">✏️</button>
+                        <button onclick="deleteCategory('${cat.id}')" class="delete">🗑️</button>
+                    </div>
+                `;
+                categoryList.appendChild(li);
+            });
+        }
+
+        function addCategory() {
+            const nameInput = document.getElementById('newCategoryName');
+            const name = nameInput.value.trim();
+            if (name) {
+                // Generate a unique ID (simple increment for demonstration, more robust needed in production)
+                const newId = 'cat' + (menuData.categories.length > 0 ? Math.max(...menuData.categories.map(c => parseInt(c.id.replace('cat', '') || 0))) + 1 : 1);
+                menuData.categories.push({ id: newId, name: name });
+                nameInput.value = '';
+                updateAdminDisplay();
+                showMessage('Categorie adăugată!', 'success');
+            } else {
+                showMessage('Numele categoriei nu poate fi gol.', 'error');
+            }
+        }
+        function handleCategoryInput(event) {
+            if (event.key === 'Enter') {
+                addCategory();
+            }
+        }
+
+        function editCategory(id) {
+            const newName = prompt('Editează numele categoriei:', menuData.categories.find(c => c.id === id).name);
+            if (newName !== null && newName.trim() !== '') {
+                menuData.categories.find(c => c.id === id).name = newName.trim();
+                updateAdminDisplay();
+                showMessage('Categorie actualizată!', 'success');
+            } else if (newName !== null) {
+                showMessage('Numele categoriei nu poate fi gol.', 'error');
+            }
+        }
+
+        function deleteCategory(id) {
+            if (confirm('Ești sigur că vrei să ștergi această categorie și toate produsele asociate?')) {
+                menuData.categories = menuData.categories.filter(cat => cat.id !== id);
+                menuData.products = menuData.products.filter(prod => prod.categoryId !== id); // Also delete associated products
+                updateAdminDisplay();
+                showMessage('Categorie ștearsă!', 'info');
+            }
+        }
+
+        // Product Admin Functions
+        function displayProductsAdmin() {
+            const productList = document.getElementById('productList');
+            productList.innerHTML = '';
+            if (menuData.products.length === 0) {
+                productList.innerHTML = '<div class="product-editor-card" style="text-align: center; color: var(--text-light);">Nu există produse.</div>';
+                return;
+            }
+
+            menuData.products.forEach(prod => {
+                const productCard = document.createElement('div');
+                productCard.className = 'product-editor-card';
+                productCard.id = `editor-product-${prod.id}`;
+                productCard.innerHTML = `
+                    <h3>${prod.name || 'Produs Nou'}</h3>
+                    <label>Nume Produs:</label>
+                    <input type="text" value="${prod.name || ''}" data-field="name">
+                    <label>Descriere (g/ml/buc):</label>
+                    <input type="text" value="${prod.description || ''}" data-field="description">
+                    <div class="input-group">
+                        <label style="width: 50%;">Preț (lei):</label>
+                        <label style="width: 50%;">URL Imagine (opțional):</label>
+                    </div>
+                    <div class="input-group">
+                        <input type="number" step="0.01" value="${prod.price !== undefined ? prod.price : ''}" data-field="price" class="price-input">
+                        <input type="text" value="${prod.imageUrl || ''}" data-field="imageUrl" class="grams-input">
+                    </div>
+                    <label>Categorie:</label>
+                    <select data-field="categoryId">
+                        ${menuData.categories.map(cat => `<option value="${cat.id}" ${prod.categoryId === cat.id ? 'selected' : ''}>${cat.name}</option>`).join('')}
+                    </select>
+                    <div class="product-editor-actions">
+                        <button class="save-btn" onclick="saveProduct('${prod.id}')">Salvează</button>
+                        <button class="delete-btn" onclick="deleteProduct('${prod.id}')">Șterge</button>
+                    </div>
+                `;
+                productList.appendChild(productCard);
+            });
+        }
+
+        function addProduct() {
+            // Generate a unique ID
+            const newId = 'prod' + (menuData.products.length > 0 ? Math.max(...menuData.products.map(p => parseInt(p.id.replace('prod', '') || 0))) + 1 : 1);
+            menuData.products.push({
+                id: newId,
+                categoryId: menuData.categories.length > 0 ? menuData.categories[0].id : '', // Default to first category if exists
+                name: '',
+                description: '',
+                price: 0,
+                imageUrl: ''
+            });
+            updateAdminDisplay();
+            const newProductCard = document.getElementById(`editor-product-${newId}`);
+            if (newProductCard) {
+                newProductCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+            showMessage('Produs nou adăugat! Editează detaliile.', 'info');
+        }
+
+        function saveProduct(id) {
+            const card = document.getElementById(`editor-product-${id}`);
+            const product = menuData.products.find(p => p.id === id);
+
+            if (product) {
+                product.name = card.querySelector('[data-field="name"]').value.trim();
+                product.description = card.querySelector('[data-field="description"]').value.trim();
+                product.price = parseFloat(card.querySelector('[data-field="price"]').value);
+                product.imageUrl = card.querySelector('[data-field="imageUrl"]').value.trim();
+                product.categoryId = card.querySelector('[data-field="categoryId"]').value;
+
+                if (!product.name || isNaN(product.price) || product.price < 0) {
+                    showMessage('Numele și prețul valid sunt obligatorii pentru produs.', 'error');
+                    return;
+                }
+                if (!product.categoryId) {
+                     showMessage('Un produs trebuie să aibă o categorie selectată.', 'error');
+                     return;
+                }
+
+                updateAdminDisplay();
+                showMessage('Produs salvat!', 'success');
+            }
+        }
+
+        function deleteProduct(id) {
+            if (confirm('Ești sigur că vrei să ștergi acest produs?')) {
+                menuData.products = menuData.products.filter(prod => prod.id !== id);
+                updateAdminDisplay();
+                showMessage('Produs șters!', 'info');
+            }
+        }
+
+        // Global Admin Tools
+        function updateJSONOutput() {
+            const output = {
+                categories: menuData.categories,
+                products: menuData.products
+            };
+            document.getElementById('jsonOutput').textContent =
+                'const menuData = ' + JSON.stringify(output, null, 2) + ';';
+        }
+
+        function copyToClipboard() {
+            const output = document.getElementById('jsonOutput').textContent;
+            navigator.clipboard.writeText(output).then(() => {
+                showMessage('JSON copiat în clipboard!', 'success');
+            }).catch(err => {
+                showMessage('Eroare la copierea în clipboard.', 'error');
+                console.error('Failed to copy: ', err);
+            });
+        }
+
+        function downloadJSON() {
+            const output = document.getElementById('jsonOutput').textContent;
+            const blob = new Blob([output], { type: 'application/javascript' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'menu-data.js'; // Suggest downloading as JS for easier direct replacement
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            showMessage('Fișierul menu-data.js a fost descărcat!', 'success');
+        }
+
+        function clearAll() {
+            if (confirm('Sigur vrei să ștergi tot meniul? Această acțiune este ireversibilă fără un backup!')) {
+                menuData = { categories: [], products: [] };
+                updateAdminDisplay();
+                showMessage('Meniul a fost șters complet.', 'success');
+            }
         }
     </script>
 </body>
-</html>-size: 1.2em;">📞</span>
-                            <span>+40 766 362 943</span>
-                        </div>
-                        <div style="display: flex; align-items: center; color: var(--text-light);">
-                            <span style="margin-right: 12px; font-size: 1.2em;">📍</span>
-                            <span>Str. Republicii Nr. 15, București</span>
-                        </div>
-                        <div style="display: flex; align-items: center; color: var(--text-light);">
-                            <span style="margin-right: 12px; fontcontent">
-                                    <div class="card-title">crackbites x6</div>
-                                    <div class="card-description">bucățele de pui crocante cu usturoi</div>
-                                    <div class="card-meta">
-                                        <div class="card-weight">200g</div>
-                                        <div class="card-price">27 ron</div>
-                                    </div>
-                                    <button class="add-to-cart" onclick="addToCart('CrackBites x6', 27, 15)">adaugă</button>
-                                </div>
-                            </div>
-
-                            <div class="menu-card">
-                                <div class="card-image">
-                                    <div class="image-placeholder">🍗</div>
-                                </div>
-                                <div class="card-content">
-                                    <div class="card-title">crunchy wings x6</div>
-                                    <div class="card-description">aripioare de pui crocante și picante</div>
-                                    <div class="card-meta">
-                                        <div class="card-weight">270g</div>
-                                        <div class="card-price">27 ron</div>
-                                    </div>
-                                    <button class="add-to-cart" onclick="addToCart('Crunchy Wings x6', 27, 18)">adaugă</button>
-                                </div>
-                            </div>
-
-                            <div class="menu-card">
-                                <div class="card-image">
-                                    <div class="image-placeholder">🍗</div>
-                                </div>
-                                <div class="card-content">
-                                    <div class="card-title">golden crisps x6</div>
-                                    <div class="card-description">bucățele de pui aurii și crocante</div>
-                                    <div class="card-meta">
-                                        <div class="card-weight">240g</div>
-                                        <div class="card-price">29 ron</div>
-                                    </div>
-                                    <button class="add-to-cart" onclick="addToCart('Golden Crisps x6', 29, 16)">adaugă</button>
-                                </div>
-                            </div>
-
-                            <div class="menu-card">
-                                <div class="card-image">
-                                    <div class="image-placeholder">🍗</div>
-                                </div>
-                                <div class="card-content">
-                                    <div class="card-title">șnițel clasic pui</div>
-                                    <div class="card-description">șnițel clasic de pui pane</div>
-                                    <div class="card-meta">
-                                        <div class="card-weight">240g</div>
-                                        <div class="card-price">29 ron</div>
-                                    </div>
-                                    <button class="add-to-cart" onclick="addToCart('Șnițel Clasic Pui', 29, 18)">adaugă</button>
-                                </div>
-                            </div>
-
-                            <div class="menu-card">
-                                <div class="card-image">
-                                    <div class="image-placeholder">🍗</div>
-                                </div>
-                                <div class="card-
-                                    <div class="card-title">hummus</div>
-                                    <div class="card-description">pastă de naut cu tahini, ulei măsline, usturoi și lămâie</div>
-                                    <div class="card-meta">
-                                        <div class="card-weight">240g</div>
-                                        <div class="card-price">22 ron</div>
-                                    </div>
-                                    <button class="add-to-cart" onclick="addToCart('Hummus', 22, 5)">adaugă</button>
-                                </div>
-                            </div>
-
-                            <div class="menu-card">
-                                <div class="card-image">
-                                    <div class="image-placeholder">🥗</div>
-                                </div>
-                                <div class="card-content">
-                                    <div class="card-title">hummus beirut</div>
-                                    <div class="card-description">pastă de naut cu tahini, ulei măsline, usturoi și lămâie</div>
-                                    <div class="card-meta">
-                                        <div class="card-weight">240g</div>
-                                        <div class="card-price">22 ron</div>
-                                    </div>
-                                    <button class="add-to-cart" onclick="addToCart('Hummus Beirut', 22, 5)">adaugă</button>
-                                </div>
-                            </div>
-
-                            <div class="menu-card">
-                                <div class="card-image">
-                                    <div class="image-placeholder">🍆</div>
-                                </div>
-                                <div class="card-content">
-                                    <div class="card-title">salată de vinete</div>
-                                    <div class="card-description">salată de vinete tradițională cu condimente</div>
-                                    <div class="card-meta">
-                                        <div class="card-weight">240g</div>
-                                        <div class="card-price">24 ron</div>
-                                    </div>
-                                    <button class="add-to-cart" onclick="addToCart('Salată de Vinete', 24, 7)">adaugă</button>
-                                </div>
-                            </div>
-
-                            <div class="menu-card">
-                                <div class="card-image">
-                                    <div class="image-placeholder">🍆</div>
-                                </div>
-                                <div class="card-content">
-                                    <div class="card-title">baba ganoush</div>
-                                    <div class="card-description">pastă de vinete coapte cu tahini și condimente orientale</div>
-                                    <div class="card-meta">
-                                        <div class="card-weight">240g</div>
-                                        <div class="card-price">25 ron</div>
-                                    </div>
-                                    <button class="add-to-cart" onclick="addToCart('Baba Ganoush', 25, 7)">adaugă</button>
-                                </div>
-                            </div>
-
-                            <div class="menu-card">
-                                <div class="card-image">
-                                    <div class="image-placeholder">🍃</div>
-                                </div>
-                                <div class="card-content">
-                                    <div class="card-title">yalangi</div>
-                                    <div class="card-description">foi de viță umplute cu orez și condimente</div>
-                                    <div class="card-meta">
-                                        <div class="card-weight">240g</div>
-                                        <div class="card-price">27 ron</div>
-                                    </div>
-                                    <button class="add-to-cart" onclick="addToCart('Yalangi', 27, 8)">adaugă</button>
-                                </div>
-                            </div>
-
-                            <div class="menu-card">
-                                <div class="card-image">
-                                    <div class="image-placeholder">🍆</div>
-                                </div>
-                                <div class="card-content">
-                                    <div class="card-title">moutabal de vinete</div>
-                                    <div class="card-description">pastă de vinete cu iaurt și condimente</div>
-                                    <div class="card-meta">
-                                        <div class="card-weight">240g</div>
-                                        <div class="card-price">27 ron</div>
-                                    </div>
-                                    <button class="add-to-cart" onclick="addToCart('Moutabal de Vinete', 27, 8)">adaugă</button>
-                                </div>
-                            </div>
-
-                            <div class="menu-card">
-                                <div class="card-image">
-                                    <div class="image-placeholder">🌶️</div>
-                                </div>
-                                <div class="card-content">
-                                    <div class="card-title">muhammarah</div>
-                                    <div class="card-description">gustare picantă din nuci, ardei roșu, melasă de rodie și pesmet</div>
-                                    <div class="card-meta">
-                                        <div class="card-weight">240g</div>
-                                        <div class="card-price">28 ron</div>
-                                    </div>
-                                    <button class="add-to-cart" onclick="addToCart('Muhammarah', 28, 5)">adaugă</button>
-                                </div>
-                            </div>
-
-                            <div class="menu-card">
-                                <div class="card-image">
-                                    <div class="image-placeholder">🥗</div>
-                                </div>
-                                <div class="card-content">
-                                    
+</html>
